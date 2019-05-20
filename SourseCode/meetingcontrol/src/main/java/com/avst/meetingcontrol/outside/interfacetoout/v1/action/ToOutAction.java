@@ -100,8 +100,13 @@ public class ToOutAction extends BaseAction {
             rResult=overMC(param);
             System.out.println(JacksonUtil.objebtToString(rResult));
         }else if(type==3){
-            List<AsrForMCCache_oneParam> list=AsrForMCCache.getMTAsrAllUserAsrByMTSsid(mtssid);
-            rResult.setData(list);
+
+            GetMCAsrTxtBackParam_out getMCAsrTxtBackParam_out=new GetMCAsrTxtBackParam_out();
+            getMCAsrTxtBackParam_out.setMcType("AVST");
+            getMCAsrTxtBackParam_out.setMtssid(mtssid);
+            ReqParam<GetMCAsrTxtBackParam_out> param=new ReqParam<GetMCAsrTxtBackParam_out>();
+            param.setParam(getMCAsrTxtBackParam_out);
+            rResult=getMCAsrTxtBack(param);
             System.out.println(JacksonUtil.objebtToString(rResult));
         }
         return rResult;
