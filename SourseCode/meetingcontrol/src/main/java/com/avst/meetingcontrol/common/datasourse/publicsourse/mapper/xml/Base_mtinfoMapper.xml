@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo">
+        <id column="id" property="id" />
+        <result column="meetingtype" property="meetingtype" />
+        <result column="livingurl" property="livingurl" />
+        <result column="filesavessid" property="filesavessid" />
+        <result column="opened" property="opened" />
+        <result column="mtstate" property="mtstate" />
+        <result column="userecord" property="userecord" />
+        <result column="recordstarttime" property="recordstarttime" />
+        <result column="recordendtime" property="recordendtime" />
+        <result column="createtime" property="createtime" />
+        <result column="string1" property="string1" />
+        <result column="string2" property="string2" />
+        <result column="integer1" property="integer1" />
+        <result column="integer2" property="integer2" />
+        <result column="ssid" property="ssid" />
+    </resultMap>
+
+</mapper>
