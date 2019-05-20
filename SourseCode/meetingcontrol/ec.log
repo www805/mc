@@ -1485,3 +1485,235 @@ java.lang.NullPointerException: null
 2019-05-20 18:45:32.612  INFO 16896 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8082 (http) with context path ''
 2019-05-20 18:45:32.613  INFO 16896 --- [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
 2019-05-20 18:45:32.615  INFO 16896 --- [main] c.a.m.MeetingcontrolApplication          : Started MeetingcontrolApplication in 4.749 seconds (JVM running for 5.33)
+2019-05-20 18:50:32.433  INFO 16896 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 18:54:54.469  INFO 16896 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-20 18:54:54.469  INFO 16896 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-05-20 18:54:54.476  INFO 16896 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2019-05-20 18:55:32.440  INFO 16896 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 18:59:11.385  INFO 26264 --- [main] c.a.m.MeetingcontrolApplication          : No active profile set, falling back to default profiles: default
+2019-05-20 18:59:12.050  INFO 26264 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=649bb5af-6681-3c9d-8ec4-a54aa84962f5
+2019-05-20 18:59:12.056  INFO 26264 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2019-05-20 18:59:12.063  INFO 26264 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+2019-05-20 18:59:12.067  INFO 26264 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2019-05-20 18:59:12.084  INFO 26264 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.avst.meetingcontrol.feignclient.EquipmentControl' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 18:59:12.153  INFO 26264 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$3180d6d1] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 18:59:12.166  INFO 26264 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration$$EnhancerBySpringCGLIB$$9c729200] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 18:59:12.175  INFO 26264 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 18:59:12.186  INFO 26264 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$4d9ad9ce] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 18:59:12.436  INFO 26264 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8082 (http)
+2019-05-20 18:59:12.464  INFO 26264 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-05-20 18:59:12.465  INFO 26264 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-20 18:59:12.646  INFO 26264 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-05-20 18:59:12.646  INFO 26264 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1246 ms
+2019-05-20 18:59:12.967  INFO 26264 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-05-20 18:59:13.301  INFO 26264 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-05-20 18:59:13.879  WARN 26264 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2019-05-20 18:59:13.879  INFO 26264 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2019-05-20 18:59:13.883  WARN 26264 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2019-05-20 18:59:13.883  INFO 26264 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2019-05-20 18:59:14.036  INFO 26264 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-20 18:59:14.488  INFO 26264 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2019-05-20 18:59:14.567  INFO 26264 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2019-05-20 18:59:14.567  INFO 26264 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application-1.errorChannel' has 1 subscriber(s).
+2019-05-20 18:59:14.567  INFO 26264 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started _org.springframework.integration.errorLogger
+2019-05-20 18:59:14.575  INFO 26264 --- [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2019-05-20 18:59:14.620  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2019-05-20 18:59:14.731  INFO 26264 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2019-05-20 18:59:14.731  INFO 26264 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2019-05-20 18:59:14.825  INFO 26264 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2019-05-20 18:59:14.825  INFO 26264 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2019-05-20 18:59:15.051  INFO 26264 --- [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 18:59:15.100  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2019-05-20 18:59:15.101  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2019-05-20 18:59:15.101  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2019-05-20 18:59:15.101  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2019-05-20 18:59:15.101  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2019-05-20 18:59:15.101  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2019-05-20 18:59:15.101  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2019-05-20 18:59:15.342  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2019-05-20 18:59:15.345  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2019-05-20 18:59:15.349  INFO 26264 --- [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2019-05-20 18:59:15.353  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1558349955352 with initial instances count: 4
+2019-05-20 18:59:15.357  INFO 26264 --- [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MC with eureka with status UP
+2019-05-20 18:59:15.357  INFO 26264 --- [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1558349955357, current=UP, previous=STARTING]
+2019-05-20 18:59:15.359  INFO 26264 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MC/wb-PC:mc:8082: registering service...
+2019-05-20 18:59:15.399  INFO 26264 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MC/wb-PC:mc:8082 - registration status: 204
+2019-05-20 18:59:15.407  INFO 26264 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8082 (http) with context path ''
+2019-05-20 18:59:15.408  INFO 26264 --- [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2019-05-20 18:59:15.410  INFO 26264 --- [main] c.a.m.MeetingcontrolApplication          : Started MeetingcontrolApplication in 5.122 seconds (JVM running for 5.716)
+2019-05-20 18:59:28.470  INFO 26264 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-20 18:59:28.470  INFO 26264 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-05-20 18:59:28.477  INFO 26264 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2019-05-20 19:02:40.451 ERROR 26264 --- [http-nio-8082-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache.getNewestAsrTxtByasrid(AsrForMCCache.java:89) ~[classes/:na]
+	at com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst.getMCAsrTxtBack(ToOutMCService_avst.java:134) ~[classes/:na]
+	at com.avst.meetingcontrol.outside.interfacetoout.v1.action.ToOutAction.getMCAsrTxtBack(ToOutAction.java:62) ~[classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_60]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_60]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_60]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_60]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:189) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:892) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1038) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:942) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1005) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:908) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:882) ~[spring-webmvc-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:834) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1415) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_60]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_60]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_60]
+
+2019-05-20 19:04:15.109  INFO 26264 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 19:06:51.595  INFO 20440 --- [main] c.a.m.MeetingcontrolApplication          : No active profile set, falling back to default profiles: default
+2019-05-20 19:06:52.330  INFO 20440 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=649bb5af-6681-3c9d-8ec4-a54aa84962f5
+2019-05-20 19:06:52.336  INFO 20440 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2019-05-20 19:06:52.342  INFO 20440 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+2019-05-20 19:06:52.347  INFO 20440 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2019-05-20 19:06:52.365  INFO 20440 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.avst.meetingcontrol.feignclient.EquipmentControl' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:06:52.437  INFO 20440 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$8a1ae6a8] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:06:52.450  INFO 20440 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration$$EnhancerBySpringCGLIB$$f50ca1d7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:06:52.459  INFO 20440 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:06:52.470  INFO 20440 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$a634e9a5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:06:52.715  INFO 20440 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8082 (http)
+2019-05-20 19:06:52.740  INFO 20440 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-05-20 19:06:52.740  INFO 20440 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-20 19:06:52.855  INFO 20440 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-05-20 19:06:52.855  INFO 20440 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1243 ms
+2019-05-20 19:06:53.081  INFO 20440 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-05-20 19:06:53.307  INFO 20440 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-05-20 19:06:53.768  WARN 20440 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2019-05-20 19:06:53.768  INFO 20440 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2019-05-20 19:06:53.772  WARN 20440 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2019-05-20 19:06:53.772  INFO 20440 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2019-05-20 19:06:53.912  INFO 20440 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-20 19:06:54.365  INFO 20440 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2019-05-20 19:06:54.440  INFO 20440 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2019-05-20 19:06:54.440  INFO 20440 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application-1.errorChannel' has 1 subscriber(s).
+2019-05-20 19:06:54.440  INFO 20440 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started _org.springframework.integration.errorLogger
+2019-05-20 19:06:54.447  INFO 20440 --- [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2019-05-20 19:06:54.475  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2019-05-20 19:06:54.589  INFO 20440 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2019-05-20 19:06:54.590  INFO 20440 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2019-05-20 19:06:54.684  INFO 20440 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2019-05-20 19:06:54.684  INFO 20440 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2019-05-20 19:06:54.848  INFO 20440 --- [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2019-05-20 19:06:54.878  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2019-05-20 19:06:55.011  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2019-05-20 19:06:55.014  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2019-05-20 19:06:55.016  INFO 20440 --- [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2019-05-20 19:06:55.019  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1558350415018 with initial instances count: 4
+2019-05-20 19:06:55.021  INFO 20440 --- [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MC with eureka with status UP
+2019-05-20 19:06:55.021  INFO 20440 --- [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1558350415021, current=UP, previous=STARTING]
+2019-05-20 19:06:55.022  INFO 20440 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MC/wb-PC:mc:8082: registering service...
+2019-05-20 19:06:55.063  INFO 20440 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MC/wb-PC:mc:8082 - registration status: 204
+2019-05-20 19:06:55.075  INFO 20440 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8082 (http) with context path ''
+2019-05-20 19:06:55.076  INFO 20440 --- [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2019-05-20 19:06:55.077  INFO 20440 --- [main] c.a.m.MeetingcontrolApplication          : Started MeetingcontrolApplication in 4.476 seconds (JVM running for 5.064)
+2019-05-20 19:10:51.937  INFO 20440 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-20 19:10:51.938  INFO 20440 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-05-20 19:10:51.945  INFO 20440 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2019-05-20 19:11:54.884  INFO 20440 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 19:14:47.890  INFO 27048 --- [main] c.a.m.MeetingcontrolApplication          : No active profile set, falling back to default profiles: default
+2019-05-20 19:14:48.590  INFO 27048 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=649bb5af-6681-3c9d-8ec4-a54aa84962f5
+2019-05-20 19:14:48.596  INFO 27048 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2019-05-20 19:14:48.602  INFO 27048 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+2019-05-20 19:14:48.607  INFO 27048 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2019-05-20 19:14:48.625  INFO 27048 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.avst.meetingcontrol.feignclient.EquipmentControl' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:14:48.699  INFO 27048 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5576be7b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:14:48.711  INFO 27048 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration$$EnhancerBySpringCGLIB$$c06879aa] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:14:48.720  INFO 27048 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:14:48.731  INFO 27048 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$7190c178] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-20 19:14:48.971  INFO 27048 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8082 (http)
+2019-05-20 19:14:48.993  INFO 27048 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-05-20 19:14:48.993  INFO 27048 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-20 19:14:49.112  INFO 27048 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-05-20 19:14:49.112  INFO 27048 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1208 ms
+2019-05-20 19:14:49.412  INFO 27048 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-05-20 19:14:49.561  INFO 27048 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-05-20 19:14:50.020  WARN 27048 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2019-05-20 19:14:50.020  INFO 27048 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2019-05-20 19:14:50.023  WARN 27048 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2019-05-20 19:14:50.023  INFO 27048 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2019-05-20 19:14:50.175  INFO 27048 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-20 19:14:50.645  INFO 27048 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2019-05-20 19:14:50.726  INFO 27048 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2019-05-20 19:14:50.726  INFO 27048 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application-1.errorChannel' has 1 subscriber(s).
+2019-05-20 19:14:50.726  INFO 27048 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started _org.springframework.integration.errorLogger
+2019-05-20 19:14:50.734  INFO 27048 --- [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2019-05-20 19:14:50.768  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2019-05-20 19:14:50.882  INFO 27048 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2019-05-20 19:14:50.882  INFO 27048 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2019-05-20 19:14:50.976  INFO 27048 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2019-05-20 19:14:50.977  INFO 27048 --- [main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2019-05-20 19:14:51.149  INFO 27048 --- [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2019-05-20 19:14:51.181  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2019-05-20 19:14:51.321  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2019-05-20 19:14:51.324  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2019-05-20 19:14:51.326  INFO 27048 --- [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2019-05-20 19:14:51.329  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1558350891328 with initial instances count: 6
+2019-05-20 19:14:51.331  INFO 27048 --- [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application MC with eureka with status UP
+2019-05-20 19:14:51.331  INFO 27048 --- [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1558350891331, current=UP, previous=STARTING]
+2019-05-20 19:14:51.332  INFO 27048 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MC/wb-PC:mc:8082: registering service...
+2019-05-20 19:14:51.368  INFO 27048 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_MC/wb-PC:mc:8082 - registration status: 204
+2019-05-20 19:14:51.375  INFO 27048 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8082 (http) with context path ''
+2019-05-20 19:14:51.375  INFO 27048 --- [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2019-05-20 19:14:51.377  INFO 27048 --- [main] c.a.m.MeetingcontrolApplication          : Started MeetingcontrolApplication in 4.37 seconds (JVM running for 4.961)
+2019-05-20 19:17:12.203  INFO 27048 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-20 19:17:12.203  INFO 27048 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-05-20 19:17:12.209  INFO 27048 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2019-05-20 19:19:51.188  INFO 27048 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-05-20 19:24:51.194  INFO 27048 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration

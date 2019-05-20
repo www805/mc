@@ -96,7 +96,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             }
             startMCParam.setTdAserList(tdAndAsrList);
             RRParam<Boolean> rr2= AvstMCImpl.startMC(startMCParam);
-            if(null!=rr2&&rr.getCode()==1&&null!=rr.getT()&&rr.getT().equals(true)){//开启会议成功
+            if(null!=rr2&&rr2.getCode()==1&&null!=rr.getT()&&rr2.getT().equals(true)){//开启会议成功
                 result.changeToTrue(mtssid);//返回本次会议的ssid
             }
         }
