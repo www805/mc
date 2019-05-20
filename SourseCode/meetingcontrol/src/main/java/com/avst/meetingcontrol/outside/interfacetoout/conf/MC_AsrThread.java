@@ -57,6 +57,7 @@ public class MC_AsrThread extends Thread{
                         if(AsrForMCCache.runbool){
                             System.out.println(userssid+":userssid 运行中---");
                             AsrForMCCache.runbool=false;
+                            asrtxt.setUserssid(userssid);
                             AsrForMCCache.addAsrTxt(mtssid,asrid,asrtxt,userssid);
                             AsrForMCCache.runbool=true;
                         }else{

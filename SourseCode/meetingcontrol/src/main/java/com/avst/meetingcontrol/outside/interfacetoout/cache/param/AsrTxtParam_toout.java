@@ -5,6 +5,8 @@ package com.avst.meetingcontrol.outside.interfacetoout.cache.param;
  */
 public class AsrTxtParam_toout {
 
+    private String userssid;//会议用户ssid
+
     private String txt;
 
     private String starttime;//本句话的开始时间，基于本次语音识别开始的ms数值
@@ -14,6 +16,18 @@ public class AsrTxtParam_toout {
     private String asrtime;//识别的返回时间,long类型的ms，用于记录和标注结束的时间节点
 
     private int asrsort;//本次语音识别，这一句是第几句
+
+    public String getUserssid() {
+        return userssid;
+    }
+
+    public void setUserssid(String userssid) {
+        this.userssid = userssid;
+    }
+
+    public void setAsrnum(int asrnum) {
+        this.asrnum = asrnum;
+    }
 
     public int getAsrsort() {
         return asrsort;
