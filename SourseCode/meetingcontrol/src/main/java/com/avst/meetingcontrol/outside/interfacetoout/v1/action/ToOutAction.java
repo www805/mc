@@ -48,6 +48,7 @@ public class ToOutAction extends BaseAction {
     }
 
     @RequestMapping("/overMC")
+    @ResponseBody
     public RResult overMC(@RequestBody ReqParam<OverMCParam_out> param) {
         RResult result=createNewResultOfFail();
 
@@ -56,6 +57,7 @@ public class ToOutAction extends BaseAction {
     }
 
     @RequestMapping("/getMCAsrTxtBack")
+    @ResponseBody
     public RResult getMCAsrTxtBack(@RequestBody ReqParam<GetMCAsrTxtBackParam_out> param) {
         RResult result=createNewResultOfFail();
 

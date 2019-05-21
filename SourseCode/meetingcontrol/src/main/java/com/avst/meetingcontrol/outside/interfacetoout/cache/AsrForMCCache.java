@@ -84,18 +84,19 @@ public class AsrForMCCache {
      * @return
      */
     public static  AsrTxtParam_toout getNewestAsrTxtByasrid(String mtssid){
-
-         //先找到是哪一个人的，或者说是哪一个asrid是有最新识别信息
-        String newestAsrid=newestAsridMap.get(mtssid);
-        if(null==newestAsrid){
-            System.out.println("没有找到最新的语音识别的asrid---重大问题");
-            return null;
-        }
-        AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByAsrid(mtssid,newestAsrid);
-        if(null!=asrForMCCache_oneParam){
-            List<AsrTxtParam_toout> asrtxtList=asrForMCCache_oneParam.getAsrTxtList();
-            if(null!=asrtxtList&&asrtxtList.size() > 0){
-                return asrtxtList.get(asrtxtList.size()-1);//返回最后一条
+        if (null!=newestAsridMap&&newestAsridMap.size()>0){
+            //先找到是哪一个人的，或者说是哪一个asrid是有最新识别信息
+            String newestAsrid=newestAsridMap.get(mtssid);
+            if(null==newestAsrid){
+                System.out.println("没有找到最新的语音识别的asrid---重大问题");
+                return null;
+            }
+            AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByAsrid(mtssid,newestAsrid);
+            if(null!=asrForMCCache_oneParam){
+                List<AsrTxtParam_toout> asrtxtList=asrForMCCache_oneParam.getAsrTxtList();
+                if(null!=asrtxtList&&asrtxtList.size() > 0){
+                    return asrtxtList.get(asrtxtList.size()-1);//返回最后一条
+                }
             }
         }
         return null;
