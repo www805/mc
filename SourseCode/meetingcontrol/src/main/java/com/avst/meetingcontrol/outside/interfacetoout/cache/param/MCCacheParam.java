@@ -11,6 +11,26 @@ public class MCCacheParam {
 
     private List<TdAndUserAndOtherCacheParam> tdList;//会议中所有用户的使用信息
 
+    private String mcType;//会议采用版本，现阶段只有AVST
+
+    private String ywSystemType;//业务系统类型，TRM_AVST AVst版本的笔录系统
+
+    public String getMcType() {
+        return mcType;
+    }
+
+    public void setMcType(String mcType) {
+        this.mcType = mcType;
+    }
+
+    public String getYwSystemType() {
+        return ywSystemType;
+    }
+
+    public void setYwSystemType(String ywSystemType) {
+        this.ywSystemType = ywSystemType;
+    }
+
     public int getMeetingtype() {
         return meetingtype;
     }

@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.req;
+package com.avst.meetingcontrol.feignclient.ec.req;
 
 public class GetFlushbonadingBySsidParam {
 

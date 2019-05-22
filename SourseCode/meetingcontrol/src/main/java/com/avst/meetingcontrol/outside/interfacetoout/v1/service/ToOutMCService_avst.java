@@ -1,12 +1,16 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
-import com.avst.meetingcontrol.common.util.baseaction.Code;
+import com.avst.meetingcontrol.common.conf.ASRType;
+import com.avst.meetingcontrol.common.util.JacksonUtil;
+import com.avst.meetingcontrol.common.util.ReadWriteFile;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.feignclient.EquipmentControl;
-import com.avst.meetingcontrol.feignclient.req.GetAsrServerBySsidParam;
-import com.avst.meetingcontrol.feignclient.vo.GetAsrServerBySsidVO;
+import com.avst.meetingcontrol.feignclient.bl.REMControl;
+import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
+import com.avst.meetingcontrol.feignclient.ec.req.GetAsrServerBySsidParam;
+import com.avst.meetingcontrol.feignclient.ec.vo.GetAsrServerBySsidVO;
+import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.cache.AVSTMCCache;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -17,13 +21,10 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.InitMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
-import com.avst.meetingcontrol.outside.interfacetoout.req.GetMCAsrTxtBackParam_out;
-import com.avst.meetingcontrol.outside.interfacetoout.req.OverMCParam_out;
-import com.avst.meetingcontrol.outside.interfacetoout.req.StartMCParam_out;
-import com.avst.meetingcontrol.outside.interfacetoout.req.TdAndUserAndOtherParam;
+import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     @Autowired
     private EquipmentControl equipmentControl;
 
+    @Autowired
+    private REMControl remControl;
+
     @Override
     public RResult startMC(ReqParam<StartMCParam_out> param, RResult result) {
 
@@ -48,6 +52,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         initMCParam.setMeetingtype(startMCParam_out.getMeetingtype());
         initMCParam.setModelbool(startMCParam_out.getModelbool());
         initMCParam.setMtmodelssid(startMCParam_out.getMtmodelssid());
+        initMCParam.setYwSystemType(startMCParam_out.getYwSystemType());
         List<TdAndUserParam> tdAndUserList=new ArrayList<TdAndUserParam>();
         Gson gson = new Gson();
         List<TdAndUserAndOtherParam> tdlist=startMCParam_out.getTdList();
@@ -122,21 +127,51 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return result;
     }
 
-
-
     @Override
-    public RResult getMCAsrTxtBack(ReqParam<GetMCAsrTxtBackParam_out> param, RResult result) {
+    public boolean setMCAsrTxtBack(ReqParam<SetMCAsrTxtBackParam_out> param) {
 
-        //关闭会议
-        GetMCAsrTxtBackParam_out getMCAsrTxtBackParam_out=param.getParam();
-        String mtssid=getMCAsrTxtBackParam_out.getMtssid();
-
-        AsrTxtParam_toout asrTxtParam_toout = AsrForMCCache.getNewestAsrTxtByasrid(mtssid);
-        if(null!=asrTxtParam_toout){
-            result.changeToTrue(asrTxtParam_toout);
+        SetMCAsrTxtBackParam_out mcAsrTxtBackParam_out=param.getParam();
+        String asrid=mcAsrTxtBackParam_out.getAsrid();
+        String mtssid=AsrForMCCache.getMTssidByAsrid(asrid);
+        if(null==mcAsrTxtBackParam_out.getAsrTxtParam_toout()){
+            return false;
         }
-        return result;
+        String userssid=MCCache.getUserSsidByAsrid(mtssid,asrid);
+
+        AsrTxtParam_toout asrtxt= null;
+        Gson gson=new Gson();
+        asrtxt = gson.fromJson(gson.toJson(mcAsrTxtBackParam_out.getAsrTxtParam_toout()), AsrTxtParam_toout.class);
+
+        if(null!=asrtxt){
+
+            System.out.println(userssid+":userssid 运行中---");
+            AsrForMCCache.runbool=false;
+            asrtxt.setUserssid(userssid);
+            AsrForMCCache.addAsrTxt(mtssid,asrid,asrtxt,userssid);
+            AsrForMCCache.runbool=true;
+
+            //向业务平台推送数据
+            try {
+                MCCacheParam mcCacheParam=MCCache.getMCCacheParam(mtssid);
+                if(null!=mcCacheParam){
+                    AsrTxtParam_toout asrTxtParam_toout=AsrForMCCache.getNewestAsrTxtBymtssid(mtssid);
+                    ReqParam<AsrTxtParam_toout> pparam=new ReqParam<AsrTxtParam_toout>();
+                    pparam.setParam(asrTxtParam_toout);
+                    if(mcCacheParam.getYwSystemType().equals("TRM_AVST")){//avst版本的的笔录系统的类型
+                        return remControl.setRercordAsrTxtBack(pparam);//调用对应的feign请求，返回TXT数据
+                    }//以后还有其他的系统
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+        return false;
     }
+
 
 
 }

@@ -17,6 +17,16 @@ public class InitMCParam extends  BaseReqParam {
 
     private List<TdAndUserParam> tdAndUserList;//会议用户关联通道
 
+    private String ywSystemType;//业务系统类型，TRM_AVST AVst版本的笔录系统
+
+    public String getYwSystemType() {
+        return ywSystemType;
+    }
+
+    public void setYwSystemType(String ywSystemType) {
+        this.ywSystemType = ywSystemType;
+    }
+
     public List<TdAndUserParam> getTdAndUserList() {
         return tdAndUserList;
     }

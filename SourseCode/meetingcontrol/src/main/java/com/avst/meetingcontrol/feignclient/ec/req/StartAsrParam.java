@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.req;
+package com.avst.meetingcontrol.feignclient.ec.req;
 
 /**
  * 开启asr服务需要带的参数

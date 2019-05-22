@@ -14,6 +14,16 @@ public class StartMCParam_out extends BaseReqParam{
 
     private List<TdAndUserAndOtherParam> tdList;
 
+    private String ywSystemType;//业务系统类型，TRM_AVST AVst版本的笔录系统
+
+    public String getYwSystemType() {
+        return ywSystemType;
+    }
+
+    public void setYwSystemType(String ywSystemType) {
+        this.ywSystemType = ywSystemType;
+    }
+
     public String getMcType() {
         return mcType;
     }

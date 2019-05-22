@@ -38,21 +38,8 @@ public class MCOverThread<T> extends Thread{
         }
 
         //最后关闭会议缓存
-        MCCacheParam mcCacheParam=MCCache.getMCCacheParam(mtssid);
-        if(null!=mcCacheParam){
+        MCCache.delMCCacheParam(mtssid);//最后关闭会议缓存
 
-            //先关闭线程
-            List<TdAndUserAndOtherCacheParam> tdlist=mcCacheParam.getTdList();
-            if(null!=tdlist&&tdlist.size() > 0){
-                for(TdAndUserAndOtherCacheParam td:tdlist){
-                    MC_AsrThread thread=td.getMcAsrThread();
-                    if(null!=thread){
-                        thread.bool=false;//中断线程
-                    }
-                }
-            }
-            MCCache.delMCCacheParam(mtssid);//最后关闭会议缓存
-        }
 
         //查看是否有asr
         //是否需要写入数据，比如asr识别的数据

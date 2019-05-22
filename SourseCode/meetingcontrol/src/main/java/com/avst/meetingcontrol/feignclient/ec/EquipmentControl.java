@@ -1,13 +1,16 @@
-package com.avst.meetingcontrol.feignclient;
+package com.avst.meetingcontrol.feignclient.ec;
 
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.feignclient.req.*;
-import com.avst.meetingcontrol.feignclient.vo.AsrTxtParam_toout;
+import com.avst.meetingcontrol.feignclient.ec.req.*;
+import com.avst.meetingcontrol.feignclient.ec.vo.AsrTxtParam_toout;
+import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 设备控制的代理
@@ -18,7 +21,7 @@ public interface EquipmentControl {
     //avstmt
     @RequestMapping( value = "/asr/v1/toClientForTxtBack")
     @ResponseBody
-    public RResult<AsrTxtParam_toout> txtBack(@RequestBody String asrid);
+    public RResult<List<AsrTxtParam_toout>> txtBack(@RequestBody TxtBackParam txtBackParam);
 
     @RequestMapping("/asr/v1/startAsr")
     @ResponseBody

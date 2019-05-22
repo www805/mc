@@ -1,5 +1,7 @@
 package com.avst.meetingcontrol.common.util.baseaction;
 
+import com.avst.meetingcontrol.common.util.DateUtil;
+
 /**
  * 请求的参数集合
  * @author wb
@@ -26,7 +28,12 @@ public class ReqParam<T> {
 	 */
 	private String token;
 
+	public ReqParam() {
 
+		version="v1.0";
+		reqtime= DateUtil.getDateAndMinute();
+		token="token";
+	}
 
 	public String getVersion() {
 		return version;

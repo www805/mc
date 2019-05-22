@@ -204,7 +204,7 @@ public class ReadWriteFile {
      * 追加数据
      * 
      */
-    public static boolean writeApptoTxtFile(String newStr,String path) throws IOException{
+    public static boolean writeApptoTxtFile(String newStr,String path) {
         //System.out.println("进入写文件"+newStr);
     	
     	String filepath="";
@@ -227,15 +227,15 @@ public class ReadWriteFile {
 				System.out.println("------------------------");
 			}
     	}
-    	
-    	File f = new File(path);    
-        if (f.exists()) {    
-            System.out.print("文件存在");    
-        } else {    
-            System.out.print("文件不存在");    
-            f.createNewFile();// 不存在则创建    
-        } 
+
         try {
+        	File f = new File(path);
+			if (f.exists()) {
+				System.out.print("文件存在");
+			} else {
+				System.out.print("文件不存在");
+				f.createNewFile();// 不存在则创建
+			}
         	
         	BufferedWriter output = new BufferedWriter(new FileWriter(f,true));
         	output.write(newStr);

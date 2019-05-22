@@ -49,6 +49,43 @@ public class MCCache {
         return null;
     }
 
+    /**
+     * 获取会议缓存中某一位用户的通道数据信息
+     * @param mtssid
+     * @param asrid
+     * @return
+     */
+    public static  synchronized  TdAndUserAndOtherCacheParam getMCCacheOneTDParamByAsrid(String mtssid,String asrid){
+        MCCacheParam mcCacheParam=getMCCacheParam(mtssid);
+        if(null!=mcCacheParam&&null!=mcCacheParam.getTdList()&&mcCacheParam.getTdList().size() > 0){
+            for(TdAndUserAndOtherCacheParam cacheParam:mcCacheParam.getTdList()){
+                if(null!=cacheParam.getAsrid()&&cacheParam.getAsrid().equals(asrid)){
+                    return cacheParam;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取会议缓存中某一位用户的ssid
+     * @param mtssid
+     * @param asrid
+     * @return
+     */
+    public static  synchronized  String getUserSsidByAsrid(String mtssid,String asrid){
+        MCCacheParam mcCacheParam=getMCCacheParam(mtssid);
+        if(null!=mcCacheParam&&null!=mcCacheParam.getTdList()&&mcCacheParam.getTdList().size() > 0){
+            for(TdAndUserAndOtherCacheParam cacheParam:mcCacheParam.getTdList()){
+                if(null!=cacheParam.getAsrid()&&cacheParam.getAsrid().equals(asrid)){
+                    return cacheParam.getUserssid();
+                }
+            }
+        }
+        return null;
+    }
+
+
     public static  synchronized  boolean setMCCacheParam(MCCacheParam mcCacheParam){
 
         if(null==mcList){

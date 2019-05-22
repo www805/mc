@@ -34,8 +34,18 @@ public class TdAndUserAndOtherCacheParam {
 
     private long asrStartTime;//语音识别开始的时间
 
+    private boolean asrRun;//语音识别服务是否启动
+
     //测谎仪有线程就写在这
 
+
+    public boolean isAsrRun() {
+        return asrRun;
+    }
+
+    public void setAsrRun(boolean asrRun) {
+        this.asrRun = asrRun;
+    }
 
     public long getAsrStartTime() {
         return asrStartTime;

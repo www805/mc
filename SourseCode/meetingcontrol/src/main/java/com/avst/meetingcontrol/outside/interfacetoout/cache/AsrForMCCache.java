@@ -17,6 +17,8 @@ public class AsrForMCCache {
 
     private static Map<String, AsrForMCCacheParam> asrMap=new HashMap<String, AsrForMCCacheParam>();//本次会议的所有人员的asr识别结果，key会议ssid
 
+    private static Map<String,String> asrToMTMap=null;//asrid语音识别的唯一识别码对应的会议ssid
+
     public static  AsrForMCCacheParam getMTAsrByMTSsid(String mtssid){
 
         if(null!=asrMap&&asrMap.containsKey(mtssid)){
@@ -40,7 +42,7 @@ public class AsrForMCCache {
      * @param asrid
      * @return
      */
-    public static  AsrForMCCache_oneParam getMTAsrOneUserAsrByAsrid(String mtssid,String asrid){
+    public static synchronized AsrForMCCache_oneParam getMTAsrOneUserAsrByAsrid(String mtssid,String asrid){
 
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null!=list&&list.size() > 0){
@@ -61,7 +63,7 @@ public class AsrForMCCache {
      * @param userssid
      * @return
      */
-    public static  AsrForMCCache_oneParam getMTAsrOneUserAsrByUserid(String mtssid,String userssid){
+    public static synchronized AsrForMCCache_oneParam getMTAsrOneUserAsrByUserid(String mtssid,String userssid){
 
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null!=list&&list.size() > 0){
@@ -83,20 +85,32 @@ public class AsrForMCCache {
      * @param mtssid
      * @return
      */
-    public static  AsrTxtParam_toout getNewestAsrTxtByasrid(String mtssid){
-        if (null!=newestAsridMap&&newestAsridMap.size()>0){
-            //先找到是哪一个人的，或者说是哪一个asrid是有最新识别信息
-            String newestAsrid=newestAsridMap.get(mtssid);
-            if(null==newestAsrid){
-                System.out.println("没有找到最新的语音识别的asrid---重大问题");
-                return null;
+    public static synchronized AsrTxtParam_toout getNewestAsrTxtBymtssid(String mtssid){
+
+         //先找到是哪一个人的，或者说是哪一个asrid是有最新识别信息
+        String newestAsrid=newestAsridMap.get(mtssid);
+        if(null==newestAsrid){
+            System.out.println("没有找到最新的语音识别的asrid---重大问题");
+            return null;
+        }
+        AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByAsrid(mtssid,newestAsrid);
+        if(null!=asrForMCCache_oneParam){
+            List<AsrTxtParam_toout> asrtxtList=asrForMCCache_oneParam.getAsrTxtList();
+            if(null!=asrtxtList&&asrtxtList.size() > 0){
+                return asrtxtList.get(asrtxtList.size()-1);//返回最后一条
             }
-            AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByAsrid(mtssid,newestAsrid);
-            if(null!=asrForMCCache_oneParam){
-                List<AsrTxtParam_toout> asrtxtList=asrForMCCache_oneParam.getAsrTxtList();
-                if(null!=asrtxtList&&asrtxtList.size() > 0){
-                    return asrtxtList.get(asrtxtList.size()-1);//返回最后一条
-                }
+        }
+        return null;
+    };
+
+
+    public static synchronized AsrTxtParam_toout getNewestAsrTxtByAsrid(String mtssid,String asrid){
+
+        AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByAsrid(mtssid,asrid);
+        if(null!=asrForMCCache_oneParam){
+            List<AsrTxtParam_toout> asrtxtList=asrForMCCache_oneParam.getAsrTxtList();
+            if(null!=asrtxtList&&asrtxtList.size() > 0){
+                return asrtxtList.get(asrtxtList.size()-1);//返回最后一条
             }
         }
         return null;
@@ -108,7 +122,7 @@ public class AsrForMCCache {
      * @param asrForMCCacheParam
      * @return
      */
-    public static   boolean setAsrForMCCache(String mtssid,AsrForMCCacheParam asrForMCCacheParam){
+    public static  synchronized boolean setAsrForMCCache(String mtssid,AsrForMCCacheParam asrForMCCacheParam){
 
         if(null==asrMap){
             asrMap=new HashMap<String,AsrForMCCacheParam>();
@@ -123,7 +137,7 @@ public class AsrForMCCache {
      * @param asrlist
      * @return
      */
-    public static   boolean setMTAsrAllUserAsr(String mtssid,List<AsrForMCCache_oneParam> asrlist){
+    public static synchronized  boolean setMTAsrAllUserAsr(String mtssid,List<AsrForMCCache_oneParam> asrlist){
 
         AsrForMCCacheParam asrForMCCacheParam=getMTAsrByMTSsid(mtssid);
         if(null==asrForMCCacheParam){
@@ -142,7 +156,7 @@ public class AsrForMCCache {
      * @param oneasr
      * @return
      */
-    public static   boolean setMTAsrOneUserAsr(String mtssid,AsrForMCCache_oneParam oneasr){
+    public static synchronized  boolean setMTAsrOneUserAsr(String mtssid,AsrForMCCache_oneParam oneasr){
 
         System.out.println(oneasr.getAsrid()+"-----");
 
@@ -176,6 +190,10 @@ public class AsrForMCCache {
 
 public static boolean runbool=true;
 
+
+
+
+
     /**
      * 添加一条识别结果到缓存（可能这一句已经有识别，直接替换）
      * @param mtssid
@@ -184,7 +202,7 @@ public static boolean runbool=true;
      * @param userssid
      * @return
      */
-    public static  boolean addAsrTxt(String mtssid,String asrid,AsrTxtParam_toout asrtxt,String userssid){
+    public static synchronized boolean addAsrTxt(String mtssid,String asrid,AsrTxtParam_toout asrtxt,String userssid){
 
 
         AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByUserid(mtssid,userssid);
@@ -237,13 +255,45 @@ public static boolean runbool=true;
      * @param mtssid
      * @return
      */
-    public static   boolean delAsrForMCMap(String mtssid){
+    public static synchronized boolean delAsrForMCMap(String mtssid){
 
         if(null!=asrMap&&asrMap.containsKey(mtssid)){
+
+            List<AsrForMCCache_oneParam> asrForMCCache_oneParams=getMTAsrAllUserAsrByMTSsid(mtssid);
+            if(null!=asrForMCCache_oneParams&&asrForMCCache_oneParams.size() > 0){
+                for(AsrForMCCache_oneParam asr:asrForMCCache_oneParams){
+                    String asrid=asr.getAsrid();
+                    if(null!=asrToMTMap&&asrToMTMap.containsKey(asrid)){
+                        asrToMTMap.remove(asrid);
+                    }
+                }
+            }
+
             asrMap.remove(mtssid);
+
+            //最新的一次语音识别的asrid
+            if(null!=newestAsridMap&&newestAsridMap.containsKey(mtssid)){
+                newestAsridMap.remove(mtssid);
+            }
+
             return true;
         }
         return false;
+    }
+
+    public static synchronized String getMTssidByAsrid(String asrid){
+        if(null!=asrToMTMap&&asrToMTMap.containsKey(asrid)){
+            return asrToMTMap.get(asrid);
+        }
+        return null;
+    }
+
+    public static synchronized boolean setMTssidByAsrid(String asrid,String mtssid){
+        if(null==asrToMTMap){
+            asrToMTMap=new HashMap<String,String>();
+        }
+        asrToMTMap.put(asrid,mtssid);
+        return true;
     }
 
 

@@ -63,7 +63,7 @@ public class Base_mtinfo extends Model<Base_mtinfo> {
     private Date createtime;
 
     /**
-     * 会议状态，0初始化，1进行中，2已结束，3暂停
+     * 会议状态，0初始化，1进行中，2已结束，3暂停,4异常
      */
     private Integer mtstate=0;
 

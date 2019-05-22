@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.vo;
+package com.avst.meetingcontrol.outside.interfacetoout.req;
 
 /**
  * 服务返回文本的集合

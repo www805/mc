@@ -7,10 +7,8 @@ import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
-import com.avst.meetingcontrol.outside.interfacetoout.req.GetMCAsrTxtBackParam_out;
-import com.avst.meetingcontrol.outside.interfacetoout.req.OverMCParam_out;
-import com.avst.meetingcontrol.outside.interfacetoout.req.StartMCParam_out;
-import com.avst.meetingcontrol.outside.interfacetoout.req.TdAndUserAndOtherParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
+import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.BaseDealMCInterface;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class ToOutAction extends BaseAction {
     private ToOutMCService_avst toOutMCService_avst;
 
     private BaseDealMCInterface getBaseDealMCInterfaceImpl(String mctype){
-        if(mctype.equals(MCCache.MCTYPE)){//根据类型选择对应的处理，这里要优化
+        if(mctype.trim().equals(MCCache.MCTYPE)){//根据类型选择对应的处理，这里要优化
             return toOutMCService_avst;
         }
         return null;
@@ -56,14 +54,34 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
+    /**
+     * 提供给其他业务获取语音识别数据，暂时弃用
+     * @param param
+     * @return
+     */
     @RequestMapping("/getMCAsrTxtBack")
     @ResponseBody
     public RResult getMCAsrTxtBack(@RequestBody ReqParam<GetMCAsrTxtBackParam_out> param) {
         RResult result=createNewResultOfFail();
 
-        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCAsrTxtBack(param,result);
+        //result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCAsrTxtBack(param,result);
         return result;
     }
+
+    /**
+     * 提供给下级语音服务推送识别结果的接口
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setMCAsrTxtBack")
+    @ResponseBody
+    public boolean setMCAsrTxtBack(@RequestBody ReqParam<SetMCAsrTxtBackParam_out> param) {
+
+        boolean bool=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).setMCAsrTxtBack(param);
+        return bool;
+    }
+
+
 
 
     @RequestMapping("/ceshimc")
@@ -76,6 +94,7 @@ public class ToOutAction extends BaseAction {
             startMCParam_out.setMcType("AVST");
             startMCParam_out.setModelbool(1);
             startMCParam_out.setMtmodelssid("asgfjry521784h67");
+            startMCParam_out.setYwSystemType("TRM_AVST");
             List<TdAndUserAndOtherParam> tdList=new ArrayList<TdAndUserAndOtherParam>();
             TdAndUserAndOtherParam tdAndUserAndOtherParam=new TdAndUserAndOtherParam();
             tdAndUserAndOtherParam.setGrade(1);

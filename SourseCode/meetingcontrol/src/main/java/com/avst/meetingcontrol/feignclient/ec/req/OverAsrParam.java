@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.req;
+package com.avst.meetingcontrol.feignclient.ec.req;
 
 /**
  * 关闭asr服务需要带的参数

@@ -7,15 +7,16 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstm
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
-import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.feignclient.EquipmentControl;
-import com.avst.meetingcontrol.feignclient.req.*;
-import com.avst.meetingcontrol.feignclient.vo.GetAsrServerBySsidVO;
+import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
+import com.avst.meetingcontrol.feignclient.ec.req.OverAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.StartAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.vo.GetAsrServerBySsidVO;
+import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.cache.AVSTMCCache;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -23,14 +24,12 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.param.TdAndAs
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.param.TdAndUserParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.InitMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
-import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_AsrThread;
-import com.avst.meetingcontrol.outside.interfacetoout.req.TdAndUserAndOtherParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -156,6 +155,8 @@ public class DealAvstMCImpl {
             MCCacheParam mcCacheParam=new MCCacheParam();
             mcCacheParam.setMeetingtype(mttype);
             mcCacheParam.setMtssid(ssid);
+            mcCacheParam.setMcType(AVSTMCCache.avstMCType);//在avstmc的处理类中，类型就肯定是这个
+            mcCacheParam.setYwSystemType(param.getYwSystemType());//业务系统的类型
 
             if(null!=tulist&&tulist.size()> 0){
                 List<TdAndUserAndOtherCacheParam> tdList=new ArrayList<TdAndUserAndOtherCacheParam>();
@@ -217,6 +218,7 @@ public class DealAvstMCImpl {
         //对每一个会议通道进行处理，该asr的要新建语言识别记录，开启asr识别；测谎也是一样的
         List<TdAndAsrParam> tdUserList=param.getTdAserList();
         if(null!=tdUserList&&tdUserList.size() > 0){
+            int asrerrorcount=0;//asr语音识别错误路数
             for(TdAndAsrParam td:tdUserList){
                 //完善会议缓存中通道的参数
                 TdAndUserAndOtherCacheParam tdcacheParam= MCCache.getMCCacheOneTDParamByMTUserTDSsid(mtssid,td.getMttduserssid());
@@ -270,14 +272,23 @@ public class DealAvstMCImpl {
                         int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
                         System.out.println(i_updateById+":i_updateById 修改语音识别记录中的asrid");
 
-                        //开启语音识别成功后，执行asr的线程，写入缓存
-                        MC_AsrThread mcAsrThread=new MC_AsrThread(asrid,tdcacheParam.getUserssid(),equipmentControl,mtssid);
-                        mcAsrThread.start();
-                        tdcacheParam.setMcAsrThread(mcAsrThread);
+                        tdcacheParam.setAsrRun(true);
+
+                        //添加asrid语音识别的唯一识别码对应的会议ssid
+                        AsrForMCCache.setMTssidByAsrid(asrid,mtssid);
+
                     }else{
+                        asrerrorcount++;
                         System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
+                        tdcacheParam.setAsrRun(false);
                     }
+
+                }else{
+                    asrerrorcount++;
+                    System.out.println("数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
+                    tdcacheParam.setAsrRun(false);
                 }
+
 
                 //检测是否需要测谎，要新建测谎记录，并开启测谎
 
@@ -285,23 +296,42 @@ public class DealAvstMCImpl {
                 //是否需要录音
                 //修改录音时间，asr识别时间，测谎仪时间
 
-
-
                 //刷新会议缓存
                 MCCache.setMCTDCacheParam(mtssid,tdcacheParam);
+
             }
-            rrParam.changeTrue(true);
-            //修改会议
+
             try {
                 EntityWrapper<Base_mtinfo> entityWrapper=new EntityWrapper<Base_mtinfo>();
                 entityWrapper.eq("ssid",mtssid);
                 Base_mtinfo base_mtinfo =base_mtinfoMapper.selectList(entityWrapper).get(0);
-                base_mtinfo.setMtstate(1);
-                int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
-                System.out.println("修改会议状态 开始 updatebool："+updatebool);
+                //是否考虑所有的服务未开启，或者必须开启的服务未开启时关闭本次会议
+                //关闭会议缓存，会议数据库当前记录，avstmt_asrtdMapper会议通道识别记录
+                if(asrerrorcount==tdUserList.size()){//说明语音识别开启完全失败
+    //以后加上所有需要开启的判断，综合考虑是否需要关闭本次会议
+
+                    MCCache.delMCCacheParam(mtssid);
+                    base_mtinfo.setMtstate(4);
+                    int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
+                    System.out.println("会议开启失败 修改会议状态 开始 updatebool："+updatebool);
+
+                }else{
+                    rrParam.changeTrue(true);
+                    //修改会议
+                    try {
+
+                        base_mtinfo.setMtstate(1);
+                        int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
+                        System.out.println("会议开启成功 修改会议状态 开始 updatebool："+updatebool);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
         }
         return rrParam;
     }
