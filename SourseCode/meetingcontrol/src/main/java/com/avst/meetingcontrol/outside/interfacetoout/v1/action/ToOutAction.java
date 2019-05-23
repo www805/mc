@@ -81,6 +81,21 @@ public class ToOutAction extends BaseAction {
         return bool;
     }
 
+    /**提供下级会议实时数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMC")
+    @ResponseBody
+    public RResult getMC(@RequestBody ReqParam<GetMCParam_out> param) {
+        RResult result=createNewResultOfFail();
+         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMC(param,result);
+        return result;
+    }
+
+
+
+
 
 
 

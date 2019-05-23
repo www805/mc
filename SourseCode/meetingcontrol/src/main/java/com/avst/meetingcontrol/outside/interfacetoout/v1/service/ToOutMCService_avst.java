@@ -1,6 +1,7 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
 import com.avst.meetingcontrol.common.conf.ASRType;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
 import com.avst.meetingcontrol.common.util.JacksonUtil;
 import com.avst.meetingcontrol.common.util.ReadWriteFile;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
@@ -20,12 +21,16 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.v1.action.AvstMCI
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.InitMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.GetMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.GetMCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.google.gson.Gson;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -172,6 +177,17 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return false;
     }
 
-
-
+    @Override
+    public RResult getMC(ReqParam<GetMCParam_out> param,RResult result) {
+        GetMCParam_out getMCParam_out=param.getParam();
+        String mtssid=getMCParam_out.getMtssid();
+        if (StringUtils.isNotBlank(mtssid)){
+            //根据会议ssid获取用户本次会议对话
+            List<GetMCCacheParam>  list = GetMCCache.getMCByMtssid(mtssid);
+            result.changeToTrue(list);
+        }else{
+            System.out.println("参数为空");
+        }
+        return result;
+    }
 }

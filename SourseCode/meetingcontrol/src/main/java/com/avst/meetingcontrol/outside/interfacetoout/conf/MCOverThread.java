@@ -3,6 +3,7 @@ package com.avst.meetingcontrol.outside.interfacetoout.conf;
 
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
+import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.SpringUtil;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
@@ -12,6 +13,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_to
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,6 +65,8 @@ public class MCOverThread<T> extends Thread{
                                 realtimrecord.setOrdernum(sortnum);
                                 realtimrecord.setMtssid(mtssid);
                                 realtimrecord.setMtuserssid(oneUserAsr.getUserssid());
+                                realtimrecord.setCreatetime(new Date());
+                                realtimrecord.setString1(txt.getAsrtime());//发送时间
                                 avstmt_realtimrecordMapper.insert(realtimrecord);
                                 sortnum++;
                             }catch (Exception e){
