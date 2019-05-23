@@ -11,8 +11,6 @@ import java.util.List;
  */
 public class MCCache {
 
-    public static String MCTYPE="AVST";//默认会议类型
-
     private static List<MCCacheParam> mcList;//会议缓存list
 
     public static  synchronized  List<MCCacheParam> getMCList(){
