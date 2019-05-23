@@ -308,7 +308,7 @@ public class DealAvstMCImpl {
                 //是否考虑所有的服务未开启，或者必须开启的服务未开启时关闭本次会议
                 //关闭会议缓存，会议数据库当前记录，avstmt_asrtdMapper会议通道识别记录
                 if(asrerrorcount==tdUserList.size()){//说明语音识别开启完全失败
-    //以后加上所有需要开启的判断，综合考虑是否需要关闭本次会议
+                    //以后加上所有需要开启的判断，综合考虑是否需要关闭本次会议
 
                     MCCache.delMCCacheParam(mtssid);
                     base_mtinfo.setMtstate(4);

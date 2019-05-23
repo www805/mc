@@ -1,17 +1,10 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
-import com.avst.meetingcontrol.common.conf.ASRType;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
-import com.avst.meetingcontrol.common.util.JacksonUtil;
-import com.avst.meetingcontrol.common.util.ReadWriteFile;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.bl.REMControl;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
-import com.avst.meetingcontrol.feignclient.ec.req.GetAsrServerBySsidParam;
-import com.avst.meetingcontrol.feignclient.ec.vo.GetAsrServerBySsidVO;
-import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.cache.AVSTMCCache;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -23,9 +16,7 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUse
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.GetMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.GetMCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
@@ -183,7 +174,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         String mtssid=getMCParam_out.getMtssid();
         if (StringUtils.isNotBlank(mtssid)){
             //根据会议ssid获取用户本次会议对话
-            List<GetMCCacheParam>  list = GetMCCache.getMCByMtssid(mtssid);
+            List<AsrTxtParam_toout>  list = GetMCCache.getMCByMtssid(mtssid);
             result.changeToTrue(list);
         }else{
             System.out.println("参数为空");
