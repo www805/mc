@@ -1,5 +1,8 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.action;
 
+import com.avst.meetingcontrol.common.conf.ASRType;
+import com.avst.meetingcontrol.common.conf.MCType;
+import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.util.JacksonUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
@@ -31,7 +34,7 @@ public class ToOutAction extends BaseAction {
     private ToOutMCService_avst toOutMCService_avst;
 
     private BaseDealMCInterface getBaseDealMCInterfaceImpl(String mctype){
-        if(mctype.trim().equals(MCCache.MCTYPE)){//根据类型选择对应的处理，这里要优化
+        if(mctype.trim().equals(MCType.AVST)){//根据类型选择对应的处理，这里要优化
             return toOutMCService_avst;
         }
         return null;
@@ -76,7 +79,6 @@ public class ToOutAction extends BaseAction {
     @RequestMapping("/setMCAsrTxtBack")
     @ResponseBody
     public boolean setMCAsrTxtBack(@RequestBody ReqParam<SetMCAsrTxtBackParam_out> param) {
-
         boolean bool=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).setMCAsrTxtBack(param);
         return bool;
     }
@@ -98,7 +100,6 @@ public class ToOutAction extends BaseAction {
 
 
 
-
     @RequestMapping("/ceshimc")
     public RResult ceshi(int type,String mtssid ) {
         RResult rResult=createNewResultOfFail();
@@ -106,22 +107,22 @@ public class ToOutAction extends BaseAction {
             ReqParam<StartMCParam_out> param=new ReqParam<StartMCParam_out>();
             StartMCParam_out startMCParam_out=new StartMCParam_out();
             startMCParam_out.setMeetingtype(2);//音频会议
-            startMCParam_out.setMcType("AVST");
+            startMCParam_out.setMcType(MCType.AVST);
             startMCParam_out.setModelbool(1);
             startMCParam_out.setMtmodelssid("asgfjry521784h67");
-            startMCParam_out.setYwSystemType("TRM_AVST");
+            startMCParam_out.setYwSystemType(YWType.RECORD_TRM);
             List<TdAndUserAndOtherParam> tdList=new ArrayList<TdAndUserAndOtherParam>();
             TdAndUserAndOtherParam tdAndUserAndOtherParam=new TdAndUserAndOtherParam();
             tdAndUserAndOtherParam.setGrade(1);
             tdAndUserAndOtherParam.setUsername("zhangsan");
             tdAndUserAndOtherParam.setUserssid("1654");
-            tdAndUserAndOtherParam.setAsrtype("AVST");
+            tdAndUserAndOtherParam.setAsrtype(ASRType.AVST);
             tdList.add(tdAndUserAndOtherParam);
             tdAndUserAndOtherParam=new TdAndUserAndOtherParam();
             tdAndUserAndOtherParam.setGrade(2);
             tdAndUserAndOtherParam.setUsername("李四");
             tdAndUserAndOtherParam.setUserssid("1234567");
-            tdAndUserAndOtherParam.setAsrtype("AVST");
+            tdAndUserAndOtherParam.setAsrtype(ASRType.AVST);
             tdList.add(tdAndUserAndOtherParam);
             startMCParam_out.setTdList(tdList);
             param.setParam(startMCParam_out);
@@ -131,14 +132,14 @@ public class ToOutAction extends BaseAction {
             ReqParam<OverMCParam_out> param=new ReqParam<OverMCParam_out>();
             OverMCParam_out overMCParam_out=new OverMCParam_out();
             overMCParam_out.setMtssid(mtssid);
-            overMCParam_out.setMcType("AVST");
+            overMCParam_out.setMcType(MCType.AVST);
             param.setParam(overMCParam_out);
             rResult=overMC(param);
             System.out.println(JacksonUtil.objebtToString(rResult));
         }else if(type==3){
 
             GetMCAsrTxtBackParam_out getMCAsrTxtBackParam_out=new GetMCAsrTxtBackParam_out();
-            getMCAsrTxtBackParam_out.setMcType("AVST");
+            getMCAsrTxtBackParam_out.setMcType(MCType.AVST);
             getMCAsrTxtBackParam_out.setMtssid(mtssid);
             ReqParam<GetMCAsrTxtBackParam_out> param=new ReqParam<GetMCAsrTxtBackParam_out>();
             param.setParam(getMCAsrTxtBackParam_out);

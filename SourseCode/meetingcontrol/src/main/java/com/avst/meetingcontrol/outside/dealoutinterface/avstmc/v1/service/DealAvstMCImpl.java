@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.outside.dealoutinterface.avstmc.v1.service;
 
+import com.avst.meetingcontrol.common.conf.MCType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_asrtd;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_modeltd;
@@ -155,7 +156,7 @@ public class DealAvstMCImpl {
             MCCacheParam mcCacheParam=new MCCacheParam();
             mcCacheParam.setMeetingtype(mttype);
             mcCacheParam.setMtssid(ssid);
-            mcCacheParam.setMcType(AVSTMCCache.avstMCType);//在avstmc的处理类中，类型就肯定是这个
+            mcCacheParam.setMcType(MCType.AVST);//在avstmc的处理类中，类型就肯定是这个
             mcCacheParam.setYwSystemType(param.getYwSystemType());//业务系统的类型
 
             if(null!=tulist&&tulist.size()> 0){
