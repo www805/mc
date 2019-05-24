@@ -5,6 +5,7 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstm
 import com.avst.meetingcontrol.common.util.SpringUtil;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,16 +16,20 @@ import java.util.Map;
  * 会议实时数据
  */
 public class GetMCCache {
-    private static Map<String, List<AsrTxtParam_toout>> getMCList=null;//本次会议的所有人员的asr识别结果，key会议ssid
+    private static Map<String, List<AsrTxtParam_toout>> getMCList=null;//key会议ssid
 
-    private static String lastmtssid=null;
+    private static String lastmtssid=null;//上一个会议ssid
 
     public static synchronized List<AsrTxtParam_toout> getMCByMtssid(String mtssid) {
+        if (StringUtils.isBlank(mtssid)){
+            return null;
+        }
+
         if (null==getMCList||getMCList.isEmpty()){
             initgetMC(mtssid);
         }
 
-        if (null!=lastmtssid&&lastmtssid!=mtssid){
+        if (null!=lastmtssid&&!lastmtssid.equals(mtssid)){
             initgetMC(mtssid);
         }
 
