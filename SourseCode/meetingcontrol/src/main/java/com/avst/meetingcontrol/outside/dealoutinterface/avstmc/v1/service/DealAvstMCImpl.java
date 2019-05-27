@@ -24,6 +24,7 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.param.TdAndAsrParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.param.TdAndUserParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.InitMCVO;
+import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.StartMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
@@ -213,12 +214,15 @@ public class DealAvstMCImpl {
         return rrParam;
     }
 
-    public RRParam<Boolean> startMC(StartMCParam param, RRParam<Boolean> rrParam){
+    public RRParam startMC(StartMCParam param, RRParam rrParam){
 
 //开始匹配会议人员设备通道
         String mtssid=param.getMtssid();
         int modelbool=param.getModelbool();
         String mtmodelssid=param.getMtmodelssid();
+        int recordnum=0;//录音/像个数
+        int asrnum=0;//语音识别个数
+        int polygraphnum=0;//测谎仪个数
 
         //对每一个会议通道进行处理，该asr的要新建语言识别记录，开启asr识别；测谎也是一样的
         List<TdAndAsrParam> tdUserList=param.getTdAserList();
@@ -236,6 +240,7 @@ public class DealAvstMCImpl {
 
                     tdcacheParam.setFdssid(td.getFdssid());
                     tdcacheParam.setFdtype(td.getFdtype());
+                    tdcacheParam.setFdrecord(td.getUserecord());
                 }else{
                     System.out.println("注意完善会议缓存中通道失败，MCCache.getMCCacheOneTDParamByAsrssid(mtssid,td.getAsrssid()) is null --mtssid："+mtssid+"----td.getAsrssid():"+td.getAsrssid());
                     System.out.println("跳出，不开启会议其他组件---");
@@ -245,74 +250,85 @@ public class DealAvstMCImpl {
                 //检测是否需要asr，要新建语言识别记录，并开启asr
                 if(td.getUseasr()!=1){//说明不需要asr
                     System.out.println("不需要开启asr--td.getMttduserssid()："+td.getMttduserssid());
-                    continue;
-                }
 
-                String ssid =OpenUtil.getUUID_32();
-                Avstmt_asrtd avstmt_asrtd=new Avstmt_asrtd();
-                avstmt_asrtd.setSsid(ssid);
-                avstmt_asrtd.setMttduserssid(td.getMttduserssid());
-                avstmt_asrtd.setAsrserverssid(td.getAsrssid());
-                avstmt_asrtd.setCreatetime((new Date()));
-                int insert=avstmt_asrtdMapper.insert(avstmt_asrtd);
-                System.out.println(insert+":insert---avstmt_tduserMapper.insert");
-                if(insert > -1){
+                }else{
 
-                    //有语音识别的开启语音识别
-                    ReqParam<StartAsrParam> startparam=new ReqParam<StartAsrParam>();
-                    StartAsrParam startAsrParam=new StartAsrParam();
+                    String ssid =OpenUtil.getUUID_32();
+                    Avstmt_asrtd avstmt_asrtd=new Avstmt_asrtd();
+                    avstmt_asrtd.setSsid(ssid);
+                    avstmt_asrtd.setMttduserssid(td.getMttduserssid());
+                    avstmt_asrtd.setAsrserverssid(td.getAsrssid());
+                    avstmt_asrtd.setCreatetime((new Date()));
+                    int insert=avstmt_asrtdMapper.insert(avstmt_asrtd);
+                    System.out.println(insert+":insert---avstmt_tduserMapper.insert");
+                    if(insert > -1){
 
-                    //这里只需要给通道的ssid，设备微服务自己处理
-                    startAsrParam.setTdssid(td.getTdssid());
-                    startAsrParam.setAsrEquipmentssid(td.getAsrssid());
-                    startAsrParam.setAsrtype(td.getAsrtype());
-                    startparam.setParam(startAsrParam);
-                    RResult result=equipmentControl.startAsr(startparam);
-                    if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
-                        String asrid=result.getData().toString();
-                        String asrStartTime=result.getEndtime();//语音识别开始的时间
-                        //修改语音识别记录中的asrid，这个是本次识别的唯一识别码
-                        avstmt_asrtd.setAsrid(asrid);
-                        long asrStartTime_long=Long.parseLong(asrStartTime);
-                        avstmt_asrtd.setStarttime(asrStartTime_long);//开始时间保存为long类型
-                        tdcacheParam.setAsrid(asrid);//缓存中放一份
-                        tdcacheParam.setAsrStartTime(asrStartTime_long);
-                        int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
-                        System.out.println(i_updateById+":i_updateById 修改语音识别记录中的asrid");
+                        //有语音识别的开启语音识别
+                        ReqParam<StartAsrParam> startparam=new ReqParam<StartAsrParam>();
+                        StartAsrParam startAsrParam=new StartAsrParam();
 
-                        tdcacheParam.setAsrRun(true);
+                        //这里只需要给通道的ssid，设备微服务自己处理
+                        startAsrParam.setTdssid(td.getTdssid());
+                        startAsrParam.setAsrEquipmentssid(td.getAsrssid());
+                        startAsrParam.setAsrtype(td.getAsrtype());
+                        startparam.setParam(startAsrParam);
+                        RResult result=equipmentControl.startAsr(startparam);
+                        if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+                            String asrid=result.getData().toString();
+                            String asrStartTime=result.getEndtime();//语音识别开始的时间
+                            //修改语音识别记录中的asrid，这个是本次识别的唯一识别码
+                            avstmt_asrtd.setAsrid(asrid);
+                            long asrStartTime_long=Long.parseLong(asrStartTime);
+                            avstmt_asrtd.setStarttime(asrStartTime_long);//开始时间保存为long类型
+                            tdcacheParam.setAsrid(asrid);//缓存中放一份
+                            tdcacheParam.setAsrStartTime(asrStartTime_long);
+                            int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
+                            System.out.println(i_updateById+":i_updateById 修改语音识别记录中的asrid");
 
-                        //添加asrid语音识别的唯一识别码对应的会议ssid
-                        AsrForMCCache.setMTssidByAsrid(asrid,mtssid);
+                            tdcacheParam.setAsrRun(true);
+
+                            //添加asrid语音识别的唯一识别码对应的会议ssid
+                            AsrForMCCache.setMTssidByAsrid(asrid,mtssid);
+
+                            asrnum++;
+
+                        }else{
+                            asrerrorcount++;
+                            System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
+                            tdcacheParam.setAsrRun(false);
+                        }
 
                     }else{
                         asrerrorcount++;
-                        System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
+                        System.out.println("数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
                         tdcacheParam.setAsrRun(false);
                     }
-
-                }else{
-                    asrerrorcount++;
-                    System.out.println("数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
-                    tdcacheParam.setAsrRun(false);
                 }
+
 
 
                 //检测是否需要测谎，要新建测谎记录，并开启测谎
 
 
                 //是否需要录音
-                ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
-                WorkStartParam startParam=new WorkStartParam();
-                startParam.setFdid(mtssid);//就是会议ssid
-                startParam.setFdType(td.getFdtype());
-                startParam.setFlushbonadingetinfossid(td.getFdssid());
-                workStartParam.setParam(startParam);
-                RResult result=equipmentControl.workStart(workStartParam);
-                if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
-                    String iid=result.getData().toString();//设备录像的唯一识别码
+                if(td.getUserecord()==1){
+
+                    ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
+                    WorkStartParam startParam=new WorkStartParam();
+                    startParam.setFdid(mtssid);//就是会议ssid
+                    startParam.setFdType(td.getFdtype());
+                    startParam.setFlushbonadingetinfossid(td.getFdssid());
+                    workStartParam.setParam(startParam);
+                    RResult result=equipmentControl.workStart(workStartParam);
+                    if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+                        String iid=result.getData().toString();//设备录像的唯一识别码
+
+                        recordnum++;
+                    }else{
+                        System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
+                    }
                 }else{
-                    System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
+                    System.out.println("不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
                 }
 
                 //修改录音时间，asr识别时间，测谎仪时间
@@ -337,7 +353,13 @@ public class DealAvstMCImpl {
                     System.out.println("会议开启失败 修改会议状态 开始 updatebool："+updatebool);
 
                 }else{
-                    rrParam.changeTrue(true);
+
+                    StartMCVO startMCVO=new StartMCVO();
+                    startMCVO.setAsrnum(asrnum);
+                    startMCVO.setMtssid(mtssid);
+                    startMCVO.setPolygraphnum(polygraphnum);
+                    startMCVO.setRecordnum(recordnum);
+                    rrParam.changeTrue(startMCVO);
                     //修改会议
                     try {
 

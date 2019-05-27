@@ -14,6 +14,8 @@ public class TdAndUserAndOtherCacheParam {
 
     private String fdssid;//设备ssid
 
+    private int fdrecord;//是否需要录像，1使用，-1 不使用
+
     private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
 
     private String username;//会议用户名
@@ -42,6 +44,14 @@ public class TdAndUserAndOtherCacheParam {
 
     //测谎仪有线程就写在这
 
+
+    public int getFdrecord() {
+        return fdrecord;
+    }
+
+    public void setFdrecord(int fdrecord) {
+        this.fdrecord = fdrecord;
+    }
 
     public String getFdssid() {
         return fdssid;

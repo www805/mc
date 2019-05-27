@@ -38,9 +38,9 @@ public class AvstMCImpl {
      * 开始会议
      * @return
      */
-    public static RRParam<Boolean> startMC(StartMCParam param){
+    public static RRParam startMC(StartMCParam param){
 
-        RRParam<Boolean> rrParam=new RRParam<Boolean>();
+        RRParam rrParam=new RRParam<Boolean>();
         return getDealAvstMCImpl().startMC(param,rrParam);
     }
 

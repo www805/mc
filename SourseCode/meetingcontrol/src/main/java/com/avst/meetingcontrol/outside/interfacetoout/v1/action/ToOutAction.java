@@ -119,6 +119,8 @@ public class ToOutAction extends BaseAction {
             tdAndUserAndOtherParam.setUserssid("1654");
             tdAndUserAndOtherParam.setAsrtype(ASRType.AVST);
             tdAndUserAndOtherParam.setFdtype(FDType.FD_AVST);
+            tdAndUserAndOtherParam.setUserecord(1);
+            tdAndUserAndOtherParam.setUseasr(1);
             tdList.add(tdAndUserAndOtherParam);
             tdAndUserAndOtherParam=new TdAndUserAndOtherParam();
             tdAndUserAndOtherParam.setGrade(2);
@@ -126,6 +128,8 @@ public class ToOutAction extends BaseAction {
             tdAndUserAndOtherParam.setUserssid("1234567");
             tdAndUserAndOtherParam.setAsrtype(ASRType.AVST);
             tdAndUserAndOtherParam.setFdtype(FDType.FD_AVST);
+            tdAndUserAndOtherParam.setUserecord(1);
+            tdAndUserAndOtherParam.setUseasr(1);
             tdList.add(tdAndUserAndOtherParam);
             startMCParam_out.setTdList(tdList);
             param.setParam(startMCParam_out);

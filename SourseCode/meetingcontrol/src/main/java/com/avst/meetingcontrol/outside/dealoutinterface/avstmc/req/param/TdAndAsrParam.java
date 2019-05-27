@@ -11,6 +11,8 @@ public class TdAndAsrParam {
 
     private String fdssid;//设备ssid
 
+    private int userecord;//是否需要录像，1使用，-1 不使用
+
     private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
 
     private int usepolygraph;//是否使用测谎仪
@@ -22,6 +24,14 @@ public class TdAndAsrParam {
     private String asrssid;//语言识别ssid
 
     private String asrtype;//采用的是哪一种语音识别服务，avst公司自制的语音服务
+
+    public int getUserecord() {
+        return userecord;
+    }
+
+    public void setUserecord(int userecord) {
+        this.userecord = userecord;
+    }
 
     public String getFdssid() {
         return fdssid;

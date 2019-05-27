@@ -20,7 +20,9 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_to
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,9 +99,20 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                 tdAndAsrList.add(tdAndAsrParam);
             }
             startMCParam.setTdAserList(tdAndAsrList);
-            RRParam<Boolean> rr2= AvstMCImpl.startMC(startMCParam);
-            if(null!=rr2&&rr2.getCode()==1&&null!=rr.getT()&&rr2.getT().equals(true)){//开启会议成功
-                result.changeToTrue(mtssid);//返回本次会议的ssid
+            RRParam rr2= AvstMCImpl.startMC(startMCParam);
+            if(null!=rr2&&rr2.getCode()==1&&null!=rr2.getT()){//开启会议成功
+                gson=new Gson();
+                StartMCVO startMCVO=null;
+                try {
+                    startMCVO=gson.fromJson(gson.toJson(rr2.getT()),StartMCVO.class);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(null==startMCVO){//以防万一解析出错了
+                    startMCVO=new StartMCVO();
+                    startMCVO.setMtssid(mtssid);
+                }
+                result.changeToTrue(startMCVO);//返回本次会议的ssid
             }
         }
         return result;
