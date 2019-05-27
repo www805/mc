@@ -19,5 +19,11 @@ public interface BaseDealMCInterface {
 
     public RResult getMC(ReqParam<GetMCParam_out> param, RResult result);
 
+    public RResult  getMCaLLUserAsrTxtList(ReqParam<GetMCaLLUserAsrTxtListParam_out> param, RResult result);
+
+    public RResult  getMCState(ReqParam<GetMCStateParam_out> param, RResult result);
+
+
+
 
 }

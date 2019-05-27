@@ -15,6 +15,16 @@ public class MCCacheParam {
 
     private String ywSystemType;//业务系统类型，TRM_AVST AVst版本的笔录系统
 
+    private Integer mtstate;//会议状态 0初始化，1进行中，2已结束，3暂停
+
+    public Integer getMtstate() {
+        return mtstate;
+    }
+
+    public void setMtstate(Integer mtstate) {
+        this.mtstate = mtstate;
+    }
+
     public String getMcType() {
         return mcType;
     }

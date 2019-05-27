@@ -96,7 +96,31 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
+    /**
+     * 提供下级会议实时数据(会议进行中)
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMCaLLUserAsrTxtList")
+    @ResponseBody
+    public RResult getMCaLLUserAsrTxtList(@RequestBody ReqParam<GetMCaLLUserAsrTxtListParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCaLLUserAsrTxtList(param,result);
+        return result;
+    }
 
+    /**
+     * 获取会议状态
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMCState")
+    @ResponseBody
+    public RResult getMCState(@RequestBody ReqParam<GetMCStateParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCState(param,result);
+        return result;
+    }
 
 
 

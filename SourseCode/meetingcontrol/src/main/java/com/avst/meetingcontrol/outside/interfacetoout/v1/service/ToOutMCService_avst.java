@@ -1,5 +1,7 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
@@ -14,15 +16,14 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.v1.action.AvstMCI
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.InitMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.GetMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Autowired
     private REMControl remControl;
+
+    @Autowired
+    private Avstmt_realtimrecordMapper avstmt_realtimrecordMapper;
 
     @Override
     public RResult startMC(ReqParam<StartMCParam_out> param, RResult result) {
@@ -182,17 +186,64 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return false;
     }
 
+
+
     @Override
     public RResult getMC(ReqParam<GetMCParam_out> param,RResult result) {
         GetMCParam_out getMCParam_out=param.getParam();
         String mtssid=getMCParam_out.getMtssid();
         if (StringUtils.isNotBlank(mtssid)){
             //根据会议ssid获取用户本次会议对话
-            List<AsrTxtParam_toout>  list = GetMCCache.getMCByMtssid(mtssid);
+            EntityWrapper ew=new EntityWrapper();
+            ew.orderBy("ordernum",true);
+            ew.eq("mtssid",mtssid);
+            List<Avstmt_realtimrecord>  avstmt_realtimrecords = avstmt_realtimrecordMapper.selectList(ew);
+            List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
+            if (null!=avstmt_realtimrecords&&avstmt_realtimrecords.size()>0){
+                for (Avstmt_realtimrecord a : avstmt_realtimrecords) {
+                    AsrTxtParam_toout l=new AsrTxtParam_toout();
+                    l.setStarttime(a.getStarttime().toString());
+                    l.setAsrsort(a.getOrdernum());
+                    l.setTxt(a.getTranslatext());
+                    l.setUserssid(a.getMtuserssid());
+                    l.setAsrtime(a.getString1());//时间
+                    list.add(l);
+                }
+            }
             result.changeToTrue(list);
         }else{
             System.out.println("参数为空");
         }
         return result;
     }
+
+    @Override
+    public RResult getMCaLLUserAsrTxtList(ReqParam<GetMCaLLUserAsrTxtListParam_out> param, RResult result) {
+        GetMCaLLUserAsrTxtListParam_out getMCaLLUserAsrTxtListParam_out=param.getParam();
+        String mtssid=getMCaLLUserAsrTxtListParam_out.getMtssid();
+        if (StringUtils.isNotBlank(mtssid)){
+            List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
+            list=AsrForMCCache.getMCaLLUserAsrTxtList(mtssid);
+            result.changeToTrue(list);
+        }else{
+            System.out.println("参数为空");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult getMCState(ReqParam<GetMCStateParam_out> param, RResult result) {
+        GetMCStateParam_out getMCStateParam_out=param.getParam();
+        String mtssid=getMCStateParam_out.getMtssid();
+        if (StringUtils.isNotBlank(mtssid)){
+            MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
+            if (null!=mcCacheParam){
+                Integer mtstate =  mcCacheParam.getMtstate();
+                result.changeToTrue(mtstate);
+                return result;
+            }
+        }
+        return null;
+    }
+
 }

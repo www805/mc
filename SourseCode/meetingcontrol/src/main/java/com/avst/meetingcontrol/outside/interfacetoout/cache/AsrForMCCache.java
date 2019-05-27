@@ -27,6 +27,30 @@ public class AsrForMCCache {
         return null;
     };
 
+    /**
+     *
+     * @param mtssid
+     * @return
+     */
+    public static  synchronized   List<AsrTxtParam_toout> getMCaLLUserAsrTxtList(String mtssid){
+        AsrForMCCacheParam asrForMCCacheParam=getMTAsrByMTSsid(mtssid);
+        List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
+        if(null!=asrForMCCacheParam){
+            List<AsrForMCCache_oneParam> asrForMCCache_oneParamList =asrForMCCacheParam.getAsrForMCCache_oneParamList();
+            if (null!=asrForMCCache_oneParamList&&asrForMCCache_oneParamList.size()>0){
+                List<AsrTxtParam_toout> listparam=new ArrayList<AsrTxtParam_toout>();
+                for (AsrForMCCache_oneParam asrForMCCache_oneParam : asrForMCCache_oneParamList) {
+                    listparam.addAll(asrForMCCache_oneParam.getAsrTxtList());
+                }
+                if (null!=listparam&&listparam.size()>0){
+                    list.addAll(listparam);
+                    return list;
+                }
+            }
+        }
+        return null;
+    }
+
     public static  List<AsrForMCCache_oneParam> getMTAsrAllUserAsrByMTSsid(String mtssid){
 
         AsrForMCCacheParam asrForMCCacheParam=getMTAsrByMTSsid(mtssid);
