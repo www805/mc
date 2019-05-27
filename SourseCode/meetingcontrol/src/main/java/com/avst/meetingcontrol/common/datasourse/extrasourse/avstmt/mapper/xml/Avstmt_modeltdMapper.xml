@@ -18,6 +18,7 @@
         <result column="integer1" property="integer1" />
         <result column="integer2" property="integer2" />
         <result column="ssid" property="ssid" />
+        <result column="fdssid" property="fdssid" />
     </resultMap>
 
 </mapper>

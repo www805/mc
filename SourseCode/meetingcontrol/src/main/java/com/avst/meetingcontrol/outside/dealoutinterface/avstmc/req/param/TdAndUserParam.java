@@ -21,6 +21,25 @@ public class TdAndUserParam {
 
     private String asrssid;//语言识别ssid
 
+    private int useeuipment;//是否使用设备，1使用，-1 不使用
+    private String fdeuipmentssid;//嵌入式设备的ssid
+
+    public int getUseeuipment() {
+        return useeuipment;
+    }
+
+    public void setUseeuipment(int useeuipment) {
+        this.useeuipment = useeuipment;
+    }
+
+    public String getFdeuipmentssid() {
+        return fdeuipmentssid;
+    }
+
+    public void setFdeuipmentssid(String fdeuipmentssid) {
+        this.fdeuipmentssid = fdeuipmentssid;
+    }
+
     public int getUsepolygraph() {
         return usepolygraph;
     }

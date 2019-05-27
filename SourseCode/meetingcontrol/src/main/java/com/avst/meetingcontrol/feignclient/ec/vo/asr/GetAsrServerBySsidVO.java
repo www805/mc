@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.ec.vo;
+package com.avst.meetingcontrol.feignclient.ec.vo.asr;
 
 public class GetAsrServerBySsidVO {
 

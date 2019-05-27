@@ -12,6 +12,10 @@ public class TdAndUserAndOtherCacheParam {
 
     private String tdssid;//设备通道ssid
 
+    private String fdssid;//设备ssid
+
+    private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
+
     private String username;//会议用户名
 
     private String userssid;//会议用户的ssid
@@ -38,6 +42,22 @@ public class TdAndUserAndOtherCacheParam {
 
     //测谎仪有线程就写在这
 
+
+    public String getFdssid() {
+        return fdssid;
+    }
+
+    public void setFdssid(String fdssid) {
+        this.fdssid = fdssid;
+    }
+
+    public String getFdtype() {
+        return fdtype;
+    }
+
+    public void setFdtype(String fdtype) {
+        this.fdtype = fdtype;
+    }
 
     public boolean isAsrRun() {
         return asrRun;

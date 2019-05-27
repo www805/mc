@@ -35,6 +35,11 @@ public class Avstmt_modeltd extends Model<Avstmt_modeltd> {
     private String tdssid;
 
     /**
+     * 嵌入式设备ssid
+     */
+    private String fdssid;
+
+    /**
      * 测谎仪ssid
      */
     private String polygraphssid;
@@ -73,6 +78,18 @@ public class Avstmt_modeltd extends Model<Avstmt_modeltd> {
     private Integer integer2;
 
     private String ssid;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getFdssid() {
+        return fdssid;
+    }
+
+    public void setFdssid(String fdssid) {
+        this.fdssid = fdssid;
+    }
 
     public Integer getId() {
         return id;

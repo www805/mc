@@ -2,8 +2,14 @@ package com.avst.meetingcontrol.feignclient.ec;
 
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.feignclient.ec.req.*;
-import com.avst.meetingcontrol.feignclient.ec.vo.AsrTxtParam_toout;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.GetAsrServerBySsidParam;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.GetFlushbonadingBySsidParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.GetFlushbonadingTDByETSsidParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
+import com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +53,16 @@ public interface EquipmentControl {
     @RequestMapping("/flushbonading/v1/getFlushbonadingTDByETSsid")
     @ResponseBody
     public RResult getFlushbonadingTDByETSsid(@RequestBody ReqParam<GetFlushbonadingTDByETSsidParam> param);
+
+    //开始录像
+    @RequestMapping("/flushbonading/v1/workStart")
+    @ResponseBody
+    public RResult workStart(@RequestBody ReqParam<WorkStartParam> param);
+
+    //结束录像
+    @RequestMapping("/flushbonading/v1/workOver")
+    @ResponseBody
+    public RResult workOver(@RequestBody ReqParam<WorkOverParam> param);
 
 
 }

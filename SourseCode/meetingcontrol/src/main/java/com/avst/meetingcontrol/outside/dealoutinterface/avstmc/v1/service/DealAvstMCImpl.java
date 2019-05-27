@@ -14,10 +14,10 @@ import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
-import com.avst.meetingcontrol.feignclient.ec.req.OverAsrParam;
-import com.avst.meetingcontrol.feignclient.ec.req.StartAsrParam;
-import com.avst.meetingcontrol.feignclient.ec.vo.GetAsrServerBySsidVO;
-import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.cache.AVSTMCCache;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -116,6 +116,7 @@ public class DealAvstMCImpl {
                                     tu.setPolygraphssid(mtu.getPolygraphssid());
                                     tu.setUsepolygraph(mtu.getUsepolygraph());
                                     tu.setUseasr(mtu.getUseasr());
+                                    tu.setFdeuipmentssid(mtu.getFdssid());
                                     modeltdList.remove(i);
                                     break;
                                 }
@@ -135,6 +136,7 @@ public class DealAvstMCImpl {
                         tu.setPolygraphssid(modeltdList.get(0).getPolygraphssid());
                         tu.setUsepolygraph(modeltdList.get(0).getUsepolygraph());
                         tu.setUseasr(modeltdList.get(0).getUseasr());
+                        tu.setFdeuipmentssid(modeltdList.get(0).getFdssid());
                         modeltdList.remove(0);
                     }
                 }
@@ -187,12 +189,14 @@ public class DealAvstMCImpl {
                         tdAndUserParam.setUseasr(tu.getUseasr());
                         tdAndUserParam.setPolygraphssid(tu.getPolygraphssid());
                         tdAndUserParam.setAsrssid(tu.getAsrssid());
+                        tdAndUserParam.setFdssid(tu.getFdeuipmentssid());
                         tdAndUserParams.add(tdAndUserParam);
 
                         //新增会议缓存中每一个人员
                         Gson gson = new Gson();
                         TdAndUserAndOtherCacheParam tdcache=gson.fromJson(gson.toJson(tu),TdAndUserAndOtherCacheParam.class);
                         tdcache.setMttduserssid(tussid);
+                        tdcache.setFdssid(tu.getFdeuipmentssid());
                         tdList.add(tdcache);
                     }
                 }
@@ -229,6 +233,9 @@ public class DealAvstMCImpl {
                     tdcacheParam.setPolygraphssid(td.getPolygraphssid());
                     tdcacheParam.setUsepolygraph(td.getUsepolygraph());
                     tdcacheParam.setAsrtype(td.getAsrtype());
+
+                    tdcacheParam.setFdssid(td.getFdssid());
+                    tdcacheParam.setFdtype(td.getFdtype());
                 }else{
                     System.out.println("注意完善会议缓存中通道失败，MCCache.getMCCacheOneTDParamByAsrssid(mtssid,td.getAsrssid()) is null --mtssid："+mtssid+"----td.getAsrssid():"+td.getAsrssid());
                     System.out.println("跳出，不开启会议其他组件---");
@@ -295,6 +302,19 @@ public class DealAvstMCImpl {
 
 
                 //是否需要录音
+                ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
+                WorkStartParam startParam=new WorkStartParam();
+                startParam.setFdid(mtssid);//就是会议ssid
+                startParam.setFdType(td.getFdtype());
+                startParam.setFlushbonadingetinfossid(td.getFdssid());
+                workStartParam.setParam(startParam);
+                RResult result=equipmentControl.workStart(workStartParam);
+                if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+                    String iid=result.getData().toString();//设备录像的唯一识别码
+                }else{
+                    System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
+                }
+
                 //修改录音时间，asr识别时间，测谎仪时间
 
                 //刷新会议缓存
@@ -348,6 +368,7 @@ public class DealAvstMCImpl {
             List<TdAndUserAndOtherCacheParam> tdlist=mcCacheParam.getTdList();
             for(TdAndUserAndOtherCacheParam cachetd:tdlist){
 
+                //关闭asr
                 ReqParam<OverAsrParam> overparam=new ReqParam<OverAsrParam>();
                 OverAsrParam overAsrParam=new OverAsrParam();
                 overAsrParam.setAsrid(cachetd.getAsrid());
@@ -359,6 +380,23 @@ public class DealAvstMCImpl {
                     rrParam.changeTrue(true);
                 }else{
                     System.out.println(result.getMessage()+",语音识别服务关闭失败，param.getAsrid()："+param.getMtssid()+"--"+cachetd.getAsrid());
+                }
+
+                //关闭设备录像
+                ReqParam<WorkOverParam> workOverParamReqParam=new ReqParam<WorkOverParam>();
+                WorkOverParam workOverParam=new WorkOverParam();
+                workOverParam.setFdid(mtssid);//就是会议ssid
+                workOverParam.setFdType(cachetd.getFdtype());
+                workOverParam.setFlushbonadingetinfossid(cachetd.getFdssid());
+                workOverParamReqParam.setParam(workOverParam);
+                RResult worr=equipmentControl.workOver(workOverParamReqParam);
+                if(null!=worr&&null!=worr.getActioncode()&&worr.getActioncode().equals(Code.SUCCESS.toString())){
+                    String iid=worr.getData().toString();//录音的唯一标识码
+                    //是否需要对录音进行处理
+                    System.out.println("关闭录像成功 mtssid："+mtssid+"----iid:"+iid);
+
+                }else{
+                    System.out.println("关闭录像失败 mtssid："+mtssid+"----cachetd.getFdssid():"+cachetd.getFdssid());
                 }
             }
         }else{

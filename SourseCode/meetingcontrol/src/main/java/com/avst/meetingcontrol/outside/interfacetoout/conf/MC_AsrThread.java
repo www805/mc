@@ -53,12 +53,12 @@ public class MC_AsrThread extends Thread{
                 TxtBackParam txtBackParam=new TxtBackParam();
                 txtBackParam.setAsrid(asrid);
                 txtBackParam.setAsrsort(asrsort);
-                RResult<List<com.avst.meetingcontrol.feignclient.ec.vo.AsrTxtParam_toout>> rr= equipmentControl.txtBack(txtBackParam);
+                RResult<List<com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout>> rr= equipmentControl.txtBack(txtBackParam);
                 if(null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
                     try {
                         if(null!=rr.getData()&&rr.getData().size() > 0){
 
-                            for(com.avst.meetingcontrol.feignclient.ec.vo.AsrTxtParam_toout asrrr:rr.getData()){
+                            for(com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout asrrr:rr.getData()){
                                 AsrTxtParam_toout asrtxt= null;
                                 Gson gson=new Gson();
                                 asrtxt = gson.fromJson(gson.toJson(asrrr), AsrTxtParam_toout.class);

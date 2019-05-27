@@ -10,6 +10,10 @@ public class TdAndUserAndOtherParam {
 
     private String tdssid;//设备通道ssid
 
+    private String fdssid;//设备ssid
+
+    private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
+
     private String username;//会议用户名
 
     private String userssid;//会议用户的ssid
@@ -25,6 +29,22 @@ public class TdAndUserAndOtherParam {
     private String asrssid;//语言识别ssid
 
     private String asrtype;//语音服务类型，AVST
+
+    public String getFdssid() {
+        return fdssid;
+    }
+
+    public void setFdssid(String fdssid) {
+        this.fdssid = fdssid;
+    }
+
+    public String getFdtype() {
+        return fdtype;
+    }
+
+    public void setFdtype(String fdtype) {
+        this.fdtype = fdtype;
+    }
 
     public String getAsrtype() {
         return asrtype;

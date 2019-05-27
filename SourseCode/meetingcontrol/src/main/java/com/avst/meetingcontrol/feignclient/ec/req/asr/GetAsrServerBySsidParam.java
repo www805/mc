@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.ec.req;
+package com.avst.meetingcontrol.feignclient.ec.req.asr;
 
 public class GetAsrServerBySsidParam {
 

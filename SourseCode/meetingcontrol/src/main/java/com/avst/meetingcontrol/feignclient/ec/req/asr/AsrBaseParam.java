@@ -1,6 +1,6 @@
-package com.avst.meetingcontrol.feignclient.ec.req;
+package com.avst.meetingcontrol.feignclient.ec.req.asr;
 
-public class BaseParam {
+public class AsrBaseParam {
 
     /**
      * 语音识别服务器的IP
@@ -28,14 +28,14 @@ public class BaseParam {
         this.port = port;
     }
 
-    public BaseParam(String ip, String port) {
+    public AsrBaseParam(String ip, String port) {
         this.ip = ip;
         this.port = port;
     }
 
     @Override
     public String toString() {
-        return "BaseParam{" +
+        return "AsrBaseParam{" +
                 "ip='" + ip + '\'' +
                 ", port='" + port + '\'' +
                 '}';

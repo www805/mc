@@ -4,6 +4,8 @@ public class TDAndUserParam {
 
     private String tdssid;
 
+    private String fdssid;
+
     private String mttduserssid;
 
     private String mtuserssid;
@@ -15,6 +17,14 @@ public class TDAndUserParam {
     private String polygraphssid;//测谎仪ssid
 
     private String asrssid;//语言识别ssid
+
+    public String getFdssid() {
+        return fdssid;
+    }
+
+    public void setFdssid(String fdssid) {
+        this.fdssid = fdssid;
+    }
 
     public int getUsepolygraph() {
         return usepolygraph;

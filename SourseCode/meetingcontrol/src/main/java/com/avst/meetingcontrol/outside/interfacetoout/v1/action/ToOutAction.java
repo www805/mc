@@ -1,6 +1,7 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.action;
 
 import com.avst.meetingcontrol.common.conf.ASRType;
+import com.avst.meetingcontrol.common.conf.FDType;
 import com.avst.meetingcontrol.common.conf.MCType;
 import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.util.JacksonUtil;
@@ -117,12 +118,14 @@ public class ToOutAction extends BaseAction {
             tdAndUserAndOtherParam.setUsername("zhangsan");
             tdAndUserAndOtherParam.setUserssid("1654");
             tdAndUserAndOtherParam.setAsrtype(ASRType.AVST);
+            tdAndUserAndOtherParam.setFdtype(FDType.FD_AVST);
             tdList.add(tdAndUserAndOtherParam);
             tdAndUserAndOtherParam=new TdAndUserAndOtherParam();
             tdAndUserAndOtherParam.setGrade(2);
             tdAndUserAndOtherParam.setUsername("李四");
             tdAndUserAndOtherParam.setUserssid("1234567");
             tdAndUserAndOtherParam.setAsrtype(ASRType.AVST);
+            tdAndUserAndOtherParam.setFdtype(FDType.FD_AVST);
             tdList.add(tdAndUserAndOtherParam);
             startMCParam_out.setTdList(tdList);
             param.setParam(startMCParam_out);

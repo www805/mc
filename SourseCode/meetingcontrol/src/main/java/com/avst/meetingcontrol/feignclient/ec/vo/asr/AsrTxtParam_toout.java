@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.ec.vo;
+package com.avst.meetingcontrol.feignclient.ec.vo.asr;
 
 /**
  * 服务返回文本的集合

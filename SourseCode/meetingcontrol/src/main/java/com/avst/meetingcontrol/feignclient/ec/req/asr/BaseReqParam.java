@@ -1,4 +1,4 @@
-package com.avst.meetingcontrol.feignclient.ec.req;
+package com.avst.meetingcontrol.feignclient.ec.req.asr;
 
 /**
  * 一般放的都是权限验证的东西
