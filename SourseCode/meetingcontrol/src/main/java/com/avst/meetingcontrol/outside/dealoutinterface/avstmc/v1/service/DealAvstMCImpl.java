@@ -18,6 +18,7 @@ import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
+import com.avst.meetingcontrol.feignclient.ec.vo.fd.WorkStartVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -30,8 +31,10 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.param.UserETParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -223,11 +226,14 @@ public class DealAvstMCImpl {
         int recordnum=0;//录音/像个数
         int asrnum=0;//语音识别个数
         int polygraphnum=0;//测谎仪个数
+        List<UserETParam> useretlist=new ArrayList<UserETParam>();
 
         //对每一个会议通道进行处理，该asr的要新建语言识别记录，开启asr识别；测谎也是一样的
         List<TdAndAsrParam> tdUserList=param.getTdAserList();
         if(null!=tdUserList&&tdUserList.size() > 0){
             int asrerrorcount=0;//asr语音识别错误路数
+            String livingurl=null;
+            String iid=null;
             for(TdAndAsrParam td:tdUserList){
                 //完善会议缓存中通道的参数
                 TdAndUserAndOtherCacheParam tdcacheParam= MCCache.getMCCacheOneTDParamByMTUserTDSsid(mtssid,td.getMttduserssid());
@@ -292,6 +298,7 @@ public class DealAvstMCImpl {
 
                             asrnum++;
 
+
                         }else{
                             asrerrorcount++;
                             System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
@@ -320,16 +327,32 @@ public class DealAvstMCImpl {
                     startParam.setFlushbonadingetinfossid(td.getFdssid());
                     workStartParam.setParam(startParam);
                     RResult result=equipmentControl.workStart(workStartParam);
-                    if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
-                        String iid=result.getData().toString();//设备录像的唯一识别码
-
+                    if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())&&null!=result.getData()){
+                        try {
+                            Gson gson=new Gson();
+                            WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
+                            iid=workStartVO.getIid();//设备录像的唯一识别码
+                            livingurl=workStartVO.getFdlivingurl();//设备直播地址
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         recordnum++;
+
                     }else{
                         System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
                     }
                 }else{
                     System.out.println("不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
                 }
+
+                //直播地址的填写
+                //
+                UserETParam userETParam=new UserETParam();
+                userETParam.setFdssid(td.getFdssid());
+                userETParam.setLivingurl(livingurl);
+                userETParam.setIid(iid);
+                userETParam.setUserssid(tdcacheParam.getUserssid());
+                useretlist.add(userETParam);
 
                 //修改录音时间，asr识别时间，测谎仪时间
 
@@ -359,6 +382,7 @@ public class DealAvstMCImpl {
                     startMCVO.setMtssid(mtssid);
                     startMCVO.setPolygraphnum(polygraphnum);
                     startMCVO.setRecordnum(recordnum);
+                    startMCVO.setUseretlist(useretlist);
                     rrParam.changeTrue(startMCVO);
                     //修改会议
                     try {
