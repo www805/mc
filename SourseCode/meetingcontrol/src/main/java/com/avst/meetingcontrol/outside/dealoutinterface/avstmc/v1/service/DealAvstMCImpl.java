@@ -164,6 +164,7 @@ public class DealAvstMCImpl {
             mcCacheParam.setMtssid(ssid);
             mcCacheParam.setMcType(MCType.AVST);//在avstmc的处理类中，类型就肯定是这个
             mcCacheParam.setYwSystemType(param.getYwSystemType());//业务系统的类型
+            mcCacheParam.setMtstate(base_mtinfo.getMtstate());//状态初始化
 
             if(null!=tulist&&tulist.size()> 0){
                 List<TdAndUserAndOtherCacheParam> tdList=new ArrayList<TdAndUserAndOtherCacheParam>();
@@ -390,6 +391,13 @@ public class DealAvstMCImpl {
                         base_mtinfo.setMtstate(1);
                         int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
                         System.out.println("会议开启成功 修改会议状态 开始 updatebool："+updatebool);
+
+
+                        MCCacheParam  mcCacheParam=MCCache.getMCCacheParam(mtssid);
+
+                        //刷新会议缓存状态
+                        MCCache.setMCCacheParam(mtssid,base_mtinfo.getMtstate());
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

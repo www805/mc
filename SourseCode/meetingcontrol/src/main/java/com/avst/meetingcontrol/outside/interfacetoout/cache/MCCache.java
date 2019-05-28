@@ -138,6 +138,30 @@ public class MCCache {
         return true;
     }
 
+    /**
+     * 更新会议状态
+     * @param mtssid
+     * @return
+     */
+    public static  synchronized  boolean setMCCacheParam(String mtssid, int bool){
+        if(null==mcList){
+            mcList=new ArrayList<MCCacheParam>();
+        }else{
+            if(mcList.size()> 0){
+                int i=0;
+                for(MCCacheParam mc:mcList){
+                    if(null!=mc.getMtssid()&&mc.getMtssid().equals(mtssid)){
+                        mcList.get(i).setMtstate(bool);
+                        break;
+                    }
+                    i++;
+                }
+            }
+        }
+        return true;
+    }
+
+
     public static  synchronized  boolean delMCCacheParam(String mtssid){
 
         if(null!=mcList&&mcList.size() > 0){
