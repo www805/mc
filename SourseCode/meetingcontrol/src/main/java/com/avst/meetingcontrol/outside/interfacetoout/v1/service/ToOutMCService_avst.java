@@ -21,6 +21,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_to
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.SetMCAsrTxtBackVO;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
@@ -169,8 +170,10 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                 MCCacheParam mcCacheParam=MCCache.getMCCacheParam(mtssid);
                 if(null!=mcCacheParam){
                     AsrTxtParam_toout asrTxtParam_toout=AsrForMCCache.getNewestAsrTxtBymtssid(mtssid);
-                    ReqParam<AsrTxtParam_toout> pparam=new ReqParam<AsrTxtParam_toout>();
-                    pparam.setParam(asrTxtParam_toout);
+                    SetMCAsrTxtBackVO setMCAsrTxtBackVO = gson.fromJson(gson.toJson(asrTxtParam_toout), SetMCAsrTxtBackVO.class);
+                    setMCAsrTxtBackVO.setMtssid(mtssid);
+                    ReqParam<SetMCAsrTxtBackVO> pparam=new ReqParam<SetMCAsrTxtBackVO>();
+                    pparam.setParam(setMCAsrTxtBackVO);
                     if(mcCacheParam.getYwSystemType().equals("TRM_AVST")){//avst版本的的笔录系统的类型
                         return remControl.setRercordAsrTxtBack(pparam);//调用对应的feign请求，返回TXT数据
                     }//以后还有其他的系统
