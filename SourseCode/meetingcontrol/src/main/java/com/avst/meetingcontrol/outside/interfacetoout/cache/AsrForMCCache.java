@@ -94,7 +94,7 @@ public class AsrForMCCache {
             for(AsrForMCCache_oneParam asr:list){
                 System.out.println(asr.getUserssid()+":asr.getuserssid()---"+userssid);
 
-                if(asr.getUserssid().equals(userssid)){
+                if(null!=asr.getUserssid()&&asr.getUserssid().equals(userssid)){
                     return asr;
                 }
             }
