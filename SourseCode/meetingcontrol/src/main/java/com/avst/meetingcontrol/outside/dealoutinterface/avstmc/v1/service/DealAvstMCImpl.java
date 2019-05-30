@@ -7,7 +7,9 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstm
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tduser;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
@@ -69,6 +71,8 @@ public class DealAvstMCImpl {
     @Autowired
     private EquipmentControl equipmentControl;
 
+    @Autowired
+    private Base_mttodatasaveMapper base_mttodatasaveMapper;
 
 
 
@@ -361,6 +365,15 @@ public class DealAvstMCImpl {
                 MCCache.setMCTDCacheParam(mtssid,tdcacheParam);
 
             }
+
+            //添加会议数据存储对应
+            Base_mttodatasave base_mttodatasave=new Base_mttodatasave();
+            base_mttodatasave.setCreatetime(new Date());
+            base_mttodatasave.setMtssid(mtssid);
+            base_mttodatasave.setIid(iid);
+            base_mttodatasave.setSsid(OpenUtil.getUUID_32());
+            int mttodatasaveinsert_bool=base_mttodatasaveMapper.insert(base_mttodatasave);
+            System.out.println("mttodatasaveinsert_bool__"+mttodatasaveinsert_bool);
 
             try {
                 EntityWrapper<Base_mtinfo> entityWrapper=new EntityWrapper<Base_mtinfo>();

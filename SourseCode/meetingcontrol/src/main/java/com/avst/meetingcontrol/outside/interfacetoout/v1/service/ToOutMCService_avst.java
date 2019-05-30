@@ -2,6 +2,8 @@ package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
@@ -21,6 +23,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_to
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.GetMCVO;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.SetMCAsrTxtBackVO;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -43,6 +46,10 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Autowired
     private Avstmt_realtimrecordMapper avstmt_realtimrecordMapper;
+
+    @Autowired
+    private Base_mttodatasaveMapper base_mttodatasaveMapper;
+
 
     @Override
     public RResult startMC(ReqParam<StartMCParam_out> param, RResult result) {
@@ -193,15 +200,19 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Override
     public RResult getMC(ReqParam<GetMCParam_out> param,RResult result) {
+        GetMCVO getMCVO=new GetMCVO();
+
         GetMCParam_out getMCParam_out=param.getParam();
         String mtssid=getMCParam_out.getMtssid();
         if (StringUtils.isNotBlank(mtssid)){
+            String iid=null;
+            List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
+
             //根据会议ssid获取用户本次会议对话
             EntityWrapper ew=new EntityWrapper();
             ew.orderBy("ordernum",true);
             ew.eq("mtssid",mtssid);
             List<Avstmt_realtimrecord>  avstmt_realtimrecords = avstmt_realtimrecordMapper.selectList(ew);
-            List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
             if (null!=avstmt_realtimrecords&&avstmt_realtimrecords.size()>0){
                 for (Avstmt_realtimrecord a : avstmt_realtimrecords) {
                     AsrTxtParam_toout l=new AsrTxtParam_toout();
@@ -213,7 +224,17 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     list.add(l);
                 }
             }
-            result.changeToTrue(list);
+
+            Base_mttodatasave base_mttodatasave=new Base_mttodatasave();
+            base_mttodatasave.setMtssid(mtssid);
+            base_mttodatasave=base_mttodatasaveMapper.selectOne(base_mttodatasave);
+
+            if (null!=base_mttodatasave){
+                iid=base_mttodatasave.getIid();
+            }
+            getMCVO.setIid(iid);
+            getMCVO.setList(list);
+            result.changeToTrue(getMCVO);
         }else{
             System.out.println("参数为空");
         }
