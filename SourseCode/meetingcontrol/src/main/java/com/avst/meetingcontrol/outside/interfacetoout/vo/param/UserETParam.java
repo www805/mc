@@ -6,9 +6,19 @@ public class UserETParam {
 
     private String fdssid;//嵌入式设备ssid
 
+    private String polygraphssid;//测谎仪ssid，不一定有值，一般只有副麦才会有
+
     private String livingurl;//设备直播地址
 
     private String iid;//设备录音/像的唯一标识，用于保存录音/像
+
+    public String getPolygraphssid() {
+        return polygraphssid;
+    }
+
+    public void setPolygraphssid(String polygraphssid) {
+        this.polygraphssid = polygraphssid;
+    }
 
     public String getIid() {
         return iid;

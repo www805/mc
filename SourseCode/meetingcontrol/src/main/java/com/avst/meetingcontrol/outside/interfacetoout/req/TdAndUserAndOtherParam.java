@@ -22,15 +22,25 @@ public class TdAndUserAndOtherParam {
 
     private int grade;//1主麦，2副麦，有时需要一些特殊的处理(主麦只有一个)
 
-    private int usepolygraph;//是否使用测谎仪
+    private int usepolygraph;//是否使用测谎仪,1使用，-1 不使用
 
-    private int useasr;//是否使用语言识别，1使用，-1 不使用
+    private String polygraphtype;//测谎仪服务类型，
 
     private String polygraphssid;//测谎仪ssid
+
+    private int useasr;//是否使用语言识别，1使用，-1 不使用
 
     private String asrssid;//语言识别ssid
 
     private String asrtype;//语音服务类型，AVST
+
+    public String getPolygraphtype() {
+        return polygraphtype;
+    }
+
+    public void setPolygraphtype(String polygraphtype) {
+        this.polygraphtype = polygraphtype;
+    }
 
     public int getUserecord() {
         return userecord;

@@ -17,12 +17,23 @@ public class TdAndUserParam {
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
+    private int userecord;//是否使用录像，1使用，-1 不使用
+
     private String polygraphssid;//测谎仪ssid
 
     private String asrssid;//语言识别ssid
 
     private int useeuipment;//是否使用设备，1使用，-1 不使用
+
     private String fdeuipmentssid;//嵌入式设备的ssid
+
+    public int getUserecord() {
+        return userecord;
+    }
+
+    public void setUserecord(int userecord) {
+        this.userecord = userecord;
+    }
 
     public int getUseeuipment() {
         return useeuipment;

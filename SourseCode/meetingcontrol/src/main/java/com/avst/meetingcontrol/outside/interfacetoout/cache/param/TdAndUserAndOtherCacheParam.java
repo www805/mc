@@ -30,6 +30,8 @@ public class TdAndUserAndOtherCacheParam {
 
     private String polygraphssid;//测谎仪ssid
 
+    private String polygraphtype;//测谎仪服务类型，
+
     private String asrssid;//语言识别ssid
 
     private String asrtype;//语音服务类型，AVST
@@ -44,6 +46,14 @@ public class TdAndUserAndOtherCacheParam {
 
     //测谎仪有线程就写在这
 
+
+    public String getPolygraphtype() {
+        return polygraphtype;
+    }
+
+    public void setPolygraphtype(String polygraphtype) {
+        this.polygraphtype = polygraphtype;
+    }
 
     public int getFdrecord() {
         return fdrecord;

@@ -20,7 +20,9 @@ import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
+import com.avst.meetingcontrol.feignclient.ec.req.ph.CheckPolygraphStateParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.fd.WorkStartVO;
+import com.avst.meetingcontrol.feignclient.ec.vo.ph.CheckPolygraphStateVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -124,7 +126,9 @@ public class DealAvstMCImpl {
                                     tu.setPolygraphssid(mtu.getPolygraphssid());
                                     tu.setUsepolygraph(mtu.getUsepolygraph());
                                     tu.setUseasr(mtu.getUseasr());
+                                    tu.setUserecord(base_mtinfo.getUserecord());
                                     tu.setFdeuipmentssid(mtu.getFdssid());
+                                    tu.setGrade(mtu.getGrade());
                                     modeltdList.remove(i);
                                     break;
                                 }
@@ -136,7 +140,7 @@ public class DealAvstMCImpl {
 
                     //再把剩下的麦的通道给其他用户
                     for(TdAndUserParam tu:tulist){
-                        if(tu.getGrade()==1){//主麦已经设置了，不需要重新设置
+                        if(tu.getGrade()==1){//主麦已经设置了，不需要重新设置,主麦只能有一个，不然会有问题
                             continue;
                         }
                         tu.setTdssid(modeltdList.get(0).getTdssid());
@@ -145,6 +149,8 @@ public class DealAvstMCImpl {
                         tu.setUsepolygraph(modeltdList.get(0).getUsepolygraph());
                         tu.setUseasr(modeltdList.get(0).getUseasr());
                         tu.setFdeuipmentssid(modeltdList.get(0).getFdssid());
+                        tu.setGrade(modeltdList.get(0).getGrade());
+                        tu.setUserecord(base_mtinfo.getUserecord());
                         modeltdList.remove(0);
                     }
                 }
@@ -196,6 +202,7 @@ public class DealAvstMCImpl {
                         tdAndUserParam.setMtuserssid(tu.getUserssid());
                         tdAndUserParam.setUsepolygraph(tu.getUsepolygraph());
                         tdAndUserParam.setUseasr(tu.getUseasr());
+                        tdAndUserParam.setUserecord(tu.getUserecord());
                         tdAndUserParam.setPolygraphssid(tu.getPolygraphssid());
                         tdAndUserParam.setAsrssid(tu.getAsrssid());
                         tdAndUserParam.setFdssid(tu.getFdeuipmentssid());
@@ -245,9 +252,11 @@ public class DealAvstMCImpl {
                 if(null!=tdcacheParam){
                     tdcacheParam.setAsrssid(td.getAsrssid());
                     tdcacheParam.setUseasr(td.getUseasr());
+                    tdcacheParam.setAsrtype(td.getAsrtype());
+
                     tdcacheParam.setPolygraphssid(td.getPolygraphssid());
                     tdcacheParam.setUsepolygraph(td.getUsepolygraph());
-                    tdcacheParam.setAsrtype(td.getAsrtype());
+                    tdcacheParam.setPolygraphtype(td.getPolygraphtype());
 
                     tdcacheParam.setFdssid(td.getFdssid());
                     tdcacheParam.setFdtype(td.getFdtype());
@@ -264,90 +273,124 @@ public class DealAvstMCImpl {
 
                 }else{
 
-                    String ssid =OpenUtil.getUUID_32();
-                    Avstmt_asrtd avstmt_asrtd=new Avstmt_asrtd();
-                    avstmt_asrtd.setSsid(ssid);
-                    avstmt_asrtd.setMttduserssid(td.getMttduserssid());
-                    avstmt_asrtd.setAsrserverssid(td.getAsrssid());
-                    avstmt_asrtd.setCreatetime((new Date()));
-                    int insert=avstmt_asrtdMapper.insert(avstmt_asrtd);
-                    System.out.println(insert+":insert---avstmt_tduserMapper.insert");
-                    if(insert > -1){
+                    try {
+                        String ssid =OpenUtil.getUUID_32();
+                        Avstmt_asrtd avstmt_asrtd=new Avstmt_asrtd();
+                        avstmt_asrtd.setSsid(ssid);
+                        avstmt_asrtd.setMttduserssid(td.getMttduserssid());
+                        avstmt_asrtd.setAsrserverssid(td.getAsrssid());
+                        avstmt_asrtd.setCreatetime((new Date()));
+                        int insert=avstmt_asrtdMapper.insert(avstmt_asrtd);
+                        System.out.println(insert+":insert---avstmt_tduserMapper.insert");
+                        if(insert > -1){
 
-                        //有语音识别的开启语音识别
-                        ReqParam<StartAsrParam> startparam=new ReqParam<StartAsrParam>();
-                        StartAsrParam startAsrParam=new StartAsrParam();
+                            //有语音识别的开启语音识别
+                            ReqParam<StartAsrParam> startparam=new ReqParam<StartAsrParam>();
+                            StartAsrParam startAsrParam=new StartAsrParam();
 
-                        //这里只需要给通道的ssid，设备微服务自己处理
-                        startAsrParam.setTdssid(td.getTdssid());
-                        startAsrParam.setAsrEquipmentssid(td.getAsrssid());
-                        startAsrParam.setAsrtype(td.getAsrtype());
-                        startparam.setParam(startAsrParam);
-                        RResult result=equipmentControl.startAsr(startparam);
-                        if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
-                            String asrid=result.getData().toString();
-                            String asrStartTime=result.getEndtime();//语音识别开始的时间
-                            //修改语音识别记录中的asrid，这个是本次识别的唯一识别码
-                            avstmt_asrtd.setAsrid(asrid);
-                            long asrStartTime_long=Long.parseLong(asrStartTime);
-                            avstmt_asrtd.setStarttime(asrStartTime_long);//开始时间保存为long类型
-                            tdcacheParam.setAsrid(asrid);//缓存中放一份
-                            tdcacheParam.setAsrStartTime(asrStartTime_long);
-                            int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
-                            System.out.println(i_updateById+":i_updateById 修改语音识别记录中的asrid");
+                            //这里只需要给通道的ssid，设备微服务自己处理
+                            startAsrParam.setTdssid(td.getTdssid());
+                            startAsrParam.setAsrEquipmentssid(td.getAsrssid());
+                            startAsrParam.setAsrtype(td.getAsrtype());
+                            startparam.setParam(startAsrParam);
+                            RResult result=equipmentControl.startAsr(startparam);
+                            if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+                                String asrid=result.getData().toString();
+                                String asrStartTime=result.getEndtime();//语音识别开始的时间
+                                //修改语音识别记录中的asrid，这个是本次识别的唯一识别码
+                                avstmt_asrtd.setAsrid(asrid);
+                                long asrStartTime_long=Long.parseLong(asrStartTime);
+                                avstmt_asrtd.setStarttime(asrStartTime_long);//开始时间保存为long类型
+                                tdcacheParam.setAsrid(asrid);//缓存中放一份
+                                tdcacheParam.setAsrStartTime(asrStartTime_long);
+                                int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
+                                System.out.println(i_updateById+":i_updateById 修改语音识别记录中的asrid");
 
-                            tdcacheParam.setAsrRun(true);
+                                tdcacheParam.setAsrRun(true);
 
-                            //添加asrid语音识别的唯一识别码对应的会议ssid
-                            AsrForMCCache.setMTssidByAsrid(asrid,mtssid);
+                                //添加asrid语音识别的唯一识别码对应的会议ssid
+                                AsrForMCCache.setMTssidByAsrid(asrid,mtssid);
 
-                            asrnum++;
+                                asrnum++;
 
+
+                            }else{
+                                asrerrorcount++;
+                                System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
+                                tdcacheParam.setAsrRun(false);
+                            }
 
                         }else{
                             asrerrorcount++;
-                            System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
+                            System.out.println("数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
                             tdcacheParam.setAsrRun(false);
                         }
-
-                    }else{
-                        asrerrorcount++;
-                        System.out.println("数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
-                        tdcacheParam.setAsrRun(false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 
 
 
                 //检测是否需要测谎，要新建测谎记录，并开启测谎
+                try {
+                    if(td.getUsepolygraph()==1){
+                        ReqParam<CheckPolygraphStateParam> checkparam=new ReqParam<CheckPolygraphStateParam>();
+                        CheckPolygraphStateParam checkPolygraphStateParam =new CheckPolygraphStateParam();
+                        checkPolygraphStateParam.setPhType(td.getPolygraphtype());
+                        checkPolygraphStateParam.setPolygraphssid(td.getPolygraphssid());
+                        checkparam.setParam(checkPolygraphStateParam);
+                        RResult checkphresult=equipmentControl.checkPolygraphState(checkparam);
+                        if(null!=checkphresult&&checkphresult.getActioncode().equals(Code.SUCCESS.toString())&&null!=checkphresult.getData()){
+                            try {
+                                Gson gson=new Gson();
+                                CheckPolygraphStateVO checkPolygraphStateVO=gson.fromJson(gson.toJson(checkphresult.getData()),CheckPolygraphStateVO.class);
+                                if(0==checkPolygraphStateVO.getWorkstate()){//说明是可以用的
+                                    System.out.println("测谎仪检测 成功--Polygraphssid:"+td.getPolygraphssid());
+                                    polygraphnum++;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
+                        }else{
+                            System.out.println("测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 //是否需要录音
-                if(td.getUserecord()==1){
+                try {
+                    if(td.getUserecord()==1){
 
-                    ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
-                    WorkStartParam startParam=new WorkStartParam();
-                    startParam.setFdid(mtssid);//就是会议ssid
-                    startParam.setFdType(td.getFdtype());
-                    startParam.setFlushbonadingetinfossid(td.getFdssid());
-                    workStartParam.setParam(startParam);
-                    RResult result=equipmentControl.workStart(workStartParam);
-                    if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())&&null!=result.getData()){
-                        try {
-                            Gson gson=new Gson();
-                            WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
-                            iid=workStartVO.getIid();//设备录像的唯一识别码
-                            livingurl=workStartVO.getFdlivingurl();//设备直播地址
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
+                        WorkStartParam startParam=new WorkStartParam();
+                        startParam.setFdid(mtssid);//就是会议ssid
+                        startParam.setFdType(td.getFdtype());
+                        startParam.setFlushbonadingetinfossid(td.getFdssid());
+                        workStartParam.setParam(startParam);
+                        RResult result=equipmentControl.workStart(workStartParam);
+                        if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())&&null!=result.getData()){
+                            try {
+                                Gson gson=new Gson();
+                                WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
+                                iid=workStartVO.getIid();//设备录像的唯一识别码
+                                livingurl=workStartVO.getFdlivingurl();//设备直播地址
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            recordnum++;
+
+                        }else{
+                            System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
                         }
-                        recordnum++;
-
                     }else{
-                        System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
+                        System.out.println("不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
                     }
-                }else{
-                    System.out.println("不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 //直播地址的填写
@@ -357,6 +400,9 @@ public class DealAvstMCImpl {
                 userETParam.setLivingurl(livingurl);
                 userETParam.setIid(iid);
                 userETParam.setUserssid(tdcacheParam.getUserssid());
+                if(td.getUserecord()==1){
+                    userETParam.setPolygraphssid(td.getPolygraphssid());
+                }
                 useretlist.add(userETParam);
 
                 //修改录音时间，asr识别时间，测谎仪时间

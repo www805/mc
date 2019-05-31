@@ -102,6 +102,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                         tdAndAsrParam.setTdssid(p.getTdssid());
                         tdAndAsrParam.setUsepolygraph(p.getUsepolygraph());
                         tdAndAsrParam.setUseasr(p.getUseasr());
+                        tdAndAsrParam.setUserecord(p.getUserecord());
                         tdAndAsrParam.setPolygraphssid(p.getPolygraphssid());
                         tdAndAsrParam.setAsrssid(p.getAsrssid());
                         tdAndAsrParam.setFdssid(p.getFdssid());

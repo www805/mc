@@ -14,9 +14,19 @@ public class TDAndUserParam {
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
+    private int userecord;//是否使用设备录像，1使用，-1 不使用
+
     private String polygraphssid;//测谎仪ssid
 
     private String asrssid;//语言识别ssid
+
+    public int getUserecord() {
+        return userecord;
+    }
+
+    public void setUserecord(int userecord) {
+        this.userecord = userecord;
+    }
 
     public String getFdssid() {
         return fdssid;

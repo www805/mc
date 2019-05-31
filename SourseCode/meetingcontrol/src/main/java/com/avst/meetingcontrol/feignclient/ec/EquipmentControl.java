@@ -2,13 +2,15 @@ package com.avst.meetingcontrol.feignclient.ec;
 
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.feignclient.ec.req.asr.GetAsrServerBySsidParam;
+import com.avst.meetingcontrol.feignclient.ec.req.*;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.GetFlushbonadingBySsidParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.GetFlushbonadingTDByETSsidParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
+import com.avst.meetingcontrol.feignclient.ec.req.ph.*;
+import com.avst.meetingcontrol.feignclient.ec.vo.ph.*;
 import com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -24,7 +26,7 @@ import java.util.List;
 @FeignClient(value="ec",url="localhost:8081/")
 public interface EquipmentControl {
 
-    //avstmt
+    //asr
     @RequestMapping( value = "/asr/v1/toClientForTxtBack")
     @ResponseBody
     public RResult<List<AsrTxtParam_toout>> txtBack(@RequestBody TxtBackParam txtBackParam);
@@ -63,6 +65,54 @@ public interface EquipmentControl {
     @RequestMapping("/flushbonading/v1/workOver")
     @ResponseBody
     public RResult workOver(@RequestBody ReqParam<WorkOverParam> param);
+
+
+
+    //ph测谎仪
+    /**
+     * 检测测谎仪状态
+     * @param param
+     * @return
+     */
+    @RequestMapping("/checkPolygraphState")
+    @ResponseBody
+    public RResult checkPolygraphState(@RequestBody  ReqParam<CheckPolygraphStateParam> param);
+
+    /**
+     * 开启测谎仪
+     * @param param
+     * @return
+     */
+    @RequestMapping("/startPolygraph")
+    @ResponseBody
+    public RResult startPolygraph(@RequestBody  ReqParam<StartPolygraphParam> param);
+
+    /**
+     * //结束测谎仪
+     * @param param
+     * @return
+     */
+    @RequestMapping("/overPolygraph")
+    @ResponseBody
+    public RResult overPolygraph(@RequestBody  ReqParam<OverPolygraphParam> param);
+
+    /**
+     * //获取测谎心里分析数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getPolygraphAnalysis")
+    @ResponseBody
+    public RResult<GetPolygraphAnalysisVO> getPolygraphAnalysis(@RequestBody  ReqParam<GetPolygraphAnalysisParam> param);
+
+    /**
+     * //获取测谎仪心理分析的实时图像
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getPolygraphRealTimeImage")
+    @ResponseBody
+    public RResult getPolygraphRealTimeImage(@RequestBody  ReqParam<GetPolygraphRealTimeImageParam> param);
 
 
 }
