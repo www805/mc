@@ -5,10 +5,6 @@ import com.avst.meetingcontrol.common.util.JacksonUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.BaseDealMCInterface;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst;
@@ -108,7 +104,7 @@ public class ToOutAction extends BaseAction {
 
     /**
      * 获取会议状态
-     * @param param
+     * @param param 会废弃
      * @return
      */
     @RequestMapping("/getMCState")
@@ -118,6 +114,22 @@ public class ToOutAction extends BaseAction {
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCState(param,result);
         return result;
     }
+
+    /**
+     * 获取会议数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMCdata")
+    @ResponseBody
+    public RResult getMCdata(@RequestBody ReqParam<GetMCdataParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCdata(param,result);
+        return result;
+    }
+
+
+
 
 
 

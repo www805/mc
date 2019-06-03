@@ -23,6 +23,8 @@ public interface BaseDealMCInterface {
 
     public RResult  getMCState(ReqParam<GetMCStateParam_out> param, RResult result);
 
+    public RResult  getMCdata(ReqParam<GetMCdataParam_out> param, RResult result);
+
 
 
 

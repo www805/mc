@@ -197,8 +197,6 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return false;
     }
 
-
-
     @Override
     public RResult getMC(ReqParam<GetMCParam_out> param,RResult result) {
         GetMCVO getMCVO=new GetMCVO();
@@ -267,6 +265,18 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                 result.changeToTrue(mtstate);
                 return result;
             }
+        }
+        return null;
+    }
+
+    @Override
+    public RResult getMCdata(ReqParam<GetMCdataParam_out> param, RResult result) {
+        GetMCdataParam_out getMCdataParam_out=param.getParam();
+        String mtssid=getMCdataParam_out.getMtssid();
+        if (StringUtils.isNotBlank(mtssid)){
+            MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
+            result.changeToTrue(mcCacheParam);
+            return result;
         }
         return null;
     }

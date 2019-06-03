@@ -74,7 +74,7 @@ public interface EquipmentControl {
      * @param param
      * @return
      */
-    @RequestMapping("/checkPolygraphState")
+    @RequestMapping("/ph/v1/checkPolygraphState")
     @ResponseBody
     public RResult checkPolygraphState(@RequestBody  ReqParam<CheckPolygraphStateParam> param);
 
@@ -83,7 +83,7 @@ public interface EquipmentControl {
      * @param param
      * @return
      */
-    @RequestMapping("/startPolygraph")
+    @RequestMapping("/ph/v1/startPolygraph")
     @ResponseBody
     public RResult startPolygraph(@RequestBody  ReqParam<StartPolygraphParam> param);
 
@@ -92,7 +92,7 @@ public interface EquipmentControl {
      * @param param
      * @return
      */
-    @RequestMapping("/overPolygraph")
+    @RequestMapping("/ph/v1/overPolygraph")
     @ResponseBody
     public RResult overPolygraph(@RequestBody  ReqParam<OverPolygraphParam> param);
 
@@ -101,7 +101,7 @@ public interface EquipmentControl {
      * @param param
      * @return
      */
-    @RequestMapping("/getPolygraphAnalysis")
+    @RequestMapping("/ph/v1/getPolygraphAnalysis")
     @ResponseBody
     public RResult<GetPolygraphAnalysisVO> getPolygraphAnalysis(@RequestBody  ReqParam<GetPolygraphAnalysisParam> param);
 
@@ -110,7 +110,7 @@ public interface EquipmentControl {
      * @param param
      * @return
      */
-    @RequestMapping("/getPolygraphRealTimeImage")
+    @RequestMapping("/ph/v1/getPolygraphRealTimeImage")
     @ResponseBody
     public RResult getPolygraphRealTimeImage(@RequestBody  ReqParam<GetPolygraphRealTimeImageParam> param);
 
