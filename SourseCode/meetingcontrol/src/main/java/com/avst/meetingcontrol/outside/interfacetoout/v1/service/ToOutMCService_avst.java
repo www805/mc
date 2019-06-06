@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
+import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
@@ -182,7 +183,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     setMCAsrTxtBackVO.setMtssid(mtssid);
                     ReqParam<SetMCAsrTxtBackVO> pparam=new ReqParam<SetMCAsrTxtBackVO>();
                     pparam.setParam(setMCAsrTxtBackVO);
-                    if(mcCacheParam.getYwSystemType().equals("TRM_AVST")){//avst版本的的笔录系统的类型
+                    if(mcCacheParam.getYwSystemType().equals(YWType.RECORD_TRM)){//avst版本的的笔录系统的类型
                         return remControl.setRercordAsrTxtBack(pparam);//调用对应的feign请求，返回TXT数据
                     }//以后还有其他的系统
                 }
