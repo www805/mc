@@ -1040,10 +1040,12 @@ public static String numtoStr(int digit,Integer num){
 		//当前项目下路径
 		try {
 			String filePath = System.getProperty("user.dir");
-			if(filePath.indexOf("/") > -1){//Linux截取
-				filePath=filePath.substring(0,filePath.lastIndexOf("/"));//win的截取方式
-			}else{
-				filePath=filePath.substring(0,filePath.lastIndexOf("\\"));//win的截取方式
+			if(filePath.endsWith("meetingcontrol")){
+				if(filePath.indexOf("/") > -1){//Linux截取
+					filePath=filePath.substring(0,filePath.lastIndexOf("/"));//win的截取方式
+				}else{
+					filePath=filePath.substring(0,filePath.lastIndexOf("\\"));//win的截取方式
+				}
 			}
 
 			System.out.println(filePath);
