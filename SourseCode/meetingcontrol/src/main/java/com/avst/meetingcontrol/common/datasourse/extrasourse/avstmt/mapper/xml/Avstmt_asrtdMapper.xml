@@ -18,7 +18,7 @@
         <result column="backtxtinterface" property="backtxtinterface" />
         <result column="asrserverssid" property="asrserverssid" />
         <result column="asrid" property="asrid" />
-
+        <result column="startrecordtime" property="startrecordtime" />
 
     </resultMap>
 

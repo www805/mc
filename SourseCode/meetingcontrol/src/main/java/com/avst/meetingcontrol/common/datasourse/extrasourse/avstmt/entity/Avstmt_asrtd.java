@@ -54,6 +54,8 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
      */
     private Date createtime;
 
+    private long startrecordtime;
+
     private String string1;
 
     private String string2;
@@ -70,6 +72,14 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
      * avst语音服务本次识别的唯一识别码
      */
     private String asrid;
+
+    public long getStartrecordtime() {
+        return startrecordtime;
+    }
+
+    public void setStartrecordtime(long startrecordtime) {
+        this.startrecordtime = startrecordtime;
+    }
 
     public String getAsrid() {
         return asrid;

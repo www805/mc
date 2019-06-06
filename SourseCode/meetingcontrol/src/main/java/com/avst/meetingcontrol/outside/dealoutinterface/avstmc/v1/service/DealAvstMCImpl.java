@@ -246,6 +246,7 @@ public class DealAvstMCImpl {
             int asrerrorcount=0;//asr语音识别错误路数
             String livingurl=null;
             String iid=null;
+            long firstasrstarttime=(new Date()).getTime();//第一个
             for(TdAndAsrParam td:tdUserList){
                 //完善会议缓存中通道的参数
                 TdAndUserAndOtherCacheParam tdcacheParam= MCCache.getMCCacheOneTDParamByMTUserTDSsid(mtssid,td.getMttduserssid());
@@ -267,16 +268,17 @@ public class DealAvstMCImpl {
                     continue;
                 }
 
+
                 //检测是否需要asr，要新建语言识别记录，并开启asr
+                Avstmt_asrtd avstmt_asrtd=null;
                 if(td.getUseasr()!=1){//说明不需要asr
                     System.out.println("不需要开启asr--td.getMttduserssid()："+td.getMttduserssid());
 
                 }else{
-
+                    String mtasrtdssid =OpenUtil.getUUID_32();
+                    avstmt_asrtd=new Avstmt_asrtd();
                     try {
-                        String ssid =OpenUtil.getUUID_32();
-                        Avstmt_asrtd avstmt_asrtd=new Avstmt_asrtd();
-                        avstmt_asrtd.setSsid(ssid);
+                        avstmt_asrtd.setSsid(mtasrtdssid);
                         avstmt_asrtd.setMttduserssid(td.getMttduserssid());
                         avstmt_asrtd.setAsrserverssid(td.getAsrssid());
                         avstmt_asrtd.setCreatetime((new Date()));
@@ -312,7 +314,6 @@ public class DealAvstMCImpl {
                                 AsrForMCCache.setMTssidByAsrid(asrid,mtssid);
 
                                 asrnum++;
-
 
                             }else{
                                 asrerrorcount++;
@@ -378,6 +379,16 @@ public class DealAvstMCImpl {
                                 WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
                                 iid=workStartVO.getIid();//设备录像的唯一识别码
                                 livingurl=workStartVO.getFdlivingurl();//设备直播地址
+
+                                long startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
+
+                                if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){
+                                    avstmt_asrtd.setStartrecordtime(startrecordtime);
+                                    int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
+                                    System.out.println(i_updateById+":i_updateById 修改语音识别记录中的startrecordtime");
+                                }else{
+                                    System.out.println(startrecordtime+":startrecordtime  会议用户语音识别对象没有找到，不进行修改操作 avstmt_asrtd："+avstmt_asrtd);
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
