@@ -179,6 +179,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                 MCCacheParam mcCacheParam=MCCache.getMCCacheParam(mtssid);
                 if(null!=mcCacheParam){
                     AsrTxtParam_toout asrTxtParam_toout=AsrForMCCache.getNewestAsrTxtBymtssid(mtssid);
+                    //获取asrstarttime 时间戳
+                    asrTxtParam_toout.setAsrstartime(String.valueOf(mcCacheParam.getTdList().get(0).getAsrStartTime()));
                     SetMCAsrTxtBackVO setMCAsrTxtBackVO = gson.fromJson(gson.toJson(asrTxtParam_toout), SetMCAsrTxtBackVO.class);
                     setMCAsrTxtBackVO.setMtssid(mtssid);
                     ReqParam<SetMCAsrTxtBackVO> pparam=new ReqParam<SetMCAsrTxtBackVO>();
@@ -190,11 +192,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
-
-
         return false;
     }
 
@@ -221,6 +219,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     l.setTxt(a.getTranslatext());
                     l.setUserssid(a.getMtuserssid());
                     l.setAsrtime(a.getString1());//时间
+                    l.setAsrstartime(a.getString1());
                     list.add(l);
                 }
             }
