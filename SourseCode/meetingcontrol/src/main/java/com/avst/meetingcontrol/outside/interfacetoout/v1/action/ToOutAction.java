@@ -2,6 +2,7 @@ package com.avst.meetingcontrol.outside.interfacetoout.v1.action;
 
 import com.avst.meetingcontrol.common.conf.*;
 import com.avst.meetingcontrol.common.util.JacksonUtil;
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
@@ -169,7 +170,7 @@ public class ToOutAction extends BaseAction {
             startMCParam_out.setTdList(tdList);
             param.setParam(startMCParam_out);
             rResult=startMC(param);
-            System.out.println(JacksonUtil.objebtToString(rResult));
+            LogUtil.intoLog(this.getClass(),JacksonUtil.objebtToString(rResult));
         }else if(type==2){
             ReqParam<OverMCParam_out> param=new ReqParam<OverMCParam_out>();
             OverMCParam_out overMCParam_out=new OverMCParam_out();
@@ -177,7 +178,7 @@ public class ToOutAction extends BaseAction {
             overMCParam_out.setMcType(MCType.AVST);
             param.setParam(overMCParam_out);
             rResult=overMC(param);
-            System.out.println(JacksonUtil.objebtToString(rResult));
+            LogUtil.intoLog(this.getClass(),JacksonUtil.objebtToString(rResult));
         }else if(type==3){
 
             GetMCAsrTxtBackParam_out getMCAsrTxtBackParam_out=new GetMCAsrTxtBackParam_out();
@@ -186,7 +187,7 @@ public class ToOutAction extends BaseAction {
             ReqParam<GetMCAsrTxtBackParam_out> param=new ReqParam<GetMCAsrTxtBackParam_out>();
             param.setParam(getMCAsrTxtBackParam_out);
             rResult=getMCAsrTxtBack(param);
-            System.out.println(JacksonUtil.objebtToString(rResult));
+            LogUtil.intoLog(this.getClass(),JacksonUtil.objebtToString(rResult));
         }
         return rResult;
     }

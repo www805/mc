@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.outside.interfacetoout.conf;
 
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
@@ -41,7 +42,7 @@ public class MC_AsrThread extends Thread{
 
 
             //请求asr服务获取数据
-            System.out.println(asrid+"------asrid  userssid:"+userssid);
+            LogUtil.intoLog(this.getClass(),asrid+"------asrid  userssid:"+userssid);
             try {
                 AsrTxtParam_toout asrTxtParam_toout=AsrForMCCache.getNewestAsrTxtByAsrid(mtssid,asrid);
                 if(null==asrTxtParam_toout){
@@ -66,19 +67,19 @@ public class MC_AsrThread extends Thread{
                                 if(null!=asrtxt){
                                     if(AsrForMCCache.runbool){
 
-                                        System.out.println(userssid+":userssid 运行中---");
+                                        LogUtil.intoLog(this.getClass(),userssid+":userssid 运行中---");
                                         AsrForMCCache.runbool=false;
                                         asrtxt.setUserssid(userssid);
                                         AsrForMCCache.addAsrTxt(mtssid,asrid,asrtxt,userssid);
                                         AsrForMCCache.runbool=true;
                                     }else{
-                                        System.out.println(userssid+":userssid 稍等---");
+                                        LogUtil.intoLog(this.getClass(),userssid+":userssid 稍等---");
                                     }
-                                    //                        System.out.println("----"+JacksonUtil.objebtToString(AsrForMCCache.getNewestAsrTxtByasrid(mtssid)));
+                                    //                        LogUtil.intoLog(this.getClass(),"----"+JacksonUtil.objebtToString(AsrForMCCache.getNewestAsrTxtByasrid(mtssid)));
                                 }
                             }
                         }else{
-                            System.out.println("MC_AsrThread equipmentControl.txtBack 异常 rr.getData() is null："+rr.getData());
+                            LogUtil.intoLog(this.getClass(),"MC_AsrThread equipmentControl.txtBack 异常 rr.getData() is null："+rr.getData());
 
                         }
                     } catch (Exception e) {
@@ -86,7 +87,7 @@ public class MC_AsrThread extends Thread{
                     }
 
                 }else{
-                    System.out.println("MC_AsrThread equipmentControl.txtBack 异常 rr.getMessage()："+rr.getMessage()+"---asrid:"+asrid);
+                    LogUtil.intoLog(this.getClass(),"MC_AsrThread equipmentControl.txtBack 异常 rr.getMessage()："+rr.getMessage()+"---asrid:"+asrid);
                 }
 
                 if(!bool){
@@ -105,6 +106,6 @@ public class MC_AsrThread extends Thread{
             }
 
         }
-        System.out.println("MC_AsrThread 出来了--asrid:"+asrid+"--userssid:"+userssid+"--"+new Date());
+        LogUtil.intoLog(this.getClass(),"MC_AsrThread 出来了--asrid:"+asrid+"--userssid:"+userssid+"--"+new Date());
     }
 }

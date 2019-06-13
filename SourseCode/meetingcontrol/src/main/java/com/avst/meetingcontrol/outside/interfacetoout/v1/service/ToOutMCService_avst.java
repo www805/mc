@@ -5,6 +5,7 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstm
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
@@ -76,7 +77,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             initMCParam.setTdAndUserList(tdAndUserList);
             RRParam<InitMCVO> rr= AvstMCImpl.initMC(initMCParam);
             if(null==rr||rr.getCode()!=1||null==rr.getT()){//实例化会议失败
-                System.out.println("实例化会议失败---rr.getMessage():"+rr.getMessage()+"----startMCParam_out.getModelbool():"+startMCParam_out.getModelbool());
+                LogUtil.intoLog(this.getClass(),"实例化会议失败---rr.getMessage():"+rr.getMessage()+"----startMCParam_out.getModelbool():"+startMCParam_out.getModelbool());
                 result.setMessage("实例化会议失败");
                 return result;
             }
@@ -84,7 +85,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             String mtssid=rr.getT().getMtssid();//本次会议的ssid
             List<TDAndUserParam> rrtdlist=rr.getT().getTdlist();
             if(null==rrtdlist || rrtdlist.size() == 0){
-                System.out.println(rrtdlist.size()+":rrtdlist.size() AvstMCImpl.initMC 设置会议人员绑定设备通道失败---");
+                LogUtil.intoLog(this.getClass(),rrtdlist.size()+":rrtdlist.size() AvstMCImpl.initMC 设置会议人员绑定设备通道失败---");
                 result.setMessage("设置会议人员绑定设备通道失败---");
                 return result;
             }
@@ -168,7 +169,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
         if(null!=asrtxt){
 
-            System.out.println(userssid+":userssid 运行中---");
+            LogUtil.intoLog(this.getClass(),userssid+":userssid 运行中---");
             AsrForMCCache.runbool=false;
             asrtxt.setUserssid(userssid);
             AsrForMCCache.addAsrTxt(mtssid,asrid,asrtxt,userssid);
@@ -235,7 +236,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             getMCVO.setList(list);
             result.changeToTrue(getMCVO);
         }else{
-            System.out.println("参数为空");
+            LogUtil.intoLog(this.getClass(),"参数为空");
         }
         return result;
     }
@@ -249,7 +250,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             list=AsrForMCCache.getMCaLLUserAsrTxtList(mtssid);
             result.changeToTrue(list);
         }else{
-            System.out.println("参数为空");
+            LogUtil.intoLog(this.getClass(),"参数为空");
         }
         return result;
     }

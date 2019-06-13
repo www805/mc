@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.outside.interfacetoout.cache;
 
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
@@ -71,7 +72,7 @@ public class AsrForMCCache {
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null!=list&&list.size() > 0){
             for(AsrForMCCache_oneParam asr:list){
-                System.out.println(asr.getAsrid()+":asr.getAsrid()---"+asrid);
+                LogUtil.intoLog(AsrForMCCache.class,asr.getAsrid()+":asr.getAsrid()---"+asrid);
 
                 if(asr.getAsrid().equals(asrid)){
                     return asr;
@@ -92,7 +93,7 @@ public class AsrForMCCache {
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null!=list&&list.size() > 0){
             for(AsrForMCCache_oneParam asr:list){
-                System.out.println(asr.getUserssid()+":asr.getuserssid()---"+userssid);
+                LogUtil.intoLog(AsrForMCCache.class,asr.getUserssid()+":asr.getuserssid()---"+userssid);
 
                 if(null!=asr.getUserssid()&&asr.getUserssid().equals(userssid)){
                     return asr;
@@ -114,7 +115,7 @@ public class AsrForMCCache {
          //先找到是哪一个人的，或者说是哪一个asrid是有最新识别信息
         String newestAsrid=newestAsridMap.get(mtssid);
         if(null==newestAsrid){
-            System.out.println("没有找到最新的语音识别的asrid---重大问题");
+            LogUtil.intoLog(AsrForMCCache.class,"没有找到最新的语音识别的asrid---重大问题");
             return null;
         }
         AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByAsrid(mtssid,newestAsrid);
@@ -182,7 +183,7 @@ public class AsrForMCCache {
      */
     public static synchronized  boolean setMTAsrOneUserAsr(String mtssid,AsrForMCCache_oneParam oneasr){
 
-        System.out.println(oneasr.getAsrid()+"-----");
+        LogUtil.intoLog(AsrForMCCache.class,oneasr.getAsrid()+"-----");
 
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null==list){
@@ -191,7 +192,7 @@ public class AsrForMCCache {
             if(list.size() > 0){
                 int i=0;
                 for(AsrForMCCache_oneParam one:list){
-                    System.out.println(one.getUserssid()+"---one.getUserssid()---oneasr.getUserssid()-"+oneasr.getUserssid());
+                    LogUtil.intoLog(AsrForMCCache.class,one.getUserssid()+"---one.getUserssid()---oneasr.getUserssid()-"+oneasr.getUserssid());
                     if(null!=one.getUserssid()&&one.getUserssid().equals(oneasr.getUserssid())){
                         list.remove(i);
                         break;
@@ -247,20 +248,20 @@ public static boolean runbool=true;
 
                 //只需要比较最后一句,asr识别是会一直往后加的，只有最后一句话才会有可能还在识别中
                 AsrTxtParam_toout txt=txtList.get(txtList.size()-1);
-                System.out.println(txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
+                LogUtil.intoLog(AsrForMCCache.class,txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
                 if(txt.getStarttime().hashCode() == asrtxt.getStarttime().hashCode()){//比较这句话开始识别的时间，一样的话就还是这句话的识别直接覆盖
                     txtList.remove(txtList.size()-1);
-                    System.out.println(txtList.size()-1+"-txtList.remove--"+txtList.size());
+                    LogUtil.intoLog(AsrForMCCache.class,txtList.size()-1+"-txtList.remove--"+txtList.size());
 
                 }
 
 //                for(int i=txtList.size()-1;i>=0;i--){
 //                    //只需要比较最后一句,asr识别是会一直往后加的，只有最后一句话才会有可能还在识别中
 //                    AsrTxtParam_toout txt=txtList.get(i);
-//                    System.out.println(txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
+//                    LogUtil.intoLog(AsrForMCCache.class,txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
 //                    if(txt.getStarttime().hashCode() == asrtxt.getStarttime().hashCode()){//比较这句话开始识别的时间，一样的话就还是这句话的识别直接覆盖
 //                        txtList.remove(i);
-//                        System.out.println(i+"-txtList.remove--"+txtList.size());
+//                        LogUtil.intoLog(AsrForMCCache.class,i+"-txtList.remove--"+txtList.size());
 //                        break;
 //                    }
 //                }

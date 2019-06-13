@@ -10,6 +10,7 @@ import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
@@ -155,7 +156,7 @@ public class DealAvstMCImpl {
                     }
                 }
             }else{
-                System.out.println("avstmt_modelMapper.selectObjs(wrapper) is null or size  > 1");
+                LogUtil.intoLog(this.getClass(),"avstmt_modelMapper.selectObjs(wrapper) is null or size  > 1");
             }
         }
 
@@ -163,7 +164,7 @@ public class DealAvstMCImpl {
 
         base_mtinfo.setSsid(ssid);
         int insertbool=base_mtinfoMapper.insert(base_mtinfo);
-        System.out.println(insertbool+":insertbool,----base_mtinfoMapper.insert ssid:"+ssid );
+        LogUtil.intoLog(this.getClass(),insertbool+":insertbool,----base_mtinfoMapper.insert ssid:"+ssid );
         if(insertbool>-1){
             initMCVO.setMtssid(ssid);
             List<TDAndUserParam> tdAndUserParams=new ArrayList<TDAndUserParam>();
@@ -191,7 +192,7 @@ public class DealAvstMCImpl {
                     avstmt_tduser.setUserssid(tu.getUserssid());
                     avstmt_tduser.setCreatetime(new Date());
                     int insertbool_tu=avstmt_tduserMapper.insert(avstmt_tduser);
-                    System.out.println(insertbool_tu+":insertbool_tu,----base_mtinfoMapper.insert tussid:"+tussid);
+                    LogUtil.intoLog(this.getClass(),insertbool_tu+":insertbool_tu,----base_mtinfoMapper.insert tussid:"+tussid);
 
                     if(insertbool_tu > -1){
 
@@ -263,8 +264,8 @@ public class DealAvstMCImpl {
                     tdcacheParam.setFdtype(td.getFdtype());
                     tdcacheParam.setFdrecord(td.getUserecord());
                 }else{
-                    System.out.println("注意完善会议缓存中通道失败，MCCache.getMCCacheOneTDParamByAsrssid(mtssid,td.getAsrssid()) is null --mtssid："+mtssid+"----td.getAsrssid():"+td.getAsrssid());
-                    System.out.println("跳出，不开启会议其他组件---");
+                    LogUtil.intoLog(this.getClass(),"注意完善会议缓存中通道失败，MCCache.getMCCacheOneTDParamByAsrssid(mtssid,td.getAsrssid()) is null --mtssid："+mtssid+"----td.getAsrssid():"+td.getAsrssid());
+                    LogUtil.intoLog(this.getClass(),"跳出，不开启会议其他组件---");
                     continue;
                 }
 
@@ -272,7 +273,7 @@ public class DealAvstMCImpl {
                 //检测是否需要asr，要新建语言识别记录，并开启asr
                 Avstmt_asrtd avstmt_asrtd=null;
                 if(td.getUseasr()!=1){//说明不需要asr
-                    System.out.println("不需要开启asr--td.getMttduserssid()："+td.getMttduserssid());
+                    LogUtil.intoLog(this.getClass(),"不需要开启asr--td.getMttduserssid()："+td.getMttduserssid());
 
                 }else{
                     String mtasrtdssid =OpenUtil.getUUID_32();
@@ -283,7 +284,7 @@ public class DealAvstMCImpl {
                         avstmt_asrtd.setAsrserverssid(td.getAsrssid());
                         avstmt_asrtd.setCreatetime((new Date()));
                         int insert=avstmt_asrtdMapper.insert(avstmt_asrtd);
-                        System.out.println(insert+":insert---avstmt_tduserMapper.insert");
+                        LogUtil.intoLog(this.getClass(),insert+":insert---avstmt_tduserMapper.insert");
                         if(insert > -1){
 
                             //有语音识别的开启语音识别
@@ -306,7 +307,7 @@ public class DealAvstMCImpl {
                                 tdcacheParam.setAsrid(asrid);//缓存中放一份
                                 tdcacheParam.setAsrStartTime(asrStartTime_long);
                                 int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
-                                System.out.println(i_updateById+":i_updateById 修改语音识别记录中的asrid");
+                                LogUtil.intoLog(this.getClass(),i_updateById+":i_updateById 修改语音识别记录中的asrid");
 
                                 tdcacheParam.setAsrRun(true);
 
@@ -317,13 +318,13 @@ public class DealAvstMCImpl {
 
                             }else{
                                 asrerrorcount++;
-                                System.out.println(result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
+                                LogUtil.intoLog(this.getClass(),result.getMessage()+",语音识别服务启动失败，td.getMttduserssid()："+td.getMttduserssid());
                                 tdcacheParam.setAsrRun(false);
                             }
 
                         }else{
                             asrerrorcount++;
-                            System.out.println("数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
+                            LogUtil.intoLog(this.getClass(),"数据库新增失败 avstmt_asrtdMapper.insert"+td.getMttduserssid());
                             tdcacheParam.setAsrRun(false);
                         }
                     } catch (Exception e) {
@@ -347,7 +348,7 @@ public class DealAvstMCImpl {
                                 Gson gson=new Gson();
                                 CheckPolygraphStateVO checkPolygraphStateVO=gson.fromJson(gson.toJson(checkphresult.getData()),CheckPolygraphStateVO.class);
                                 if(0==checkPolygraphStateVO.getWorkstate()){//说明是可以用的
-                                    System.out.println("测谎仪检测 成功--Polygraphssid:"+td.getPolygraphssid());
+                                    LogUtil.intoLog(this.getClass(),"测谎仪检测 成功--Polygraphssid:"+td.getPolygraphssid());
                                     polygraphnum++;
                                 }
                             } catch (Exception e) {
@@ -355,7 +356,7 @@ public class DealAvstMCImpl {
                             }
 
                         }else{
-                            System.out.println("测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                            LogUtil.intoLog(this.getClass(),"测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                         }
                     }
                 } catch (Exception e) {
@@ -385,9 +386,9 @@ public class DealAvstMCImpl {
                                 if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){
                                     avstmt_asrtd.setStartrecordtime(startrecordtime);
                                     int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
-                                    System.out.println(i_updateById+":i_updateById 修改语音识别记录中的startrecordtime");
+                                    LogUtil.intoLog(this.getClass(),i_updateById+":i_updateById 修改语音识别记录中的startrecordtime");
                                 }else{
-                                    System.out.println(startrecordtime+":startrecordtime  会议用户语音识别对象没有找到，不进行修改操作 avstmt_asrtd："+avstmt_asrtd);
+                                    LogUtil.intoLog(this.getClass(),startrecordtime+":startrecordtime  会议用户语音识别对象没有找到，不进行修改操作 avstmt_asrtd："+avstmt_asrtd);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -395,10 +396,10 @@ public class DealAvstMCImpl {
                             recordnum++;
 
                         }else{
-                            System.out.println("设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
+                            LogUtil.intoLog(this.getClass(),"设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
                         }
                     }else{
-                        System.out.println("不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
+                        LogUtil.intoLog(this.getClass(),"不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -430,7 +431,7 @@ public class DealAvstMCImpl {
             base_mttodatasave.setIid(iid);
             base_mttodatasave.setSsid(OpenUtil.getUUID_32());
             int mttodatasaveinsert_bool=base_mttodatasaveMapper.insert(base_mttodatasave);
-            System.out.println("mttodatasaveinsert_bool__"+mttodatasaveinsert_bool);
+            LogUtil.intoLog(this.getClass(),"mttodatasaveinsert_bool__"+mttodatasaveinsert_bool);
 
             try {
                 EntityWrapper<Base_mtinfo> entityWrapper=new EntityWrapper<Base_mtinfo>();
@@ -444,7 +445,7 @@ public class DealAvstMCImpl {
                     MCCache.delMCCacheParam(mtssid);
                     base_mtinfo.setMtstate(4);
                     int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
-                    System.out.println("会议开启失败 修改会议状态 开始 updatebool："+updatebool);
+                    LogUtil.intoLog(this.getClass(),"会议开启失败 修改会议状态 开始 updatebool："+updatebool);
 
                 }else{
 
@@ -460,7 +461,7 @@ public class DealAvstMCImpl {
 
                         base_mtinfo.setMtstate(1);
                         int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
-                        System.out.println("会议开启成功 修改会议状态 开始 updatebool："+updatebool);
+                        LogUtil.intoLog(this.getClass(),"会议开启成功 修改会议状态 开始 updatebool："+updatebool);
 
 
                         MCCacheParam  mcCacheParam=MCCache.getMCCacheParam(mtssid);
@@ -503,7 +504,7 @@ public class DealAvstMCImpl {
                 if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
                     rrParam.changeTrue(true);
                 }else{
-                    System.out.println(result.getMessage()+",语音识别服务关闭失败，param.getAsrid()："+param.getMtssid()+"--"+cachetd.getAsrid());
+                    LogUtil.intoLog(this.getClass(),result.getMessage()+",语音识别服务关闭失败，param.getAsrid()："+param.getMtssid()+"--"+cachetd.getAsrid());
                 }
 
                 //关闭设备录像
@@ -517,14 +518,14 @@ public class DealAvstMCImpl {
                 if(null!=worr&&null!=worr.getActioncode()&&worr.getActioncode().equals(Code.SUCCESS.toString())){
                     String iid=worr.getData().toString();//录音的唯一标识码
                     //是否需要对录音进行处理
-                    System.out.println("关闭录像成功 mtssid："+mtssid+"----iid:"+iid);
+                    LogUtil.intoLog(this.getClass(),"关闭录像成功 mtssid："+mtssid+"----iid:"+iid);
 
                 }else{
-                    System.out.println("关闭录像失败 mtssid："+mtssid+"----cachetd.getFdssid():"+cachetd.getFdssid());
+                    LogUtil.intoLog(this.getClass(),"关闭录像失败 mtssid："+mtssid+"----cachetd.getFdssid():"+cachetd.getFdssid());
                 }
             }
         }else{
-            System.out.println("没有找到会议缓存或者会议通道缓存为空，不需要通知第三方");
+            LogUtil.intoLog(this.getClass(),"没有找到会议缓存或者会议通道缓存为空，不需要通知第三方");
         }
 
         //修改会议
@@ -534,7 +535,7 @@ public class DealAvstMCImpl {
             Base_mtinfo base_mtinfo =base_mtinfoMapper.selectList(entityWrapper).get(0);
             base_mtinfo.setMtstate(2);
             int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
-            System.out.println("修改会议状态--结束-- updatebool："+updatebool);
+            LogUtil.intoLog(this.getClass(),"修改会议状态--结束-- updatebool："+updatebool);
         } catch (Exception e) {
             e.printStackTrace();
         }
