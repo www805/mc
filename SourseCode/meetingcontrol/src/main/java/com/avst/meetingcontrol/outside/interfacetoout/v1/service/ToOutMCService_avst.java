@@ -241,12 +241,14 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                             l.setUserssid(a.getMtuserssid());
                             l.setAsrtime(a.getString1());//时间
                             l.setAsrstartime(tu.getStarttime());
+                            l.setSubtractime(tu.getStarttime()-tu.getStartrecordtime());
                             list.add(l);
                         }
                     }else{
                         LogUtil.intoLog(3,this.getClass(),"当前用户数据库没有记录一个语言识别数据----mtssid："+mtssid+"---mtuserssid:"+tu.getUserssid());
                     }
                 }
+
             }else{
                 LogUtil.intoLog(4,this.getClass(),"没有找到会议ssid对应的用户集合，avstmt_tduserMapper.getAvstmt_tduserAll is null----mtssid："+mtssid);
             }
