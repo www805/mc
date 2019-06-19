@@ -66,6 +66,24 @@ public class MCCache {
     }
 
     /**
+     * 获取会议缓存中某一位用户的通道数据信息
+     * @param mtssid
+     * @param userssid
+     * @return
+     */
+    public static  synchronized  TdAndUserAndOtherCacheParam getMCCacheOneTDParamByUserssid(String mtssid,String userssid){
+        MCCacheParam mcCacheParam=getMCCacheParam(mtssid);
+        if(null!=mcCacheParam&&null!=mcCacheParam.getTdList()&&mcCacheParam.getTdList().size() > 0){
+            for(TdAndUserAndOtherCacheParam cacheParam:mcCacheParam.getTdList()){
+                if(null!=cacheParam.getUserssid()&&cacheParam.getUserssid().equals(userssid)){
+                    return cacheParam;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 获取会议缓存中某一位用户的ssid
      * @param mtssid
      * @param asrid

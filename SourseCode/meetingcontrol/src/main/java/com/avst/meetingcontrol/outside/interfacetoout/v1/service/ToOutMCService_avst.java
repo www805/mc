@@ -2,7 +2,9 @@ package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
 import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tduserMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
 import com.avst.meetingcontrol.common.util.LogUtil;
@@ -23,6 +25,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.GetMCVO;
@@ -35,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,6 +52,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Autowired
     private Avstmt_realtimrecordMapper avstmt_realtimrecordMapper;
+
+    @Autowired
+    private Avstmt_tduserMapper avstmt_tduserMapper;
 
     @Autowired
     private Base_mttodatasaveMapper base_mttodatasaveMapper;
@@ -181,7 +188,13 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                 if(null!=mcCacheParam){
                     AsrTxtParam_toout asrTxtParam_toout=AsrForMCCache.getNewestAsrTxtBymtssid(mtssid);
                     //获取asrstarttime 时间戳
-                    asrTxtParam_toout.setAsrstartime(String.valueOf(mcCacheParam.getTdList().get(0).getAsrStartTime()));
+                    TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamByUserssid(mtssid,asrTxtParam_toout.getUserssid());
+                    if(null!=tdAndUserAndOtherCacheParam){
+                        asrTxtParam_toout.setAsrstartime(tdAndUserAndOtherCacheParam.getAsrStartTime());
+                    }else{
+                        asrTxtParam_toout.setAsrstartime((new Date()).getTime());
+                        LogUtil.intoLog(3,this.getClass(),"没有找到这个会议的这个用户对应的信息 mtssid："+mtssid+"---asrTxtParam_toout.getUserssid():"+asrTxtParam_toout.getUserssid());
+                    }
                     SetMCAsrTxtBackVO setMCAsrTxtBackVO = gson.fromJson(gson.toJson(asrTxtParam_toout), SetMCAsrTxtBackVO.class);
                     setMCAsrTxtBackVO.setMtssid(mtssid);
                     ReqParam<SetMCAsrTxtBackVO> pparam=new ReqParam<SetMCAsrTxtBackVO>();
@@ -207,22 +220,35 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             String iid=null;
             List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
 
-            //根据会议ssid获取用户本次会议对话
+            //根据mtssid获取会议所有的通道/用户
             EntityWrapper ew=new EntityWrapper();
-            ew.orderBy("ordernum",true);
-            ew.eq("mtssid",mtssid);
-            List<Avstmt_realtimrecord>  avstmt_realtimrecords = avstmt_realtimrecordMapper.selectList(ew);
-            if (null!=avstmt_realtimrecords&&avstmt_realtimrecords.size()>0){
-                for (Avstmt_realtimrecord a : avstmt_realtimrecords) {
-                    AsrTxtParam_toout l=new AsrTxtParam_toout();
-                    l.setStarttime(a.getStarttime().toString());
-                    l.setAsrsort(a.getOrdernum());
-                    l.setTxt(a.getTranslatext());
-                    l.setUserssid(a.getMtuserssid());
-                    l.setAsrtime(a.getString1());//时间
-                    l.setAsrstartime(a.getString1());
-                    list.add(l);
+            ew.eq("tu.mtssid",mtssid);
+            List<Avstmt_tduserAll> tulist=avstmt_tduserMapper.getAvstmt_tduserAll(ew);
+            if(null!=tulist&&tulist.size() > 0){
+                for(Avstmt_tduserAll tu:tulist){
+                    //根据会议ssid获取用户本次会议对话
+                    ew=new EntityWrapper();
+                    ew.orderBy("ordernum",true);
+                    ew.eq("mtssid",mtssid);
+                    ew.eq("mtuserssid",tu.getUserssid());
+                    List<Avstmt_realtimrecord>  avstmt_realtimrecords = avstmt_realtimrecordMapper.selectList(ew);
+                    if (null!=avstmt_realtimrecords&&avstmt_realtimrecords.size()>0){
+                        for (Avstmt_realtimrecord a : avstmt_realtimrecords) {
+                            AsrTxtParam_toout l=new AsrTxtParam_toout();
+                            l.setStarttime(a.getStarttime().toString());
+                            l.setAsrsort(a.getOrdernum());
+                            l.setTxt(a.getTranslatext());
+                            l.setUserssid(a.getMtuserssid());
+                            l.setAsrtime(a.getString1());//时间
+                            l.setAsrstartime(tu.getStarttime());
+                            list.add(l);
+                        }
+                    }else{
+                        LogUtil.intoLog(3,this.getClass(),"当前用户数据库没有记录一个语言识别数据----mtssid："+mtssid+"---mtuserssid:"+tu.getUserssid());
+                    }
                 }
+            }else{
+                LogUtil.intoLog(4,this.getClass(),"没有找到会议ssid对应的用户集合，avstmt_tduserMapper.getAvstmt_tduserAll is null----mtssid："+mtssid);
             }
 
             Base_mttodatasave base_mttodatasave=new Base_mttodatasave();

@@ -67,8 +67,10 @@ public class MCOverThread<T> extends Thread{
                                 realtimrecord.setMtuserssid(oneUserAsr.getUserssid());
                                 realtimrecord.setCreatetime(new Date());
                                 realtimrecord.setString1(txt.getAsrtime());//发送时间
-                                avstmt_realtimrecordMapper.insert(realtimrecord);
-                                sortnum++;
+                                Integer inser=avstmt_realtimrecordMapper.insert(realtimrecord);
+                                if(null!=inser&&inser > -1){
+                                    sortnum++;
+                                }
                             }catch (Exception e){
                                 e.printStackTrace();
                             }

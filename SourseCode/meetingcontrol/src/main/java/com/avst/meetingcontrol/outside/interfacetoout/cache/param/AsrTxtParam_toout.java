@@ -17,13 +17,13 @@ public class AsrTxtParam_toout {
 
     private int asrsort;//本次语音识别，这一句是第几句
 
-    private String asrstartime;//asr开始识别开始时间
+    private long asrstartime;//asr开始识别开始时间
 
-    public String getAsrstartime() {
+    public long getAsrstartime() {
         return asrstartime;
     }
 
-    public void setAsrstartime(String asrstartime) {
+    public void setAsrstartime(long asrstartime) {
         this.asrstartime = asrstartime;
     }
 
