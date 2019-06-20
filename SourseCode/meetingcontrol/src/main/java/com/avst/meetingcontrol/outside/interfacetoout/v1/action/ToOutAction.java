@@ -9,6 +9,8 @@ import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.BaseDealMCInterface;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst;
+import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutService;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.ToOutVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +20,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/mt/v1")
 /**
  * 会议对外接口
  */
 public class ToOutAction extends BaseAction {
+
+    @Autowired
+    private ToOutService toOutService;
+
 
     @Autowired
     private ToOutMCService_avst toOutMCService_avst;
@@ -130,6 +137,17 @@ public class ToOutAction extends BaseAction {
     }
 
 
+
+    /**
+     * 提供给总控的心跳检测
+     * @return
+     */
+    @RequestMapping("/checkClient")
+    public RResult checkClient(@RequestBody ReqParam param){
+        RResult rresult=createNewResultOfFail();
+        rresult=toOutService.checkClient(rresult,param);
+        return rresult;
+    }
 
 
 
