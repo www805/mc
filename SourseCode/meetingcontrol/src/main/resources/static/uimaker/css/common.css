@@ -2,10 +2,10 @@
     border-left: 5px solid #007aff;
 }
 .layui-laypage a:hover {
-    color: #1e9fff;
+    color: #007DDB;
 }
 .layui-form-select dl dd.layui-this {
-    background-color: #1e9fff;
+    background-color: #007DDB;
 }
 .layui-form-switch {
     margin-top: 0;
