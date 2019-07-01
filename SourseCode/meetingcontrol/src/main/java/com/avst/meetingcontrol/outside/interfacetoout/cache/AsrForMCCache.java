@@ -255,16 +255,6 @@ public static boolean runbool=true;
 
                 }
 
-//                for(int i=txtList.size()-1;i>=0;i--){
-//                    //只需要比较最后一句,asr识别是会一直往后加的，只有最后一句话才会有可能还在识别中
-//                    AsrTxtParam_toout txt=txtList.get(i);
-//                    LogUtil.intoLog(AsrForMCCache.class,txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
-//                    if(txt.getStarttime().hashCode() == asrtxt.getStarttime().hashCode()){//比较这句话开始识别的时间，一样的话就还是这句话的识别直接覆盖
-//                        txtList.remove(i);
-//                        LogUtil.intoLog(AsrForMCCache.class,i+"-txtList.remove--"+txtList.size());
-//                        break;
-//                    }
-//                }
             }
         }
 

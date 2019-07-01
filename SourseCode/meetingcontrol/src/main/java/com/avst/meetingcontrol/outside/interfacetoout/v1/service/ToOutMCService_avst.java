@@ -23,8 +23,10 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.InitMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.PhForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.PhDataParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
@@ -284,8 +286,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     }
 
     @Override
-    public RResult getMCState(ReqParam<GetMCStateParam_out> param, RResult result) {
-        GetMCStateParam_out getMCStateParam_out=param.getParam();
+    public RResult getMCState(ReqParam<GetPhssidByMTssidParam_out> param, RResult result) {
+        GetPhssidByMTssidParam_out getMCStateParam_out=param.getParam();
         String mtssid=getMCStateParam_out.getMtssid();
         if (StringUtils.isNotBlank(mtssid)){
             MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
@@ -299,15 +301,34 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     }
 
     @Override
-    public RResult getMCdata(ReqParam<GetMCdataParam_out> param, RResult result) {
-        GetMCdataParam_out getMCdataParam_out=param.getParam();
-        String mtssid=getMCdataParam_out.getMtssid();
-        if (StringUtils.isNotBlank(mtssid)){
-            MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
-            result.changeToTrue(mcCacheParam);
-            return result;
+    public RResult getPhssidByMTssid(ReqParam<GetPhssidByMTssidParam_out> param, RResult result) {
+        GetPhssidByMTssidParam_out out=param.getParam();
+        String mtssid=out.getMtssid();
+        TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamWithPh(mtssid);
+        if(null!=tdAndUserAndOtherCacheParam&&null!=tdAndUserAndOtherCacheParam.getPolygraphssid()){
+            String phssid=tdAndUserAndOtherCacheParam.getPolygraphssid();
+            if (StringUtils.isNotBlank(phssid)){
+                result.changeToTrue(phssid);
+                return result;
+            }
         }
         return null;
     }
+
+    @Override
+    public RResult getPHData(ReqParam<GetPHDataParam_out> param, RResult result) {
+        GetPHDataParam_out param_out=param.getParam();
+        String mtssid=param_out.getMtssid();
+        TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamWithPh(mtssid);
+        if(null!=tdAndUserAndOtherCacheParam&&null!=tdAndUserAndOtherCacheParam.getPolygraphssid()){
+            String phssid=tdAndUserAndOtherCacheParam.getPolygraphssid();
+            PhDataParam_toout phDataParam_toout=PhForMCCache.getMTOneUserPhDataByPhSsid_lastoneData(mtssid,phssid);
+            if(null!=phDataParam_toout){
+                result.changeToTrue(phDataParam_toout);
+            }
+        }
+        return result;
+    }
+
 
 }

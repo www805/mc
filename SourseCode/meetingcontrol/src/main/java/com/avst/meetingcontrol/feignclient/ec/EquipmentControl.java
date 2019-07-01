@@ -10,6 +10,7 @@ import com.avst.meetingcontrol.feignclient.ec.req.fd.GetFlushbonadingTDByETSsidP
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ph.*;
+import com.avst.meetingcontrol.feignclient.ec.req.ss.SaveFile_localParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.ph.*;
 import com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
@@ -114,5 +115,14 @@ public interface EquipmentControl {
     @ResponseBody
     public RResult getPolygraphRealTimeImage(@RequestBody  ReqParam<GetPolygraphRealTimeImageParam> param);
 
+
+    /**
+     * 存储本地服务的数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/ss/v1/saveFile_local")
+    @ResponseBody
+    public RResult saveFile_local(@RequestBody SaveFile_localParam param);
 
 }

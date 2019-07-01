@@ -251,7 +251,7 @@ public class ReadWriteFile {
      * 写数据
      * 
      */
-    public static boolean writeTxtFile(String newStr,String path) {
+    public static synchronized boolean writeTxtFile(String newStr,String path) {
         //LogUtil.intoLog(ReadWriteFile.class,"进入写文件"+newStr);
         try {
         	String filepath="";
