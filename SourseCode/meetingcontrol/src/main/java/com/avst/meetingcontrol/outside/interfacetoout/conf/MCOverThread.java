@@ -4,14 +4,13 @@ package com.avst.meetingcontrol.outside.interfacetoout.conf;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
 import com.avst.meetingcontrol.common.util.DateUtil;
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.SpringUtil;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrForMCCache_oneParam;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.PhForMCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.*;
 
 import java.util.Date;
 import java.util.List;
@@ -38,10 +37,6 @@ public class MCOverThread<T> extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //最后关闭会议缓存
-        MCCache.delMCCacheParam(mtssid);//最后关闭会议缓存
-
 
         //查看是否有asr
         //是否需要写入数据，比如asr识别的数据
@@ -85,8 +80,40 @@ public class MCOverThread<T> extends Thread{
         AsrForMCCache.delAsrForMCMap(mtssid);
 
         //查看是否有测谎，等等
+        PhForMCCacheParam phForMCCacheParam=PhForMCCache.getMTPHByMTSsid(mtssid);
+        if(null!=phForMCCacheParam){
 
+            List<PhForMCCache_oneParam> phAlllist=phForMCCacheParam.getPhForMCCache_oneParamList();
+            if(null!=phAlllist&&phAlllist.size() > 0){
+                for(PhForMCCache_oneParam one : phAlllist){
 
+                    //先停止获取测谎数据的线程
+                    TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamByPhssid(mtssid,one.getPhssid());
+                    if(null!=tdAndUserAndOtherCacheParam){//说明这个用户有测谎仪
+                        LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 说明这个用户有测谎仪 one.getPhssid()："
+                                +one.getPhssid()+"----tdAndUserAndOtherCacheParam.getUsepolygraph()："+tdAndUserAndOtherCacheParam.getUsepolygraph());
+                        MC_PhThread mc_phThread=tdAndUserAndOtherCacheParam.getMc_phThread();
+                        if(null==mc_phThread){
+                            LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 异常了，本来应该有的线程没有了tdAndUserAndOtherCacheParam.getMc_phThread()");
+                        }
+                        mc_phThread.bool=false;//中断掉这个线程
+                    }else{
+                        LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 说明这个用户没有测谎仪 one.getPhssid()："+one.getPhssid());
+                    }
+
+                    //开始做插入测谎数据的操作
+                    String iid=one.getIid();
+                    MC_Ph_AddThread mc_ph_addThread=new MC_Ph_AddThread(one.getPhDataList(),mtssid,one.getPhssid(),iid,one.getAddcount(),one.getAddfilepath());
+                    mc_ph_addThread.start();
+                }
+            }
+
+            PhForMCCache.rvPhMap(mtssid);
+            LogUtil.intoLog(4,MCOverThread.class,"测谎数据缓存已经清除--PhForMCCache.rvPhMap mtssid:"+mtssid);
+        }
+
+        //最后关闭会议缓存
+        MCCache.delMCCacheParam(mtssid);//最后关闭会议缓存
 
     }
 }

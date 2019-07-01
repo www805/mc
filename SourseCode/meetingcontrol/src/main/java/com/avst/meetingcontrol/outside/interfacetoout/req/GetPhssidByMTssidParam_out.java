@@ -1,6 +1,6 @@
 package com.avst.meetingcontrol.outside.interfacetoout.req;
 
-public class GetMCStateParam_out {
+public class GetPhssidByMTssidParam_out {
     private  String mtssid;//会议ssid
 
     private String mcType;//会议采用版本，现阶段只有AVST

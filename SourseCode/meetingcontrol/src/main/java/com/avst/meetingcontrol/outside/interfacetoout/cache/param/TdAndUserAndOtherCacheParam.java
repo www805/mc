@@ -1,6 +1,7 @@
 package com.avst.meetingcontrol.outside.interfacetoout.cache.param;
 
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_AsrThread;
+import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
 
 /**
  * 用户通道关联其他的参数的集合，用于开启会议时用的
@@ -24,13 +25,15 @@ public class TdAndUserAndOtherCacheParam {
 
     private int grade;//1主麦，2副麦，有时需要一些特殊的处理(主麦只有一个)
 
-    private int usepolygraph;//是否使用测谎仪
+    private int usepolygraph;//是否使用测谎仪，1使用，-1 不使用
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
     private String polygraphssid;//测谎仪ssid
 
     private String polygraphtype;//测谎仪服务类型，
+
+    private long phStartTime;//开始保存测谎仪数据,ms
 
     private String asrssid;//语言识别ssid
 
@@ -45,7 +48,23 @@ public class TdAndUserAndOtherCacheParam {
     private boolean asrRun;//语音识别服务是否启动
 
     //测谎仪有线程就写在这
+    private MC_PhThread mc_phThread;//测谎仪数据获取线程
 
+    public MC_PhThread getMc_phThread() {
+        return mc_phThread;
+    }
+
+    public void setMc_phThread(MC_PhThread mc_phThread) {
+        this.mc_phThread = mc_phThread;
+    }
+
+    public long getPhStartTime() {
+        return phStartTime;
+    }
+
+    public void setPhStartTime(long phStartTime) {
+        this.phStartTime = phStartTime;
+    }
 
     public String getPolygraphtype() {
         return polygraphtype;

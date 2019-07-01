@@ -551,7 +551,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 当前时间
+	 * 当前时间 ms
 	 * @return
 	 */
 	public static long getSeconds() {
@@ -559,10 +559,19 @@ public class DateUtil {
     	long millionSeconds = new Date().getTime();
     	
     	return millionSeconds;
-    } 
-    
-    
-    /**
+    }
+
+	/**
+	 * 当前时间 s
+	 * @return
+	 */
+	public static long getSeconds_s() {
+
+		return getSeconds()/1000;
+	}
+
+
+	/**
      * @param str
      * @return
      * @throws ParseException

@@ -1,15 +1,13 @@
 package com.avst.meetingcontrol.outside.dealoutinterface.avstmc.v1.service;
 
 import com.avst.meetingcontrol.common.conf.MCType;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_asrtd;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_modeltd;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tduser;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.*;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
+import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
@@ -22,6 +20,7 @@ import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ph.CheckPolygraphStateParam;
+import com.avst.meetingcontrol.feignclient.ec.req.ph.StartPolygraphParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.fd.WorkStartVO;
 import com.avst.meetingcontrol.feignclient.ec.vo.ph.CheckPolygraphStateVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
@@ -34,8 +33,11 @@ import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.StartMCVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.vo.param.TDAndUserParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.PhForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.PhForMCCache_oneParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.param.UserETParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
@@ -334,36 +336,8 @@ public class DealAvstMCImpl {
 
 
 
-                //检测是否需要测谎，要新建测谎记录，并开启测谎
-                try {
-                    if(td.getUsepolygraph()==1){
-                        ReqParam<CheckPolygraphStateParam> checkparam=new ReqParam<CheckPolygraphStateParam>();
-                        CheckPolygraphStateParam checkPolygraphStateParam =new CheckPolygraphStateParam();
-                        checkPolygraphStateParam.setPhType(td.getPolygraphtype());
-                        checkPolygraphStateParam.setPolygraphssid(td.getPolygraphssid());
-                        checkparam.setParam(checkPolygraphStateParam);
-                        RResult checkphresult=equipmentControl.checkPolygraphState(checkparam);
-                        if(null!=checkphresult&&checkphresult.getActioncode().equals(Code.SUCCESS.toString())&&null!=checkphresult.getData()){
-                            try {
-                                Gson gson=new Gson();
-                                CheckPolygraphStateVO checkPolygraphStateVO=gson.fromJson(gson.toJson(checkphresult.getData()),CheckPolygraphStateVO.class);
-                                if(0==checkPolygraphStateVO.getWorkstate()){//说明是可以用的
-                                    LogUtil.intoLog(this.getClass(),"测谎仪检测 成功--Polygraphssid:"+td.getPolygraphssid());
-                                    polygraphnum++;
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                        }else{
-                            LogUtil.intoLog(this.getClass(),"测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 //是否需要录音
+                long startrecordtime=0;
                 try {
                     if(td.getUserecord()==1){
 
@@ -381,7 +355,7 @@ public class DealAvstMCImpl {
                                 iid=workStartVO.getIid();//设备录像的唯一识别码
                                 livingurl=workStartVO.getFdlivingurl();//设备直播地址
 
-                                long startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
+                                startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
 
                                 if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){
                                     avstmt_asrtd.setStartrecordtime(startrecordtime);
@@ -404,6 +378,73 @@ public class DealAvstMCImpl {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
+                //检测是否需要测谎，要新建测谎记录，并开启测谎
+                try {
+                    if(td.getUsepolygraph()==1){
+                        ReqParam<StartPolygraphParam> checkparam=new ReqParam<StartPolygraphParam>();
+                        StartPolygraphParam checkPolygraphStateParam =new StartPolygraphParam();
+                        checkPolygraphStateParam.setPhType(td.getPolygraphtype());
+                        checkPolygraphStateParam.setPolygraphssid(td.getPolygraphssid());
+                        checkparam.setParam(checkPolygraphStateParam);
+                        RResult checkphresult=equipmentControl.startPolygraph(checkparam);
+                        if(null!=checkphresult&&checkphresult.getActioncode().equals(Code.SUCCESS.toString())&&null!=checkphresult.getData()){
+                            try {
+                                Gson gson=new Gson();
+                                CheckPolygraphStateVO checkPolygraphStateVO=gson.fromJson(gson.toJson(checkphresult.getData()),CheckPolygraphStateVO.class);
+                                System.out.println(checkPolygraphStateVO.getWorkstate());
+                                if(null!=checkPolygraphStateVO&&1==checkPolygraphStateVO.getWorkstate()){//说明是可以用的
+                                    LogUtil.intoLog(this.getClass(),"测谎仪开启 成功--Polygraphssid:"+td.getPolygraphssid());
+                                    polygraphnum++;
+
+                                    //long 测谎仪开始记录时间 ms
+                                    long phstarttime=DateUtil.strToLong_MS(checkphresult.getEndtime());
+                                    tdcacheParam.setPhStartTime(phstarttime);
+
+                                    String phiid=phstarttime+"_"+td.getPolygraphssid();//iid暂时用开始记录测谎时间拼接phssid
+
+                                    //写入数据库
+                                    Avstmt_tdpolygraph avstmt_tdpolygraph=new Avstmt_tdpolygraph();
+                                    avstmt_tdpolygraph.setMttduserssid(td.getMttduserssid());
+                                    avstmt_tdpolygraph.setPolygraphssid(td.getPolygraphssid());
+                                    if(0==startrecordtime){
+                                        startrecordtime=(new Date()).getTime();//ms
+                                    }
+                                    avstmt_tdpolygraph.setStartrecordtime(startrecordtime);
+                                    avstmt_tdpolygraph.setStarttime(phstarttime);
+                                    avstmt_tdpolygraph.setIid(phiid);
+                                    avstmt_tdpolygraph.setSsid(OpenUtil.getUUID_32());
+                                    int insert_ph=avstmt_tdpolygraphMapper.insert(avstmt_tdpolygraph);
+                                    if(insert_ph <= 0){//注意测试，这里，是0还是1
+                                        LogUtil.intoLog(this.getClass(),"测谎仪关联用户通道失败，没有新增到数据库， mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                                    }
+
+                                    PhForMCCache_oneParam phone=new PhForMCCache_oneParam();
+                                    phone.setPhssid(td.getPolygraphssid());
+                                    phone.setUserssid(tdcacheParam.getUserssid());
+                                    phone.setIid(phiid);
+                                    PhForMCCache.setPhForMCCache_oneParam(phone,mtssid);
+
+                                    //开启定时请求测谎仪数据 //业务平台测谎仪数据从缓存中调取
+                                    MC_PhThread mc_phThread=new MC_PhThread(
+                                            td.getPolygraphssid(),tdcacheParam.getUserssid(),equipmentControl,mtssid,td.getPolygraphtype(),phstarttime);
+                                    mc_phThread.start();
+                                    tdcacheParam.setMc_phThread(mc_phThread);
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }else{
+                            LogUtil.intoLog(this.getClass(),"测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
                 //直播地址的填写
                 //

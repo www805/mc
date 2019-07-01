@@ -35,6 +35,22 @@ public class Avstmt_tdpolygraph extends Model<Avstmt_tdpolygraph> {
     private String polygraphssid;
 
     /**
+     * 开始读取ph的时间
+     */
+    private long starttime;
+
+    /**
+     * 录音/像开始时间
+     */
+    private long startrecordtime;
+
+
+    /**
+     * 存储用的唯一标识iid
+     */
+    private String iid;
+
+    /**
      * 创建时间
      */
     private Date createtime;
@@ -48,6 +64,30 @@ public class Avstmt_tdpolygraph extends Model<Avstmt_tdpolygraph> {
     private Integer integer2;
 
     private String ssid;
+
+    public String getIid() {
+        return iid;
+    }
+
+    public void setIid(String iid) {
+        this.iid = iid;
+    }
+
+    public long getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(long starttime) {
+        this.starttime = starttime;
+    }
+
+    public long getStartrecordtime() {
+        return startrecordtime;
+    }
+
+    public void setStartrecordtime(long startrecordtime) {
+        this.startrecordtime = startrecordtime;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

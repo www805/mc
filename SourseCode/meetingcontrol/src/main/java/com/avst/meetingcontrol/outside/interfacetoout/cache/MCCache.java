@@ -84,6 +84,42 @@ public class MCCache {
     }
 
     /**
+     * 获取会议缓存中某一位用户的通道数据信息
+     * @param mtssid
+     * @param phssid
+     * @return
+     */
+    public static  synchronized  TdAndUserAndOtherCacheParam getMCCacheOneTDParamByPhssid(String mtssid,String phssid){
+        MCCacheParam mcCacheParam=getMCCacheParam(mtssid);
+        if(null!=mcCacheParam&&null!=mcCacheParam.getTdList()&&mcCacheParam.getTdList().size() > 0){
+            for(TdAndUserAndOtherCacheParam cacheParam:mcCacheParam.getTdList()){
+                if(null!=cacheParam.getMttduserssid()&&cacheParam.getUsepolygraph()==1
+                        &&null!=cacheParam.getPolygraphssid()&&cacheParam.getPolygraphssid().equals(phssid)){
+                    return cacheParam;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取会议缓存中关于测谎仪监控的用户的通道数据信息
+     * @param mtssid
+     * @return
+     */
+    public static  synchronized  TdAndUserAndOtherCacheParam getMCCacheOneTDParamWithPh(String mtssid){
+        MCCacheParam mcCacheParam=getMCCacheParam(mtssid);
+        if(null!=mcCacheParam&&null!=mcCacheParam.getTdList()&&mcCacheParam.getTdList().size() > 0){
+            for(TdAndUserAndOtherCacheParam cacheParam:mcCacheParam.getTdList()){
+                if(null!=cacheParam.getMttduserssid()&&cacheParam.getUsepolygraph()==1){
+                    return cacheParam;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 获取会议缓存中某一位用户的ssid
      * @param mtssid
      * @param asrid

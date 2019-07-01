@@ -117,7 +117,7 @@ public class ToOutAction extends BaseAction {
      */
     @RequestMapping("/getMCState")
     @ResponseBody
-    public RResult getMCState(@RequestBody ReqParam<GetMCStateParam_out> param) {
+    public RResult getMCState(@RequestBody ReqParam<GetPhssidByMTssidParam_out> param) {
         RResult result=createNewResultOfFail();
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCState(param,result);
         return result;
@@ -128,11 +128,24 @@ public class ToOutAction extends BaseAction {
      * @param param
      * @return
      */
-    @RequestMapping("/getMCdata")
+    @RequestMapping("/getPhssidByMTssid")
     @ResponseBody
-    public RResult getMCdata(@RequestBody ReqParam<GetMCdataParam_out> param) {
+    public RResult getPhssidByMTssid(@RequestBody ReqParam<GetPhssidByMTssidParam_out> param) {
         RResult result=createNewResultOfFail();
-        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCdata(param,result);
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getPhssidByMTssid(param,result);
+        return result;
+    }
+
+    /**
+     * 提供给其他业务调用身心监护数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getPHData")
+    @ResponseBody
+    public RResult getPHData(@RequestBody ReqParam<GetPHDataParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getPHData(param,result);
         return result;
     }
 
