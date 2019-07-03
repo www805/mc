@@ -150,7 +150,6 @@ public class ToOutAction extends BaseAction {
     }
 
 
-
     /**
      * 提供给总控的心跳检测
      * @return
@@ -162,9 +161,6 @@ public class ToOutAction extends BaseAction {
         rresult=toOutService.checkClient(rresult,param);
         return rresult;
     }
-
-
-
 
 
     @RequestMapping("/ceshimc")

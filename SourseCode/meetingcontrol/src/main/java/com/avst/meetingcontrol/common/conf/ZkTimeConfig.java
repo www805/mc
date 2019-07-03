@@ -3,6 +3,9 @@ package com.avst.meetingcontrol.common.conf;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
+import org.apache.commons.jexl3.JexlBuilder;
+import org.apache.commons.jexl3.JexlEngine;
+import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +31,9 @@ public class ZkTimeConfig implements ApplicationRunner {
     @Value("${control.servser.date}")
     private Integer servserDate;
 
+    @Value("${control.servser.formulas}")
+    private String formulas;
+
     //获取服务器时间进行比对
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -50,7 +56,13 @@ public class ZkTimeConfig implements ApplicationRunner {
                     //把转成总控时间和当前服务器时间戳进行计算
                     Date newday = dateFormatter.parse(newTime);
                     Date oldDay = dateFormatter.parse(createTime);
-                    long intervalDay = (newday.getTime() - oldDay.getTime())/(1*60*60*1000);
+
+                    //计算公式转换成整数
+                    JexlEngine jexlEngine = new JexlBuilder().create();
+                    JexlExpression expression = jexlEngine.createExpression(formulas);
+                    Integer evaluate = (Integer) expression.evaluate(null);
+
+                    long intervalDay = (newday.getTime() - oldDay.getTime())/(evaluate);
 
                     //如果时间差过1小时以上，就修改系统时间
                     if (Math.abs(intervalDay) >= servserDate) {

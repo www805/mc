@@ -17,6 +17,7 @@ import java.util.Map;
 @EnableFeignClients
 @SpringBootApplication
 @MapperScan({"com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper","com.avst.meetingcontrol.common.datasourse.publicsourse.mapper"})
+@EnableScheduling
 public class MeetingcontrolApplication {
 
     /**
