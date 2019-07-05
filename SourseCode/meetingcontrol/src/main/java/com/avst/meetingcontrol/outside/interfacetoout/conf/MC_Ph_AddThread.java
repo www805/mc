@@ -86,7 +86,7 @@ public class MC_Ph_AddThread extends Thread{
                     LogUtil.intoLog(1,this.getClass(),"----MC_Ph_AddThread--已经写入数据次数addcount："+addcount);
                     //直接写入
                     String data=ReadWriteFile.readTxtFileToStr(filepath);
-                    data=data.trim();
+                    data=data.trim()+"\r\n";//换行追加
                     writeFile(phDataParam_tooutList,data);
 
                 }

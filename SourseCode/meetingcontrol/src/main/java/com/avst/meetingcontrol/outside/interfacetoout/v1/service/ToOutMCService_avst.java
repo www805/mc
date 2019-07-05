@@ -1,18 +1,26 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
+import com.avst.meetingcontrol.common.conf.SSType;
 import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tdpolygraph;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tduser;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tdpolygraphMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tduserMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
 import com.avst.meetingcontrol.common.util.LogUtil;
+import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.bl.REMControl;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
+import com.avst.meetingcontrol.feignclient.ec.req.ss.GetSavePathParam;
+import com.avst.meetingcontrol.feignclient.ec.vo.ss.GetSavepathVO;
+import com.avst.meetingcontrol.feignclient.ec.vo.ss.param.RecordSavepathParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.StartMCParam;
@@ -33,15 +41,18 @@ import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.GetMCVO;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.SetMCAsrTxtBackVO;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.param.PHDataBackVoParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
 @Service
 public class ToOutMCService_avst implements BaseDealMCInterface {
@@ -60,6 +71,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Autowired
     private Base_mttodatasaveMapper base_mttodatasaveMapper;
+
+    @Autowired
+    private Avstmt_tdpolygraphMapper avstmt_tdpolygraphMapper;
 
 
     @Override
@@ -286,18 +300,19 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     }
 
     @Override
-    public RResult getMCState(ReqParam<GetPhssidByMTssidParam_out> param, RResult result) {
-        GetPhssidByMTssidParam_out getMCStateParam_out=param.getParam();
+    public RResult getMCState(ReqParam<GetMCStateParam_out> param, RResult result) {
+        GetMCStateParam_out getMCStateParam_out=param.getParam();
         String mtssid=getMCStateParam_out.getMtssid();
         if (StringUtils.isNotBlank(mtssid)){
             MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
+            Integer mtstate =0;
             if (null!=mcCacheParam){
-                Integer mtstate =  mcCacheParam.getMtstate();
+                 mtstate =  mcCacheParam.getMtstate();
                 result.changeToTrue(mtstate);
                 return result;
             }
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -312,7 +327,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                 return result;
             }
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -329,6 +344,102 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         }
         return result;
     }
+
+    @Override
+    public RResult getPHDataBack(ReqParam<GetPHDataBackParam_out> param, RResult result) {
+        GetPHDataBackParam_out param_out=param.getParam();
+        String mtssid=param_out.getMtssid();
+
+      //根据会议，获取被询问人的人员设备通道ssid
+      String mttduserssid=null;
+      EntityWrapper tduserew=new EntityWrapper();
+      tduserew.eq("mtssid",mtssid);
+      List<Avstmt_tduser> avstmt_tdusers =  avstmt_tduserMapper.selectList(tduserew);
+      if (null!=avstmt_tdusers&&avstmt_tdusers.size()>0){
+          for (Avstmt_tduser avstmt_tduser : avstmt_tdusers) {
+                if (avstmt_tduser.getUsertype()==2){
+                    mttduserssid=avstmt_tduser.getSsid();
+                    break;
+                }
+          }
+      }
+
+      if (null!=mttduserssid){
+          EntityWrapper ew=new EntityWrapper();
+          ew.eq("mttduserssid",mttduserssid);
+          List<Avstmt_tdpolygraph> avstmt_tdpolygraphs = avstmt_tdpolygraphMapper.selectList(ew);
+            if (null!=avstmt_tdpolygraphs&&avstmt_tdpolygraphs.size()==1){
+                Avstmt_tdpolygraph avstmt_tdpolygraph=avstmt_tdpolygraphs.get(0);
+                if (null!=avstmt_tdpolygraph){
+                    String iid=avstmt_tdpolygraph.getIid();//获取对应iid
+                    if (null!=iid){
+                        Gson gson = new Gson();
+                        RResult<GetSavepathVO> getsavepath_rr=new RResult<>();
+                        GetSavePathParam getSavePathParam=new GetSavePathParam();
+                        getSavePathParam.setSsType(SSType.AVST);
+                        getSavePathParam.setIid(iid);
+                        getsavepath_rr=equipmentControl.getSavePath(getSavePathParam);
+                        if (null!=getsavepath_rr&&getsavepath_rr.getActioncode().equals(Code.SUCCESS.toString())){
+                            LogUtil.intoLog(this.getClass(),"请求equipmentControl.getSavePath__成功");
+                            System.out.println("_________________________________________________"+getsavepath_rr.getData());
+                            GetSavepathVO getSavepathVO=gson.fromJson(gson.toJson(getsavepath_rr.getData()), GetSavepathVO.class);
+                            if (null!=getSavepathVO){
+                                List<RecordSavepathParam> recordList = getSavepathVO.getRecordList();
+                                List<PHDataBackVoParam> phdatabackList=new ArrayList<>();
+                                if (null!=recordList&&recordList.size()>0){
+                                    for (RecordSavepathParam recordSavepathParam : recordList) {
+                                        String savepath=recordSavepathParam.getSavepath();
+                                        if (null!=savepath){
+                                            try {
+                                                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(savepath)),"UTF-8"));
+                                                String lineTxt = null;
+                                                while ((lineTxt = br.readLine()) != null) {
+                                                    PHDataBackVoParam phDataBackVoParam=new PHDataBackVoParam();
+                                                    String[] txts = lineTxt.split(";");
+                                                    phDataBackVoParam.setNum(txts[0]);
+                                                    phDataBackVoParam.setPhBataBackJson(txts[1]);
+                                                    phdatabackList.add(phDataBackVoParam);
+                                                }
+                                                br.close();
+                                            } catch (Exception e) {
+                                                System.err.println("read errors :" + e);
+                                            }
+                                        }
+                                    }
+                                }
+                                result.changeToTrue(phdatabackList);
+                            }
+                        }else {
+                            LogUtil.intoLog(this.getClass(),"请求equipmentControl.getSavePath__出错");
+                        }
+                    }
+                }else {
+                    LogUtil.intoLog(this.getClass(),"getPHDataBack人员设备通道ssid为空__"+mttduserssid);
+                }
+            }
+
+      }else {
+          LogUtil.intoLog(this.getClass(),"avstmt_tdpolygraphMapper.selectOne人员设备通道ssid为空__"+mttduserssid);
+      }
+        return result;
+    }
+
+    @Override
+    public RResult getFdrecordStarttimeByMTssid(ReqParam<GetFdrecordStarttimeByMTssidParam_out> param, RResult result) {
+        GetFdrecordStarttimeByMTssidParam_out out=param.getParam();
+        String mtssid=out.getMtssid();
+        TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamWithPh(mtssid);
+        if(null!=tdAndUserAndOtherCacheParam&&null!=tdAndUserAndOtherCacheParam.getPolygraphssid()){
+            long fdrecordstarttime=tdAndUserAndOtherCacheParam.getFdrecordstarttime();
+            if (fdrecordstarttime>0){
+                result.changeToTrue(fdrecordstarttime);
+                return result;
+            }
+        }
+        return result;
+    }
+
+
 
 
 }

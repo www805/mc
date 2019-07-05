@@ -10,7 +10,6 @@ import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.BaseDealMCInterface;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutService;
-import com.avst.meetingcontrol.outside.interfacetoout.vo.ToOutVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -112,19 +111,19 @@ public class ToOutAction extends BaseAction {
 
     /**
      * 获取会议状态
-     * @param param 会废弃
+     * @param param
      * @return
      */
     @RequestMapping("/getMCState")
     @ResponseBody
-    public RResult getMCState(@RequestBody ReqParam<GetPhssidByMTssidParam_out> param) {
+    public RResult getMCState(@RequestBody ReqParam<GetMCStateParam_out> param) {
         RResult result=createNewResultOfFail();
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCState(param,result);
         return result;
     }
 
     /**
-     * 获取会议数据
+     * 根据会议获取测谎仪ssid
      * @param param
      * @return
      */
@@ -148,6 +147,34 @@ public class ToOutAction extends BaseAction {
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getPHData(param,result);
         return result;
     }
+
+    @RequestMapping("/getPHDataBack")
+    @ResponseBody
+    public RResult getPHDataBack(@RequestBody ReqParam<GetPHDataBackParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getPHDataBack(param,result);
+        return result;
+    }
+
+    /**
+     * 根据会议ssid获取直播开始时间
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFdrecordStarttimeByMTssid")
+    @ResponseBody
+    public RResult getFdrecordStarttimeByMTssid(@RequestBody ReqParam<GetFdrecordStarttimeByMTssidParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getFdrecordStarttimeByMTssid(param,result);
+        return result;
+    }
+
+
+
+
+
+
+
 
 
     /**

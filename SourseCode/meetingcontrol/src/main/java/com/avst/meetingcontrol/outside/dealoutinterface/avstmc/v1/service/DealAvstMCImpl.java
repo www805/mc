@@ -356,13 +356,14 @@ public class DealAvstMCImpl {
                                 livingurl=workStartVO.getFdlivingurl();//设备直播地址
 
                                 startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
-
+                                tdcacheParam.setFdrecordstarttime(startrecordtime);
                                 if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){
                                     avstmt_asrtd.setStartrecordtime(startrecordtime);
                                     int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
                                     LogUtil.intoLog(this.getClass(),i_updateById+":i_updateById 修改语音识别记录中的startrecordtime");
                                 }else{
                                     LogUtil.intoLog(this.getClass(),startrecordtime+":startrecordtime  会议用户语音识别对象没有找到，不进行修改操作 avstmt_asrtd："+avstmt_asrtd);
+
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

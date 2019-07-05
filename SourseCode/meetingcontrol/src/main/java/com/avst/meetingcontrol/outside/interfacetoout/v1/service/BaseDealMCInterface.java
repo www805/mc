@@ -21,11 +21,15 @@ public interface BaseDealMCInterface {
 
     public RResult  getMCaLLUserAsrTxtList(ReqParam<GetMCaLLUserAsrTxtListParam_out> param, RResult result);
 
-    public RResult  getMCState(ReqParam<GetPhssidByMTssidParam_out> param, RResult result);
+    public RResult  getMCState(ReqParam<GetMCStateParam_out> param, RResult result);
 
     public RResult  getPhssidByMTssid(ReqParam<GetPhssidByMTssidParam_out> param, RResult result);
 
     public RResult  getPHData(ReqParam<GetPHDataParam_out> param, RResult result);
+
+    public RResult  getPHDataBack(ReqParam<GetPHDataBackParam_out> param,RResult result);
+
+    public RResult  getFdrecordStarttimeByMTssid(ReqParam<GetFdrecordStarttimeByMTssidParam_out> param, RResult result);
 
 
 }

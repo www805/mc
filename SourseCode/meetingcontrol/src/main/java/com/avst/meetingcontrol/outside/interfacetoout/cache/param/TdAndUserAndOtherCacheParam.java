@@ -17,6 +17,8 @@ public class TdAndUserAndOtherCacheParam {
 
     private int fdrecord;//是否需要录像，1使用，-1 不使用
 
+    private long fdrecordstarttime;//录像开始时间
+
     private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
 
     private String username;//会议用户名
@@ -208,5 +210,13 @@ public class TdAndUserAndOtherCacheParam {
 
     public void setAsrssid(String asrssid) {
         this.asrssid = asrssid;
+    }
+
+    public long getFdrecordstarttime() {
+        return fdrecordstarttime;
+    }
+
+    public void setFdrecordstarttime(long fdrecordstarttime) {
+        this.fdrecordstarttime = fdrecordstarttime;
     }
 }

@@ -10,9 +10,11 @@ import com.avst.meetingcontrol.feignclient.ec.req.fd.GetFlushbonadingTDByETSsidP
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ph.*;
+import com.avst.meetingcontrol.feignclient.ec.req.ss.GetSavePathParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ss.SaveFile_localParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.ph.*;
 import com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout;
+import com.avst.meetingcontrol.feignclient.ec.vo.ss.GetURLToPlayVO;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -124,5 +126,11 @@ public interface EquipmentControl {
     @RequestMapping("/ss/v1/saveFile_local")
     @ResponseBody
     public RResult saveFile_local(@RequestBody SaveFile_localParam param);
+
+
+    @RequestMapping("/ss/v1/getSavePath")
+    @ResponseBody
+    public RResult getSavePath(@RequestBody GetSavePathParam param);
+
 
 }
