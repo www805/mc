@@ -3,6 +3,7 @@ package com.avst.meetingcontrol.common.datasourse.publicsourse.entity;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -50,16 +51,19 @@ public class Base_mtinfo extends Model<Base_mtinfo> {
     /**
      * 录制开始时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date recordstarttime;
 
     /**
      * 录制结束时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date recordendtime;
 
     /**
      * 创建时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createtime;
 
     /**

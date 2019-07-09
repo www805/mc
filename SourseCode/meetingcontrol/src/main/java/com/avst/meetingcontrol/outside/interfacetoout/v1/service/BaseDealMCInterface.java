@@ -31,5 +31,7 @@ public interface BaseDealMCInterface {
 
     public RResult  getFdrecordStarttimeByMTssid(ReqParam<GetFdrecordStarttimeByMTssidParam_out> param, RResult result);
 
+    public RResult  getTdAndUserAndOtherCacheParamByMTssid(ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param, RResult result);
+
 
 }

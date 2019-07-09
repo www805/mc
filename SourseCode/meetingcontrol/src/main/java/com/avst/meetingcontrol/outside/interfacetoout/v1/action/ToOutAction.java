@@ -6,6 +6,8 @@ import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.BaseDealMCInterface;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst;
@@ -168,6 +170,21 @@ public class ToOutAction extends BaseAction {
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getFdrecordStarttimeByMTssid(param,result);
         return result;
     }
+
+    /**
+     *
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getTdAndUserAndOtherCacheParamByMTssid")
+    @ResponseBody
+    public RResult getTdAndUserAndOtherCacheParamByMTssid(@RequestBody ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getTdAndUserAndOtherCacheParamByMTssid(param,result);
+        return result;
+    }
+
+
 
 
 
