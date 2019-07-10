@@ -101,7 +101,43 @@ function showpagetohtml(){
 }
 
 function toAvstmt_modeltdAddOrUpdate(ssid){
-    window.location.href=getUrl_manage().toAvstmt_modeltdAddOrUpdate+"?ssid="+ssid;
+    if (isNotEmpty(mtmodelssid)){
+        window.location.href=getUrl_manage().toAvstmt_modeltdAddOrUpdate+"?ssid="+ssid+"&mtmodelssid="+mtmodelssid;
+    } else{
+        layer.msg("会议模板错误")
+    }
+}
+
+function delAvstmt_modeltd(ssid){
+    if (isNotEmpty(ssid)){
+        layer.confirm('确定要删除该模板通道吗', {
+            btn: ['确认','取消'], //按钮
+            shade: [0.1,'#fff'], //不显示遮罩
+        }, function(index){
+            var url=getUrl_manage().delAvstmt_modeltd;
+            var data={
+                ssid:ssid
+            };
+            ajaxSubmit(url,data,callbackdelAvstmt_modeltd);
+            layer.close(index);
+        }, function(index){
+            layer.close(index);
+        });
+    } else {
+        layer.msg("会议模板错误")
+    }
+}
+
+function callbackdelAvstmt_modeltd(data){
+    if(null!=data&&data.actioncode=='SUCCESS'){
+        if (isNotEmpty(data)){
+            layer.msg("删除成功",{time:500,icon:1},function () {
+                getAvstmt_modeltdListByParam();
+            })
+        }
+    }else{
+        layer.msg(data.message,{icon: 2});
+    }
 }
 
 

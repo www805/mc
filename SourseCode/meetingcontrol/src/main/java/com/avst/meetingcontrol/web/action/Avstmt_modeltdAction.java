@@ -64,6 +64,19 @@ public class Avstmt_modeltdAction extends BaseAction {
     }
 
 
+    @RequestMapping("/delAvstmt_modeltd")
+    public RResult delAvstmt_modeltd(DelAvstmt_modeltdParam param){
+        RResult result=this.createNewResultOfFail();
+        if(null==param){
+            result.setMessage("参数错误");
+        }else {
+            avstmt_modeltdService.delAvstmt_modeltd(result,param);
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
 
 
 }

@@ -4,15 +4,13 @@ import com.avst.meetingcontrol.common.conf.Constant;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
+import com.avst.meetingcontrol.web.req.GetHomeParam;
 import com.avst.meetingcontrol.web.req.LoginParam;
 import com.avst.meetingcontrol.web.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.security.auth.Subject;
@@ -83,8 +81,6 @@ public class MainAction extends BaseAction {
         this.changeResultToSuccess(rResult);
         rResult.setMessage("退出成功");
         request.getSession().setAttribute(Constant.MANAGE_WEB,null);
-//        Subject subject = SecurityUtils.getSubject();
-//        subject.logout();
         return rResult;
     }
 
@@ -93,6 +89,21 @@ public class MainAction extends BaseAction {
         model.addAttribute("title", "错误页面404");
         return new ModelAndView("error/404", "error", model);
     }
+
+    /**
+     * 首页数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getHome")
+    @ResponseBody
+    public RResult getHome(@RequestBody GetHomeParam param){
+        RResult result=this.createNewResultOfFail();
+        mainService.getHome(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
 
 }

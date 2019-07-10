@@ -86,16 +86,17 @@
         {{#  layui.each(pagelist, function(index, value){ }}
         <tr>
             <td>{{index+1}}</td>
-            <td>{{value.fdssid==null?"":value.fdssid}}</td>
-            <td>{{value.polygraphssid==null?"":value.polygraphssid}}</td>
-            <td>{{value.asrssid==null?"":value.asrssid}}</td>
-            <td>{{value.tdssid==null?"":value.tdssid}}</td>
+            <td title='{{value.fdexplain==null?"":value.fdexplain}}'>{{value.fdexplain==null?"":value.fdexplain}}</td>
+            <td title='{{value.phexplain==null?"":value.phexplain}}'>{{value.phexplain==null?"":value.phexplain}}</td>
+            <td title='{{value.asrexplain==null?"":value.asrexplain}}'> {{value.asrexplain==null?"":value.asrexplain}}</td>
+            <td title='{{value.tdexplain==null?"":value.tdexplain}}'>{{value.tdexplain==null?"":value.tdexplain}}</td>
             <td>{{value.grade==null?"":(value.grade==1?"主麦":(value.grade==2?"副麦":"未知"))}}</td>
             <td>{{value.usepolygraph==null?"":(value.usepolygraph==1?"需要":(value.usepolygraph==-1?"不需要":"未知"))}}</td>
             <td>{{value.useasr==null?"":(value.useasr==1?"是":(value.useasr==-1?"否":"未知"))}}</td>
             <td>{{value.createtime==null?"":value.createtime}}</td>
             <td>
                 <a href="#" class="layui-btn layui-btn-normal layui-btn-sm" onclick="toAvstmt_modeltdAddOrUpdate('{{value.ssid}}');">修改</a>
+                <a href="#" class="layui-btn layui-btn-danger layui-btn-sm" onclick="delAvstmt_modeltd('{{value.ssid}}');">删除</a>
             </td>
         </tr>
         {{#  }); }}

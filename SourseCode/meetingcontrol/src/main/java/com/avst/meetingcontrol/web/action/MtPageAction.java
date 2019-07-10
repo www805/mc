@@ -44,8 +44,9 @@ public class MtPageAction {
     }
 
     @GetMapping("/toAvstmt_modeltdAddOrUpdate")
-    public ModelAndView toAvstmt_modeltdAddOrUpdate(Model model,String ssid){
+    public ModelAndView toAvstmt_modeltdAddOrUpdate(Model model,String ssid,String mtmodelssid){
         model.addAttribute("ssid",ssid);
+        model.addAttribute("mtmodelssid",mtmodelssid);
         model.addAttribute("title","模板通道编辑");
         return new ModelAndView("sweb/avsthtml/Avstmt_modeltdAddOrUpdate", "Avstmt_modeltdAddOrUpdate", model);
     }
