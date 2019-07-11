@@ -106,7 +106,7 @@
         {{#  layui.each(pagelist, function(index, value){ }}
         <tr>
             <td>{{index+1}}</td>
-            <td>{{value.mtstate==null?"未知":(value.mtstate==0?"<span class='layui-badge layui-bg-orange'>初始化</span>":(value.mtstate==1?"<span class='layui-badge layui-bg-green'>进行中</span>":(value.mtstate==2?"<span class='layui-badge'>已结束</span>":(value.mtstate==3?"<span class='layui-badge layui-bg-cyan'>暂停</span>":(value.mtstate==4?"异常":"未知")))))}}</td>
+            <td>{{value.mtstate==null?"<span class='layui-badge-rim'>未知</span>":(value.mtstate==0?"<span class='layui-badge layui-bg-blue'>初始化</span>":(value.mtstate==1?"<span class='layui-badge layui-bg-green'>进行中</span>":(value.mtstate==2?"<span class='layui-badge layui-bg-gray'>已结束</span>":(value.mtstate==3?"<span class='layui-badge layui-bg-cyan'>暂停</span>":(value.mtstate==4?"<span class='layui-badge'>异常</span>":"<span class='layui-badge-rim'>未知</span>")))))}}</td>
             <td>{{value.meetingtype==null?"":(value.meetingtype==1?"<i class='layui-icon layui-icon-video'></i> 视频":(value.meetingtype==2?"<i class='layui-icon layui-icon-headset'></i> 音频":"未知"))}}</td>
             <td>{{value.opened==null?"":(value.opened==1?"开放":(value.opened==-1?"不开放":"未知"))}}</td>
             <td>{{value.userecord==null?"":(value.userecord==1?"录制":(value.userecord==-1?"不录制":"未知"))}}</td>
