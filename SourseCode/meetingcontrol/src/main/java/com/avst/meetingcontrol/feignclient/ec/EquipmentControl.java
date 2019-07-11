@@ -135,6 +135,10 @@ public interface EquipmentControl {
     @ResponseBody
     public RResult getSavePath(@RequestBody GetSavePathParam param);
 
+    //通过会议通道ssid查询指定的直播地址
+    @RequestMapping("/flushbonadingEttd/v1/getFlushbonadingEttdByMcSsid")
+    @ResponseBody
+    public RResult getFlushbonadingEttdByMcSsid(@RequestBody ReqParam<GetToOutFlushbonadingEttdByListParam> param);
 
 
 

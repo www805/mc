@@ -1,6 +1,7 @@
 package com.avst.meetingcontrol.common.conf;
 
 import com.avst.meetingcontrol.common.util.DateUtil;
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
 import org.apache.commons.jexl3.JexlBuilder;
@@ -106,13 +107,8 @@ public class ZkTimeConfig implements ApplicationRunner {
 //                System.out.println("服务器获取到的时间：" + date);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println("结束");
+            LogUtil.intoLog(4,this.getClass(),"getControlTime ZkTimeConfig。run 总控同步时间，请求异常");
         }
-
-
-
 
     }
 

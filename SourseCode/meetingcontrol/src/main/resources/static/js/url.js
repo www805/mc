@@ -47,6 +47,8 @@ function getUrl_manage() {
 		//会议
         getBase_mtinfoList:getPath()+basepath+"base_mtinfo/getBase_mtinfoList",//获取会议page列表
 
+        //会议通道
+        getAvstmt_tduserList:getPath()+basepath+"avstmt_tduser/getAvstmt_tduserList",//获取会议通道page列表
 
 		//页面跳转
         toBase_mtinfoList:getPath()+pagepath+"mtpage/toBase_mtinfoList",//跳转会议页

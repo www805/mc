@@ -1,6 +1,7 @@
 package com.avst.meetingcontrol.common.conf;
 
 import com.avst.meetingcontrol.common.util.DateUtil;
+import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.base.vo.ControlInfoParamVO;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
@@ -22,7 +23,14 @@ public class SchedulerZk {
     @Value("${spring.application.name}")
     private String servername;
 
-    //每个小时的第五分钟执行
+    @Value("${control.servser.url}")
+    private String url;
+
+    @Value("${control.servser.loginusername}")
+    private String loginusername;
+
+    @Value("${control.servser.loginpassword}")
+    private String loginpassword;
 
     /**
      * 10秒心跳一次
@@ -34,7 +42,11 @@ public class SchedulerZk {
         ReqParam<ControlInfoParamVO> param = new ReqParam<>();
 
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
-        controlInfoParamVO.setServername(servername);//服务器名
+        controlInfoParamVO.setServername(servername);//服务器注册名
+        controlInfoParamVO.setServertitle("会议系统");//服务器中文名
+        controlInfoParamVO.setUrl(url);
+        controlInfoParamVO.setLoginusername(loginusername);
+        controlInfoParamVO.setLoginpassword(loginpassword);
         controlInfoParamVO.setTotal_item(1);
         controlInfoParamVO.setUse_item(1);
 //        controlInfoParamVO.setCreatetime(DateUtil.getDateAndMinute());//设置当前时间
@@ -45,7 +57,7 @@ public class SchedulerZk {
         try {
             zkControl.getHeartbeat(param);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.intoLog(4,this.getClass(),"Scheduler.testTasks is error, 上报心跳到总控失败");
         }
     }
 

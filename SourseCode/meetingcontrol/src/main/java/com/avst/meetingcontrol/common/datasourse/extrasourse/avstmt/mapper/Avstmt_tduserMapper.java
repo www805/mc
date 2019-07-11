@@ -2,8 +2,10 @@ package com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper;
 
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tduser;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
+import com.avst.meetingcontrol.web.vo.AvstmtTduserVO;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -27,5 +29,10 @@ public interface Avstmt_tduserMapper extends BaseMapper<Avstmt_tduser> {
             "  left join avstmt_asrtd at on tu.ssid=at.mttduserssid " +
             "  where 1=1 ${ew.sqlSegment} ")
     public List<Avstmt_tduserAll> getAvstmt_tduserAll(@Param("ew") EntityWrapper ew);
+
+    @Select("select * from avstmt_tduser" +
+            "  where 1=1 ${ew.sqlSegment} ")
+    public List<AvstmtTduserVO> selectListPageAll(Page page, @Param("ew") EntityWrapper ew);
+
 
 }

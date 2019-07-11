@@ -36,6 +36,12 @@ public class MtPageAction {
         return new ModelAndView("sweb/publichtml/Base_mtinfoList", "Base_mtinfoList", model);
     }
 
+    @GetMapping("/toAvstmt_tduserList")
+    public ModelAndView toAvstmt_tduserList(Model model){
+        model.addAttribute("title","会议人员设备通道列表");
+        return new ModelAndView("sweb/publichtml/Avstmt_tduserList", "Avstmt_tduserList", model);
+    }
+
     @GetMapping("/toAvstmt_modeltdList")
     public ModelAndView toAvstmt_modeltdList(Model model,String mtmodelssid){
         model.addAttribute("title","模板通道列表");

@@ -1,10 +1,14 @@
 package com.avst.meetingcontrol.web.service;
 
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tduserMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.util.baseaction.BaseService;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
+import com.avst.meetingcontrol.web.req.GetAvstmt_tduserListParam;
 import com.avst.meetingcontrol.web.req.GetBase_mtinfoListParam;
+import com.avst.meetingcontrol.web.vo.AvstmtTduserVO;
+import com.avst.meetingcontrol.web.vo.GetAvstmt_tduserVO;
 import com.avst.meetingcontrol.web.vo.GetBase_mtinfoListVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -19,6 +23,7 @@ public class Base_mtinfoService extends BaseService {
     @Autowired
     private Base_mtinfoMapper base_mtinfoMapper;
 
+    //会议列表
     public void getBase_mtinfoList(RResult result, GetBase_mtinfoListParam param){
         GetBase_mtinfoListVO vo=new GetBase_mtinfoListVO();
 
@@ -66,8 +71,10 @@ public class Base_mtinfoService extends BaseService {
         result.setData(vo);
         changeResultToSuccess(result);
 
-        result.setData(vo);
-        changeResultToSuccess(result);
         return;
     }
+
+
+
+
 }
