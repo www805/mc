@@ -27,7 +27,7 @@ function getBase_avstmt_tduserList_init(currPage,pageSize) {
 
     $("#wushuju").show();
     $("#pagelistview").hide();
-    $("#wushuju").html("数据查询中，请稍后...");
+    $("#wushuju").html("数据加载中，请稍后...");
     ajaxSubmit(url,data,callbackgetBase_avstmt_tduserList);
 }
 
@@ -45,7 +45,7 @@ function getBase_avstmt_tduserList(username, usertype, createtime_startdate, cre
 
     $("#wushuju").show();
     $("#pagelistview").hide();
-    $("#wushuju").html("数据查询中，请稍后...");
+    $("#wushuju").html("数据加载中，请稍后...");
     ajaxSubmit(url, data, callbackgetBase_avstmt_tduserList);
 }
 
