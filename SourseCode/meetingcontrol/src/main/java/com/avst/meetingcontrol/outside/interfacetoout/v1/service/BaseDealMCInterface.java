@@ -29,8 +29,6 @@ public interface BaseDealMCInterface {
 
     public RResult  getPHDataBack(ReqParam<GetPHDataBackParam_out> param,RResult result);
 
-    public RResult  getFdrecordStarttimeByMTssid(ReqParam<GetFdrecordStarttimeByMTssidParam_out> param, RResult result);
-
     public RResult  getTdAndUserAndOtherCacheParamByMTssid(ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param, RResult result);
 
 

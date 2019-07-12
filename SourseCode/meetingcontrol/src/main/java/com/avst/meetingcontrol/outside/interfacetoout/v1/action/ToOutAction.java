@@ -158,18 +158,6 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
-    /**
-     * 根据会议ssid获取直播开始时间
-     * @param param
-     * @return
-     */
-    @RequestMapping("/getFdrecordStarttimeByMTssid")
-    @ResponseBody
-    public RResult getFdrecordStarttimeByMTssid(@RequestBody ReqParam<GetFdrecordStarttimeByMTssidParam_out> param) {
-        RResult result=createNewResultOfFail();
-        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getFdrecordStarttimeByMTssid(param,result);
-        return result;
-    }
 
     /**
      *
@@ -183,14 +171,6 @@ public class ToOutAction extends BaseAction {
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getTdAndUserAndOtherCacheParamByMTssid(param,result);
         return result;
     }
-
-
-
-
-
-
-
-
 
 
 

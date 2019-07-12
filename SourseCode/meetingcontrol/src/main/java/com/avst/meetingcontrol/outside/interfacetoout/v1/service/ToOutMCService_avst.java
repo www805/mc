@@ -425,20 +425,6 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return result;
     }
 
-    @Override
-    public RResult getFdrecordStarttimeByMTssid(ReqParam<GetFdrecordStarttimeByMTssidParam_out> param, RResult result) {
-        GetFdrecordStarttimeByMTssidParam_out out=param.getParam();
-        String mtssid=out.getMtssid();
-        TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamWithPh(mtssid);
-        if(null!=tdAndUserAndOtherCacheParam&&null!=tdAndUserAndOtherCacheParam.getPolygraphssid()){
-            long fdrecordstarttime=tdAndUserAndOtherCacheParam.getFdrecordstarttime();
-            if (fdrecordstarttime>0){
-                result.changeToTrue(fdrecordstarttime);
-                return result;
-            }
-        }
-        return result;
-    }
 
     @Override
     public RResult getTdAndUserAndOtherCacheParamByMTssid(ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param, RResult result) {
