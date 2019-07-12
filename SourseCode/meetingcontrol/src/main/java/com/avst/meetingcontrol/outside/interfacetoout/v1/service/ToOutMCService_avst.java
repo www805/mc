@@ -166,7 +166,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         OverMCParam overparam=new OverMCParam();
         overparam.setMtssid(mtssid);
         RRParam<Boolean> rr= AvstMCImpl.overMC(overparam);;
-        if(null!=rr&&rr.getCode()==1&&null!=rr.getT()&&rr.getT().equals(true)){//开启会议成功
+        if(null!=rr&&rr.getCode()==1&&null!=rr.getT()&&rr.getT().equals(true)){//关闭会议成功
             result.changeToTrue(true);//返回
         }
 

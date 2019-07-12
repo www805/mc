@@ -2,6 +2,7 @@ package com.avst.meetingcontrol.outside.interfacetoout.cache;
 
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,6 +223,18 @@ public class MCCache {
             int i=0;
             for(MCCacheParam mc:mcList){
                 if(mc.getMtssid().equals(mtssid)){
+
+
+                    List<TdAndUserAndOtherCacheParam> tdlist=mc.getTdList();
+                    if(null!=tdlist&&tdlist.size() > 0){
+                        for(TdAndUserAndOtherCacheParam td:tdlist){
+                            MC_PhThread mc_phThread=td.getMc_phThread();
+                            if(null!=mc_phThread){
+                                mc_phThread.bool=false;//关闭测谎仪定时器
+                            }
+                        }
+                    }
+
                     mcList.remove(i);
                     return true;
                 }
