@@ -36,7 +36,7 @@ public class SchedulerZk {
      * 10秒心跳一次
      */
 //    @Scheduled(cron = "0 05 1/1 * * *")
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 30000)
     public void testTasks() {
 
         ReqParam<ControlInfoParamVO> param = new ReqParam<>();

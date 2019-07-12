@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 当用户关闭asr识别的时候asr识别可能还有部分数据没有回传，所以需要延迟关闭数据
  */
-public class MCOverThread<T> extends Thread{
+public class MCOverThread extends Thread{
 
     private int heartbeatTime=20;//关闭等待时间S
 

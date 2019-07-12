@@ -37,6 +37,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.PhForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.PhForMCCache_oneParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
+import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_AsrThread;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.param.UserETParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -483,7 +484,9 @@ public class DealAvstMCImpl {
                 //关闭会议缓存，会议数据库当前记录，avstmt_asrtdMapper会议通道识别记录
                 if(asrerrorcount==tdUserList.size()){//说明语音识别开启完全失败
                     //以后加上所有需要开启的判断，综合考虑是否需要关闭本次会议
-
+                    //会议开启失败需要关闭的一些缓存和处理
+                    AsrForMCCache.delAsrForMCMap(mtssid);
+                    PhForMCCache.rvPhMap(mtssid);
                     MCCache.delMCCacheParam(mtssid);
                     base_mtinfo.setMtstate(4);
                     int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
