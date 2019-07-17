@@ -30,6 +30,7 @@ function getUrl_manage() {
 
         //首页
         getHome:getPath()+basepath+"main/getHome",//获取首页数据
+        getNavList: getPath() + "/mc/main/getNavList",
 
 		//模板
         getAvstmt_modelList:getPath()+basepath+"avstmt_model/getAvstmt_modelList",//获取模板page列表
@@ -43,6 +44,8 @@ function getUrl_manage() {
         updateAvstmt_modeltd:getPath()+basepath+"avstmt_modeltd/updateAvstmt_modeltd",//修改模板通道
         addAvstmt_modeltd:getPath()+basepath+"avstmt_modeltd/addAvstmt_modeltd",//添加模板通道
         delAvstmt_modeltd:getPath()+basepath+"avstmt_modeltd/delAvstmt_modeltd",//删除模板通道
+        updateUsepolygraphBool:getPath()+basepath+"asr/updateUsepolygraphBool",//修改会议模板通道，是否需要测谎状态
+        updateUseasrBool:getPath()+basepath+"asr/updateUseasrBool",//修改会议模板通道的语音识别开关状态
 
 		//会议
         getBase_mtinfoList:getPath()+basepath+"base_mtinfo/getBase_mtinfoList",//获取会议page列表

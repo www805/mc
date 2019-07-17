@@ -1,5 +1,7 @@
 package com.avst.meetingcontrol.web.service;
 
+import com.avst.meetingcontrol.common.cache.AppCache;
+import com.avst.meetingcontrol.common.cache.param.AppCacheParam;
 import com.avst.meetingcontrol.common.conf.Constant;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modelMapper;
@@ -7,6 +9,7 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstm
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.util.LogUtil;
+import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseService;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
@@ -20,9 +23,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map;
 
 @Service
 public class MainService extends BaseService {
@@ -37,6 +45,9 @@ public class MainService extends BaseService {
 
     @Autowired
     private Base_mtinfoMapper base_mtinfoMapper;
+
+    @Value("${nav.file.client}")
+    private String swebFile;
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
          String loginaccount=loginParam.getLoginaccount().trim();
@@ -127,4 +138,36 @@ public class MainService extends BaseService {
         return;
     }
 
+    public void getNavList(RResult result) {
+
+        AppCacheParam cacheParam = AppCache.getAppCacheParam();
+        if(null == cacheParam.getData()){
+            String path = OpenUtil.getXMSoursePath() + "\\" + swebFile + ".yml";
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(path);
+
+                Yaml yaml = new Yaml();
+                Map<String,Object> map = yaml.load(fis);
+                if (null != map && map.size() > 0) {
+                    cacheParam.setTitle((String) map.get("title"));
+                }
+                cacheParam.setData(map);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                if(null != fis){
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        result.setData(cacheParam);
+        result.changeToTrue();
+
+    }
 }

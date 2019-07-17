@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.web.action;
 
+import com.avst.meetingcontrol.common.cache.AppCache;
 import com.avst.meetingcontrol.common.conf.Constant;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
@@ -70,6 +71,7 @@ public class MainAction extends BaseAction {
     public RResult checklogin(Model model, HttpServletRequest request, LoginParam loginParam) {
         RResult result=createNewResultOfFail();
         mainService.logining(result,request,loginParam);
+        AppCache.delAppCacheParam();
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
@@ -82,6 +84,19 @@ public class MainAction extends BaseAction {
         rResult.setMessage("退出成功");
         request.getSession().setAttribute(Constant.MANAGE_WEB,null);
         return rResult;
+    }
+
+    /**
+     * 获取导航栏目
+     * @return
+     */
+    @RequestMapping("/getNavList")
+    @ResponseBody
+    public  RResult getNavList(){
+        RResult result=this.createNewResultOfFail();
+        mainService.getNavList(result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
     }
 
     @RequestMapping(value = "/404")

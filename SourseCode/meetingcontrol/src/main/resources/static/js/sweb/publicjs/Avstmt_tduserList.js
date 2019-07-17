@@ -72,7 +72,7 @@ function getBase_avstmt_tduserListByParam(){
     var len=arguments.length;
     if(len==0){
         var currPage=1;
-        var pageSize=2;//测试
+        var pageSize=10;//测试
         getBase_avstmt_tduserList_init(currPage,pageSize);
     }else if (len==2){
         getBase_avstmt_tduserList('',arguments[0],arguments[1]);

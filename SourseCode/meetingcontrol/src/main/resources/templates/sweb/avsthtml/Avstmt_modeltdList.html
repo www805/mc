@@ -91,8 +91,8 @@
             <td title='{{value.asrexplain==null?"":value.asrexplain}}'> {{value.asrexplain==null?"":value.asrexplain}}</td>
             <td title='{{value.tdexplain==null?"":value.tdexplain}}'>{{value.tdexplain==null?"":value.tdexplain}}</td>
             <td>{{value.grade==null?"":(value.grade==1?"主麦":(value.grade==2?"副麦":"未知"))}}</td>
-            <td>{{value.usepolygraph==null?"":(value.usepolygraph==1?"需要":(value.usepolygraph==-1?"不需要":"未知"))}}</td>
-            <td>{{value.useasr==null?"":(value.useasr==1?"是":(value.useasr==-1?"否":"未知"))}}</td>
+            <td><input type="checkbox" name="usepolygraph" lay-skin="switch" lay-filter="switchUsepolygraph" lay-text="需要|不需要" {{value.usepolygraph==-1?'':'checked'}} value="{{value.ssid}}"/></td>
+            <td><input type="checkbox" name="useasr" lay-skin="switch" lay-filter="switchUseasr" lay-text="是|否" {{value.useasr==-1?'':'checked'}} value="{{value.ssid}}"/></td>
             <td>{{value.createtime==null?"":value.createtime}}</td>
             <td>
                 <a href="#" class="layui-btn layui-btn-normal layui-btn-sm" onclick="toAvstmt_modeltdAddOrUpdate('{{value.ssid}}');">修改</a>

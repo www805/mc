@@ -43,6 +43,50 @@ function getAvstmt_modeltdList(usepolygraph,useasr,grade,startdate,enddate,mtmod
     ajaxSubmit(url,data,callbackgetAvstmt_modeltdList);
 }
 
+//修改监听是否需要测谎状态
+function updateUsepolygraphBool(ssid, shieldbool) {
+
+    var url=getUrl_manage().updateUsepolygraphBool;
+    var data = {
+        token:"123",
+        param:{
+            ssid: ssid,
+            shieldbool: shieldbool
+        }
+    };
+
+    ajaxSubmitByJson(url,data,callupdateUsepolygraphBool);
+}
+
+//修改监听是否语音识别开关状态
+function updateUseasrBool(ssid, shieldbool) {
+
+    var url=getUrl_manage().updateUseasrBool;
+    var data = {
+        token:"123",
+        param:{
+            ssid: ssid,
+            shieldbool: shieldbool
+        }
+    };
+
+    ajaxSubmitByJson(url,data,callupdateUsepolygraphBool);
+}
+
+//监听是否需要测谎状态返回值
+function callupdateUsepolygraphBool(data) {
+
+    if(null!=data&&data.actioncode=='SUCCESS'){
+
+        if(data.data == 1){
+            layer.msg("操作成功", {icon: 1});
+        }else{
+            layer.msg("操作失败",{icon: 1});
+        }
+    }else{
+        layer.msg(data.message,{icon: 2});
+    }
+}
 
 function callbackgetAvstmt_modeltdList(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
@@ -156,5 +200,24 @@ $(function () {
         form.on('select(grade_filter)', function(data){
             getAvstmt_modeltdListByParam();
         });
+
+        //监听是否需要测谎开关
+        form.on('switch(switchUsepolygraph)', function(data){
+            var shieldbool = -1;
+            if(this.checked){
+                shieldbool = 1;
+            }
+            updateUsepolygraphBool(data.value, shieldbool);
+        });
+
+        //监听是否语音识别开关
+        form.on('switch(switchUseasr)', function(data){
+            var shieldbool = -1;
+            if(this.checked){
+                shieldbool = 1;
+            }
+            updateUseasrBool(data.value, shieldbool);
+        });
+
     });
 })

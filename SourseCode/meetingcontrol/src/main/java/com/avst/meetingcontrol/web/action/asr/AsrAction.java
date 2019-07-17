@@ -6,6 +6,7 @@ import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.AddOrUpdateToOutAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.GetToOutAsrListParam;
+import com.avst.meetingcontrol.web.req.UpdateBoolParam;
 import com.avst.meetingcontrol.web.service.asr.AsrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,4 +76,36 @@ public class AsrAction extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
+
+
+    //修改会议模板通道，是否需要测谎状态
+    @RequestMapping("/updateUsepolygraphBool")
+    @ResponseBody
+    public RResult updateUsepolygraphBool(@RequestBody ReqParam<UpdateBoolParam> param){
+        RResult result=this.createNewResultOfFail();
+        UpdateBoolParam updateBoolParam=param.getParam();
+        if (null!=updateBoolParam){
+            asrService.updateUsepolygraphBool(result,updateBoolParam);
+        }else {
+            result.setMessage("参数为空");
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //修改会议模板通道的语音识别开关状态
+    @RequestMapping("/updateUseasrBool")
+    @ResponseBody
+    public RResult updateUseasrBool(@RequestBody ReqParam<UpdateBoolParam> param){
+        RResult result=this.createNewResultOfFail();
+        UpdateBoolParam updateBoolParam=param.getParam();
+        if (null!=updateBoolParam){
+            asrService.updateUseasrBool(result,updateBoolParam);
+        }else {
+            result.setMessage("参数为空");
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 }
