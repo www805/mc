@@ -12,6 +12,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.PhForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +56,6 @@ public class MCOverThread extends Thread{
                                 Avstmt_realtimrecord realtimrecord=new Avstmt_realtimrecord();
                                 realtimrecord.setTranslatext(txt.getTxt());
                                 realtimrecord.setStarttime(Long.parseLong(txt.getStarttime()));
-    //                            realtimrecord.setRecordtime();//暂时不知道
                                 realtimrecord.setSsid(OpenUtil.getUUID_32());
                                 realtimrecord.setOrdernum(sortnum);
                                 realtimrecord.setMtssid(mtssid);
@@ -65,6 +65,7 @@ public class MCOverThread extends Thread{
                                 Integer inser=avstmt_realtimrecordMapper.insert(realtimrecord);
                                 if(null!=inser&&inser > -1){
                                     sortnum++;
+
                                 }
                             }catch (Exception e){
                                 e.printStackTrace();
@@ -114,6 +115,9 @@ public class MCOverThread extends Thread{
 
         //最后关闭会议缓存
         MCCache.delMCCacheParam(mtssid);//最后关闭会议缓存
+
+        //会议结束后，开始做asr语音文字 TXT导出
+
 
     }
 }

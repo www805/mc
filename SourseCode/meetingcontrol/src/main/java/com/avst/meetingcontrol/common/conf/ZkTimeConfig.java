@@ -96,6 +96,7 @@ public class ZkTimeConfig implements ApplicationRunner {
                                 cmd = xs.format(date);
                                 cmd = "  date -s " + cmd;
                                 Runtime.getRuntime().exec(cmd);
+
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

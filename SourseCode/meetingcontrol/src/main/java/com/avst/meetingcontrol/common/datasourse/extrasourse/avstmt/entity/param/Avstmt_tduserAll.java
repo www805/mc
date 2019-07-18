@@ -24,12 +24,12 @@ public class Avstmt_tduserAll extends Avstmt_tduser {
     private Integer recordtime;
 
     /**
-     * 录音开始时间,ms的形式
+     * asr开始时间,ms的形式
      */
     private long starttime;
 
     /**
-     * 当前asr识别的录像的
+     * 语音识别对应的音频的录音开始时间
      */
     private long startrecordtime;
 
