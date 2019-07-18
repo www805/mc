@@ -46,8 +46,10 @@ public class MainService extends BaseService {
     @Autowired
     private Base_mtinfoMapper base_mtinfoMapper;
 
-    @Value("${nav.file.client}")
-    private String swebFile;
+    @Value("${spring.application.name}")
+    private String application_name;
+    @Value("${nav.file.name}")
+    private String nav_file_name;
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
          String loginaccount=loginParam.getLoginaccount().trim();
@@ -142,20 +144,22 @@ public class MainService extends BaseService {
 
         AppCacheParam cacheParam = AppCache.getAppCacheParam();
         if(null == cacheParam.getData()){
-            String path = OpenUtil.getXMSoursePath() + "\\" + swebFile + ".yml";
+            String path = OpenUtil.getXMSoursePath() + "\\" + nav_file_name + ".yml";
             FileInputStream fis = null;
             try {
                 fis = new FileInputStream(path);
 
                 Yaml yaml = new Yaml();
                 Map<String,Object> map = yaml.load(fis);
+
+                Map<String,Object> avstYml = (Map<String, Object>) map.get(application_name);
                 if (null != map && map.size() > 0) {
-                    cacheParam.setTitle((String) map.get("title"));
+                    cacheParam.setTitle((String) avstYml.get("title"));
                 }
-                cacheParam.setData(map);
+                cacheParam.setData(avstYml);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtil.intoLog(4, this.getClass(), "没找到外部配置文件：" + path);
             }finally {
                 if(null != fis){
                     try {
