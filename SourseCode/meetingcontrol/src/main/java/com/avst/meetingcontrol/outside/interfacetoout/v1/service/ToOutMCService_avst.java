@@ -2,10 +2,13 @@ package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
 import com.avst.meetingcontrol.common.conf.SSType;
 import com.avst.meetingcontrol.common.conf.YWType;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tdpolygraph;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tduser;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modelAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modelMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tdpolygraphMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tduserMapper;
@@ -45,6 +48,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.param.PHDataBackVoParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +65,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     @Autowired
     private EquipmentControl equipmentControl;
 
+
     @Autowired
     private REMControl remControl;
 
@@ -75,6 +80,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Autowired
     private Avstmt_tdpolygraphMapper avstmt_tdpolygraphMapper;
+
+    @Autowired
+    private Avstmt_modelMapper avstmt_modelMapper;
 
 
     @Override
@@ -460,6 +468,19 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             vo.setUserssid(tdAndUserAndOtherCacheParam.getUserssid());
             result.changeToTrue(vo);
         }
+        return result;
+    }
+
+    @Override
+    public RResult getMc_model(ReqParam<GetMc_modelParam_out> param, RResult result) {
+        EntityWrapper ew=new EntityWrapper();
+        ew.eq("opened",1);//公开的
+        ew.orderBy("createtime",false);
+        List<Avstmt_model> oldlist=avstmt_modelMapper.selectList(ew);
+        if (null!=oldlist&&oldlist.size()>0){
+            result.changeToTrue(oldlist);
+        }
+        LogUtil.intoLog(this.getClass(),"获取全部会议模板__getMc_modeltd"+oldlist);
         return result;
     }
 

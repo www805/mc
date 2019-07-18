@@ -172,6 +172,20 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
+    /**
+     *  获取会议全部模板
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMc_model")
+    @ResponseBody
+    public RResult getMc_model(@RequestBody ReqParam<GetMc_modelParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMc_model(param,result);
+        return result;
+    }
+
+
 
 
     /**
