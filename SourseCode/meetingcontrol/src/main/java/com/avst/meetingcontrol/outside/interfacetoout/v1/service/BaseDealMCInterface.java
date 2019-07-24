@@ -33,5 +33,9 @@ public interface BaseDealMCInterface {
 
     public RResult getMc_model(ReqParam<GetMc_modelParam_out> param,RResult result);
 
+    public RResult getTdByModelSsid(ReqParam<GetTdByModelSsidParam_out> param,RResult result);
+
+    public RResult getMCCacheParamByMTssid(ReqParam<GetMCCacheParamByMTssidParam_out> param,RResult result);
+
 
 }

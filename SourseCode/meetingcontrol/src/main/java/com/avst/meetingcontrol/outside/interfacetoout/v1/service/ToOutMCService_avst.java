@@ -2,17 +2,13 @@ package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
 import com.avst.meetingcontrol.common.conf.SSType;
 import com.avst.meetingcontrol.common.conf.YWType;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_realtimrecord;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tdpolygraph;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_tduser;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.*;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modelAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modelMapper;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_realtimrecordMapper;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tdpolygraphMapper;
-import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_tduserMapper;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
@@ -41,10 +37,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.cache.param.PhDataParam_to
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MCOverThread;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
-import com.avst.meetingcontrol.outside.interfacetoout.vo.GetMCVO;
-import com.avst.meetingcontrol.outside.interfacetoout.vo.GetTdAndUserAndOtherCacheParamByMTssidVO;
-import com.avst.meetingcontrol.outside.interfacetoout.vo.SetMCAsrTxtBackVO;
-import com.avst.meetingcontrol.outside.interfacetoout.vo.StartMCVO;
+import com.avst.meetingcontrol.outside.interfacetoout.vo.*;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.param.PHDataBackVoParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
@@ -84,6 +77,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     @Autowired
     private Avstmt_modelMapper avstmt_modelMapper;
 
+    @Autowired
+    private Avstmt_modeltdMapper avstmt_modeltdMapper;
 
     @Override
     public RResult startMC(ReqParam<StartMCParam_out> param, RResult result) {
@@ -483,6 +478,48 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             result.changeToTrue(oldlist);
         }
         LogUtil.intoLog(this.getClass(),"获取全部会议模板__getMc_modeltd"+oldlist);
+        return result;
+    }
+
+    @Override
+    public RResult getTdByModelSsid(ReqParam<GetTdByModelSsidParam_out> param, RResult result) {
+        GetTdByModelSsidVO vo=new GetTdByModelSsidVO();
+
+        GetTdByModelSsidParam_out out=param.getParam();
+        if (null!=out){
+            String ssid=out.getModelssid();
+            if (StringUtils.isNotBlank(ssid)){
+                try {
+                    EntityWrapper entityWrapper=new EntityWrapper();
+                    entityWrapper.eq(true,"mtmodelssid",ssid);
+                   List<Avstmt_modeltd> tds=avstmt_modeltdMapper.selectList(entityWrapper);
+                   if (null!=tds&&tds.size()>0){
+                       vo.setModeltds(tds);
+                       result.changeToTrue(vo);
+                   }else {
+                       LogUtil.intoLog(this.getClass(),"getTdByModelSsid__获取模板通道__tds");
+                   }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else {
+                LogUtil.intoLog(this.getClass(),"getTdByModelSsid__获取模板通道__ssid");
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public RResult getMCCacheParamByMTssid(ReqParam<GetMCCacheParamByMTssidParam_out> param, RResult result) {
+        GetMCCacheParamByMTssidParam_out out=param.getParam();
+        String mtssid=out.getMtssid();
+        if (StringUtils.isNotBlank(mtssid)){
+            MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
+            if (null!=mcCacheParam){
+                result.changeToTrue(mcCacheParam);
+                return result;
+            }
+        }
         return result;
     }
 

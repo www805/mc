@@ -158,7 +158,6 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
-
     /**
      *
      * @param param
@@ -173,6 +172,21 @@ public class ToOutAction extends BaseAction {
     }
 
     /**
+     * 获取会议缓存
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMCCacheParamByMTssid")
+    @ResponseBody
+    public RResult getMCCacheParamByMTssid(@RequestBody ReqParam<GetMCCacheParamByMTssidParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMCCacheParamByMTssid(param,result);
+        return result;
+    }
+
+
+
+    /**
      *  获取会议全部模板
      * @param param
      * @return
@@ -182,6 +196,19 @@ public class ToOutAction extends BaseAction {
     public RResult getMc_model(@RequestBody ReqParam<GetMc_modelParam_out> param) {
         RResult result=createNewResultOfFail();
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getMc_model(param,result);
+        return result;
+    }
+
+    /**
+     *  获取模板会议通道
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getTdByModelSsid")
+    @ResponseBody
+    public RResult getTdByModelSsid(@RequestBody ReqParam<GetTdByModelSsidParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getTdByModelSsid(param,result);
         return result;
     }
 
