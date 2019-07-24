@@ -380,7 +380,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     String iid=avstmt_tdpolygraph.getIid();//获取对应iid
                     if (null!=iid){
                         Gson gson = new Gson();
-                        RResult<GetSavepathVO> getsavepath_rr=new RResult<>();
+                        RResult<GetSavepathVO> getsavepath_rr=new RResult<GetSavepathVO>();
                         GetSavePathParam getSavePathParam=new GetSavePathParam();
                         getSavePathParam.setSsType(SSType.AVST);
                         getSavePathParam.setIid(iid);
