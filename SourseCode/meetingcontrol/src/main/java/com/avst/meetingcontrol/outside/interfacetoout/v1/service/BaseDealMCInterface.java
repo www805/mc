@@ -29,8 +29,6 @@ public interface BaseDealMCInterface {
 
     public RResult  getPHDataBack(ReqParam<GetPHDataBackParam_out> param,RResult result);
 
-    public RResult  getTdAndUserAndOtherCacheParamByMTssid(ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param, RResult result);
-
     public RResult getMc_model(ReqParam<GetMc_modelParam_out> param,RResult result);
 
     public RResult getTdByModelSsid(ReqParam<GetTdByModelSsidParam_out> param,RResult result);

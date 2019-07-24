@@ -158,18 +158,7 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
-    /**
-     *
-     * @param param
-     * @return
-     */
-    @RequestMapping("/getTdAndUserAndOtherCacheParamByMTssid")
-    @ResponseBody
-    public RResult getTdAndUserAndOtherCacheParamByMTssid(@RequestBody ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param) {
-        RResult result=createNewResultOfFail();
-        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getTdAndUserAndOtherCacheParamByMTssid(param,result);
-        return result;
-    }
+
 
     /**
      * 获取会议缓存

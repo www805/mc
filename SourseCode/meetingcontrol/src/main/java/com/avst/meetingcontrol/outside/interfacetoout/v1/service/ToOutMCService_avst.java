@@ -432,43 +432,6 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
 
     @Override
-    public RResult getTdAndUserAndOtherCacheParamByMTssid(ReqParam<GetTdAndUserAndOtherCacheParamByMTssidPara_out> param, RResult result) {
-        GetTdAndUserAndOtherCacheParamByMTssidVO vo=new GetTdAndUserAndOtherCacheParamByMTssidVO();
-
-        GetTdAndUserAndOtherCacheParamByMTssidPara_out out=param.getParam();
-        String mtssid=out.getMtssid();
-        String userssid=out.getUserssid();
-        TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamByUserssid(mtssid,userssid);
-        if(null!=tdAndUserAndOtherCacheParam){
-            vo.setAsrid(tdAndUserAndOtherCacheParam.getAsrid());
-            vo.setAsrRun(tdAndUserAndOtherCacheParam.isAsrRun());
-            vo.setAsrssid(tdAndUserAndOtherCacheParam.getAsrssid());
-            vo.setAsrStartTime(tdAndUserAndOtherCacheParam.getAsrStartTime());
-            vo.setAsrtype(tdAndUserAndOtherCacheParam.getAsrtype());
-
-            vo.setFdrecord(tdAndUserAndOtherCacheParam.getFdrecord());
-            vo.setFdrecordstarttime(tdAndUserAndOtherCacheParam.getFdrecordstarttime());
-            vo.setFdssid(tdAndUserAndOtherCacheParam.getFdssid());
-            vo.setFdtype(tdAndUserAndOtherCacheParam.getFdtype());
-
-            vo.setPhStartTime(tdAndUserAndOtherCacheParam.getPhStartTime());
-            vo.setPolygraphssid(tdAndUserAndOtherCacheParam.getPolygraphssid());
-            vo.setPolygraphtype(tdAndUserAndOtherCacheParam.getPolygraphtype());
-
-            vo.setMttduserssid(tdAndUserAndOtherCacheParam.getMttduserssid());
-            vo.setTdssid(tdAndUserAndOtherCacheParam.getTdssid());
-            vo.setGrade(tdAndUserAndOtherCacheParam.getGrade());
-
-            vo.setUseasr(tdAndUserAndOtherCacheParam.getUseasr());
-            vo.setUsepolygraph(tdAndUserAndOtherCacheParam.getUsepolygraph());
-            vo.setUsername(tdAndUserAndOtherCacheParam.getUsername());
-            vo.setUserssid(tdAndUserAndOtherCacheParam.getUserssid());
-            result.changeToTrue(vo);
-        }
-        return result;
-    }
-
-    @Override
     public RResult getMc_model(ReqParam<GetMc_modelParam_out> param, RResult result) {
         EntityWrapper ew=new EntityWrapper();
         ew.eq("opened",1);//公开的
