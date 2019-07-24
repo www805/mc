@@ -371,6 +371,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     break;
                 }
           }
+      }else{
+          LogUtil.intoLog(3,this.getClass(),"avstmt_tduserMapper.selectList is null,mtssid:"+mtssid);
       }
 
       if (null!=mttduserssid){

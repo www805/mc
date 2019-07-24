@@ -17,6 +17,34 @@ public class MCCacheParam {
 
     private Integer mtstate;//会议状态 0初始化，1进行中，2已结束，3暂停
 
+    private int recordnum=0;//本次会议开启的录音/像个数
+    private int asrnum=0;//本次会议开启的语音识别个数
+    private int polygraphnum=0;//本次会议开启的测谎仪个数
+
+    public int getRecordnum() {
+        return recordnum;
+    }
+
+    public void setRecordnum(int recordnum) {
+        this.recordnum = recordnum;
+    }
+
+    public int getAsrnum() {
+        return asrnum;
+    }
+
+    public void setAsrnum(int asrnum) {
+        this.asrnum = asrnum;
+    }
+
+    public int getPolygraphnum() {
+        return polygraphnum;
+    }
+
+    public void setPolygraphnum(int polygraphnum) {
+        this.polygraphnum = polygraphnum;
+    }
+
     public Integer getMtstate() {
         return mtstate;
     }

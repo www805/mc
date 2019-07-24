@@ -482,18 +482,18 @@ public class DealAvstMCImpl {
                 Base_mtinfo base_mtinfo =base_mtinfoMapper.selectList(entityWrapper).get(0);
                 //是否考虑所有的服务未开启，或者必须开启的服务未开启时关闭本次会议
                 //关闭会议缓存，会议数据库当前记录，avstmt_asrtdMapper会议通道识别记录
-                if(asrerrorcount==tdUserList.size()){//说明语音识别开启完全失败
-                    //以后加上所有需要开启的判断，综合考虑是否需要关闭本次会议
-                    //会议开启失败需要关闭的一些缓存和处理
-                    AsrForMCCache.delAsrForMCMap(mtssid);
-                    PhForMCCache.rvPhMap(mtssid);
-                    MCCache.delMCCacheParam(mtssid);
-                    base_mtinfo.setMtstate(4);
-                    int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
-                    LogUtil.intoLog(this.getClass(),"会议开启失败 修改会议状态 开始 updatebool："+updatebool);
-
-                }else{
-
+//                if(asrerrorcount==tdUserList.size()){//说明语音识别开启完全失败
+//                    //以后加上所有需要开启的判断，综合考虑是否需要关闭本次会议
+//                    //会议开启失败需要关闭的一些缓存和处理
+//                    AsrForMCCache.delAsrForMCMap(mtssid);
+//                    PhForMCCache.rvPhMap(mtssid);
+//                    MCCache.delMCCacheParam(mtssid);
+//                    base_mtinfo.setMtstate(4);
+//                    int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
+//                    LogUtil.intoLog(this.getClass(),"会议开启失败 修改会议状态 开始 updatebool："+updatebool);
+//
+//                }else{
+                    //暂时去掉组件开始失败
                     StartMCVO startMCVO=new StartMCVO();
                     startMCVO.setAsrnum(asrnum);
                     startMCVO.setMtssid(mtssid);
@@ -510,14 +510,18 @@ public class DealAvstMCImpl {
 
 
                         MCCacheParam  mcCacheParam=MCCache.getMCCacheParam(mtssid);
+                        mcCacheParam.setMtstate(base_mtinfo.getMtstate());
+                        mcCacheParam.setPolygraphnum(polygraphnum);
+                        mcCacheParam.setAsrnum(asrnum);
+                        mcCacheParam.setRecordnum(recordnum);
 
-                        //刷新会议缓存状态
-                        MCCache.setMCCacheParam(mtssid,base_mtinfo.getMtstate());
+                        //更新会议缓存状态和组件服务数量
+                        MCCache.setMCCacheParam(mcCacheParam);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
