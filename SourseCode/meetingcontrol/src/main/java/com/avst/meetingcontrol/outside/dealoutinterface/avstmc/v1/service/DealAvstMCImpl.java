@@ -249,6 +249,7 @@ public class DealAvstMCImpl {
         if(null!=tdUserList&&tdUserList.size() > 0){
             int asrerrorcount=0;//asr语音识别错误路数
             String livingurl=null;
+            String previewurl=null;
             String iid=null;
             long firstasrstarttime=(new Date()).getTime();//第一个
             for(TdAndAsrParam td:tdUserList){
@@ -355,6 +356,7 @@ public class DealAvstMCImpl {
                                 WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
                                 iid=workStartVO.getIid();//设备录像的唯一识别码
                                 livingurl=workStartVO.getFdlivingurl();//设备直播地址
+                                previewurl=workStartVO.getFdpreviewurl();//设备直播预览地址
 
                                 startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
                                 tdcacheParam.setFdrecordstarttime(startrecordtime);
@@ -453,6 +455,7 @@ public class DealAvstMCImpl {
                 UserETParam userETParam=new UserETParam();
                 userETParam.setFdssid(td.getFdssid());
                 userETParam.setLivingurl(livingurl);
+                userETParam.setPreviewurl(previewurl);
                 userETParam.setIid(iid);
                 userETParam.setUserssid(tdcacheParam.getUserssid());
                 if(td.getUserecord()==1){

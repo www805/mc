@@ -10,6 +10,8 @@ public class UserETParam {
 
     private String livingurl;//设备直播地址
 
+    private String previewurl;//设备直播预览地址（标清）
+
     private String iid;//设备录音/像的唯一标识，用于保存录音/像
 
     public String getPolygraphssid() {
@@ -50,5 +52,13 @@ public class UserETParam {
 
     public void setLivingurl(String livingurl) {
         this.livingurl = livingurl;
+    }
+
+    public String getPreviewurl() {
+        return previewurl;
+    }
+
+    public void setPreviewurl(String previewurl) {
+        this.previewurl = previewurl;
     }
 }
