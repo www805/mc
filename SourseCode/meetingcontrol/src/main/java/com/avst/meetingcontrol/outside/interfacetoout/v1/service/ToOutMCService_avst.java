@@ -474,14 +474,61 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Override
     public RResult getMCCacheParamByMTssid(ReqParam<GetMCCacheParamByMTssidParam_out> param, RResult result) {
+        GetMCCacheParamByMTssidVO vo=new GetMCCacheParamByMTssidVO();
+
         GetMCCacheParamByMTssidParam_out out=param.getParam();
         String mtssid=out.getMtssid();
         if (StringUtils.isNotBlank(mtssid)){
             MCCacheParam mcCacheParam =   MCCache.getMCCacheParam(mtssid);
             if (null!=mcCacheParam){
-                result.changeToTrue(mcCacheParam);
+                vo.setAsrnum(mcCacheParam.getAsrnum());
+                vo.setMcType(mcCacheParam.getMcType());
+                vo.setMeetingtype(mcCacheParam.getMeetingtype());
+                vo.setMtssid(mcCacheParam.getMtssid());
+                vo.setMtstate(mcCacheParam.getMtstate());
+                vo.setPolygraphnum(mcCacheParam.getPolygraphnum());
+                vo.setRecordnum(mcCacheParam.getRecordnum());
+                vo.setYwSystemType(mcCacheParam.getYwSystemType());
+                result.changeToTrue(vo);
                 return result;
             }
+        }
+        return result;
+    }
+
+    @Override
+    public RResult getTDCacheParamByMTssid(ReqParam<GetTDCacheParamByMTssidParam_out> param, RResult result) {
+        GetTDCacheParamByMTssidVO vo=new GetTDCacheParamByMTssidVO();
+
+        GetTDCacheParamByMTssidParam_out out=param.getParam();
+        String mtssid=out.getMtssid();
+        String userssid=out.getUserssid();
+        TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamByUserssid(mtssid,userssid);
+        if(null!=tdAndUserAndOtherCacheParam){
+            vo.setAsrid(tdAndUserAndOtherCacheParam.getAsrid());
+            vo.setAsrRun(tdAndUserAndOtherCacheParam.isAsrRun());
+            vo.setAsrssid(tdAndUserAndOtherCacheParam.getAsrssid());
+            vo.setAsrStartTime(tdAndUserAndOtherCacheParam.getAsrStartTime());
+            vo.setAsrtype(tdAndUserAndOtherCacheParam.getAsrtype());
+
+            vo.setFdrecord(tdAndUserAndOtherCacheParam.getFdrecord());
+            vo.setFdrecordstarttime(tdAndUserAndOtherCacheParam.getFdrecordstarttime());
+            vo.setFdssid(tdAndUserAndOtherCacheParam.getFdssid());
+            vo.setFdtype(tdAndUserAndOtherCacheParam.getFdtype());
+
+            vo.setPhStartTime(tdAndUserAndOtherCacheParam.getPhStartTime());
+            vo.setPolygraphssid(tdAndUserAndOtherCacheParam.getPolygraphssid());
+            vo.setPolygraphtype(tdAndUserAndOtherCacheParam.getPolygraphtype());
+
+            vo.setMttduserssid(tdAndUserAndOtherCacheParam.getMttduserssid());
+            vo.setTdssid(tdAndUserAndOtherCacheParam.getTdssid());
+            vo.setGrade(tdAndUserAndOtherCacheParam.getGrade());
+
+            vo.setUseasr(tdAndUserAndOtherCacheParam.getUseasr());
+            vo.setUsepolygraph(tdAndUserAndOtherCacheParam.getUsepolygraph());
+            vo.setUsername(tdAndUserAndOtherCacheParam.getUsername());
+            vo.setUserssid(tdAndUserAndOtherCacheParam.getUserssid());
+            result.changeToTrue(vo);
         }
         return result;
     }

@@ -173,6 +173,23 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
+    /**
+     * 获取会议用户通道缓存
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getTDCacheParamByMTssid")
+    @ResponseBody
+    public RResult getTDCacheParamByMTssid(@RequestBody ReqParam<GetTDCacheParamByMTssidParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getTDCacheParamByMTssid(param,result);
+        return result;
+    }
+
+
+
+
+
 
 
     /**
