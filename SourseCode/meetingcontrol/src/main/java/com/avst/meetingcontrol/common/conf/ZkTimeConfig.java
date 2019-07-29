@@ -65,7 +65,7 @@ public class ZkTimeConfig implements ApplicationRunner {
 
                     long intervalDay = (newday.getTime() - oldDay.getTime())/(evaluate);
 
-                    //如果时间差过1小时以上，就修改系统时间
+                    如果时间差过1小时以上，就修改系统时间
                     if (Math.abs(intervalDay) >= servserDate) {
 
                         //修改系统时间

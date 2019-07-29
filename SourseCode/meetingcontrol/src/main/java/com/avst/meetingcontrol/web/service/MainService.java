@@ -14,6 +14,7 @@ import com.avst.meetingcontrol.common.util.baseaction.BaseService;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
+import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
 import com.avst.meetingcontrol.feignclient.ec.vo.fd.param.Flushbonadinginfo;
 import com.avst.meetingcontrol.web.req.GetHomeParam;
@@ -45,11 +46,6 @@ public class MainService extends BaseService {
 
     @Autowired
     private Base_mtinfoMapper base_mtinfoMapper;
-
-    @Value("${spring.application.name}")
-    private String application_name;
-    @Value("${nav.file.name}")
-    private String nav_file_name;
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
          String loginaccount=loginParam.getLoginaccount().trim();
@@ -144,6 +140,9 @@ public class MainService extends BaseService {
 
         AppCacheParam cacheParam = AppCache.getAppCacheParam();
         if(null == cacheParam.getData()){
+            String application_name = PropertiesListenerConfig.getProperty("spring.application.name");
+            String nav_file_name = PropertiesListenerConfig.getProperty("nav.file.name");
+
             String path = OpenUtil.getXMSoursePath() + "\\" + nav_file_name + ".yml";
             FileInputStream fis = null;
             try {

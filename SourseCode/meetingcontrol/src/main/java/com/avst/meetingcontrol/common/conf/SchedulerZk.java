@@ -3,6 +3,7 @@ package com.avst.meetingcontrol.common.conf;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
+import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.base.vo.ControlInfoParamVO;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,6 @@ public class SchedulerZk {
     @Autowired
     private ZkControl zkControl;
 
-    @Value("${spring.application.name}")
-    private String servername;
-
-    @Value("${control.servser.url}")
-    private String url;
-
-    @Value("${control.servser.loginusername}")
-    private String loginusername;
-
-    @Value("${control.servser.loginpassword}")
-    private String loginpassword;
-
 //    @Scheduled(fixedRate = 10000) //10秒心跳一次
     /**
      * 1分钟心跳一次
@@ -52,6 +41,11 @@ public class SchedulerZk {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
+        String servername = PropertiesListenerConfig.getProperty("spring.application.name");
+        String url = PropertiesListenerConfig.getProperty("control.servser.url");
+        String loginusername = PropertiesListenerConfig.getProperty("control.servser.loginusername");
+        String loginpassword = PropertiesListenerConfig.getProperty("control.servser.loginpassword");
 
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
         controlInfoParamVO.setServername(servername);//服务器注册名
