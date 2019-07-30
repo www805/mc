@@ -4,6 +4,7 @@ import com.avst.meetingcontrol.common.conf.SSType;
 import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.*;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modelAll;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modeltdAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
@@ -433,14 +434,34 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Override
     public RResult getMc_model(ReqParam<GetMc_modelParam_out> param, RResult result) {
+
+        GetMc_modelParam_out out=param.getParam();
+        String modelssid=out.getModelssid();
         EntityWrapper ew=new EntityWrapper();
         ew.eq("opened",1);//公开的
         ew.orderBy("createtime",false);
-        List<Avstmt_model> oldlist=avstmt_modelMapper.selectList(ew);
-        if (null!=oldlist&&oldlist.size()>0){
-            result.changeToTrue(oldlist);
+        if (StringUtils.isNotBlank(modelssid)){
+            ew.eq("ssid",modelssid);//公开的
         }
-        LogUtil.intoLog(this.getClass(),"获取全部会议模板__getMc_modeltd"+oldlist);
+        List<Avstmt_model> models=avstmt_modelMapper.selectList(ew);
+        List<Avstmt_modelAll>  modelAlls=new ArrayList<>();
+        Gson gson=new Gson();
+        modelAlls =gson.fromJson(gson.toJson(models), new TypeToken<List<Avstmt_modelAll>>(){}.getType());
+        if (null!=modelAlls&&modelAlls.size()>0){
+            for (Avstmt_modelAll avstmt_modelAll : modelAlls) {
+                String mtmodelssid=avstmt_modelAll.getSsid();
+                EntityWrapper ew1=new EntityWrapper();
+                ew1.orderBy("createtime",false);
+                ew1.eq(true,"mtmodelssid",mtmodelssid);
+                List<Avstmt_modeltdAll> avstmt_modeltdAlls=avstmt_modeltdMapper.selectList(ew1);
+                if (null!=avstmt_modeltdAlls&&avstmt_modeltdAlls.size()>0){
+                    avstmt_modelAll.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
+                }
+            }
+
+            result.changeToTrue(modelAlls);
+        }
+        LogUtil.intoLog(this.getClass(),"获取全部会议模板__getMc_modeltd"+modelAlls);
         return result;
     }
 
