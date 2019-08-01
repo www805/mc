@@ -44,13 +44,14 @@ public class SchedulerZk {
 
         String servername = PropertiesListenerConfig.getProperty("spring.application.name");
         String url = PropertiesListenerConfig.getProperty("control.servser.url");
+        String port = PropertiesListenerConfig.getProperty("server.port");
         String loginusername = PropertiesListenerConfig.getProperty("control.servser.loginusername");
         String loginpassword = PropertiesListenerConfig.getProperty("control.servser.loginpassword");
 
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
         controlInfoParamVO.setServername(servername);//服务器注册名
         controlInfoParamVO.setServertitle("会议系统");//服务器中文名
-        controlInfoParamVO.setUrl("http://" + hostAddress + url); //访问本服务器地址
+        controlInfoParamVO.setUrl("http://" + hostAddress + ":" + port + url); //访问本服务器地址
         controlInfoParamVO.setLoginusername(loginusername);
         controlInfoParamVO.setLoginpassword(loginpassword);
         controlInfoParamVO.setTotal_item(1);
@@ -59,6 +60,8 @@ public class SchedulerZk {
         controlInfoParamVO.setStatus(1);//状态
 
         param.setParam(controlInfoParamVO);
+
+        System.out.println(controlInfoParamVO);
 
         try {
             zkControl.getHeartbeat(param);

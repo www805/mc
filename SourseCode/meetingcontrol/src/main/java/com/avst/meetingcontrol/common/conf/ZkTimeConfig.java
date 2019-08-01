@@ -3,6 +3,7 @@ package com.avst.meetingcontrol.common.conf;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
+import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
 import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlEngine;
@@ -29,12 +30,6 @@ public class ZkTimeConfig implements ApplicationRunner {
     @Autowired
     private ZkControl zkControl;
 
-    @Value("${control.servser.date}")
-    private Integer servserDate;
-
-    @Value("${control.servser.formulas}")
-    private String formulas;
-
     //获取服务器时间进行比对
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -58,6 +53,9 @@ public class ZkTimeConfig implements ApplicationRunner {
                     Date newday = dateFormatter.parse(newTime);
                     Date oldDay = dateFormatter.parse(createTime);
 
+                    Integer servserDate = Integer.parseInt(PropertiesListenerConfig.getProperty("control.servser.date"));
+                    String formulas = PropertiesListenerConfig.getProperty("control.servser.formulas");
+
                     //计算公式转换成整数
                     JexlEngine jexlEngine = new JexlBuilder().create();
                     JexlExpression expression = jexlEngine.createExpression(formulas);
@@ -65,7 +63,7 @@ public class ZkTimeConfig implements ApplicationRunner {
 
                     long intervalDay = (newday.getTime() - oldDay.getTime())/(evaluate);
 
-                    如果时间差过1小时以上，就修改系统时间
+//                    如果时间差过1小时以上，就修改系统时间
                     if (Math.abs(intervalDay) >= servserDate) {
 
                         //修改系统时间
