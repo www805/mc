@@ -61,8 +61,6 @@ public class SchedulerZk {
 
         param.setParam(controlInfoParamVO);
 
-        System.out.println(controlInfoParamVO);
-
         try {
             zkControl.getHeartbeat(param);
         } catch (Exception e) {
