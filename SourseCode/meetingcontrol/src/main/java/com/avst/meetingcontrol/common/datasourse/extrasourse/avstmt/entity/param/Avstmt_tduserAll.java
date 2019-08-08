@@ -13,10 +13,6 @@ public class Avstmt_tduserAll extends Avstmt_tduser {
      */
     private String asrserverssid;
 
-    /**
-     * 实时录音/像地址,本次识别的全程录音/像
-     */
-    private String filesavessid;
 
     /**
      * 录音时长,Ms本次识别的总时长
@@ -29,9 +25,9 @@ public class Avstmt_tduserAll extends Avstmt_tduser {
     private long starttime;
 
     /**
-     * 语音识别对应的音频的录音开始时间
+     * 会议录音的开始时间
      */
-    private long startrecordtime;
+    private long mtstartrecordtime;
 
     /**
      * 通道asr识别的asrid唯一识别码
@@ -51,13 +47,6 @@ public class Avstmt_tduserAll extends Avstmt_tduser {
         this.asrserverssid = asrserverssid;
     }
 
-    public String getFilesavessid() {
-        return filesavessid;
-    }
-
-    public void setFilesavessid(String filesavessid) {
-        this.filesavessid = filesavessid;
-    }
 
     public Integer getRecordtime() {
         return recordtime;
@@ -75,12 +64,12 @@ public class Avstmt_tduserAll extends Avstmt_tduser {
         this.starttime = starttime;
     }
 
-    public long getStartrecordtime() {
-        return startrecordtime;
+    public long getMtstartrecordtime() {
+        return mtstartrecordtime;
     }
 
-    public void setStartrecordtime(long startrecordtime) {
-        this.startrecordtime = startrecordtime;
+    public void setMtstartrecordtime(long mtstartrecordtime) {
+        this.mtstartrecordtime = mtstartrecordtime;
     }
 
     public String getAsrtdssid() {

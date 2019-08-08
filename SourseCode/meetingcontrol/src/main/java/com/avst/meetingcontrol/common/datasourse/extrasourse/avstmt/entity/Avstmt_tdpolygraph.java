@@ -40,9 +40,9 @@ public class Avstmt_tdpolygraph extends Model<Avstmt_tdpolygraph> {
     private long starttime;
 
     /**
-     * 录音/像开始时间
+     * 本次会议的录像开始时间
      */
-    private long startrecordtime;
+    private long mtstartrecordtime;
 
 
     /**
@@ -81,12 +81,12 @@ public class Avstmt_tdpolygraph extends Model<Avstmt_tdpolygraph> {
         this.starttime = starttime;
     }
 
-    public long getStartrecordtime() {
-        return startrecordtime;
+    public long getMtstartrecordtime() {
+        return mtstartrecordtime;
     }
 
-    public void setStartrecordtime(long startrecordtime) {
-        this.startrecordtime = startrecordtime;
+    public void setMtstartrecordtime(long mtstartrecordtime) {
+        this.mtstartrecordtime = mtstartrecordtime;
     }
 
     public static long getSerialVersionUID() {

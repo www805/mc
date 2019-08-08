@@ -3,8 +3,8 @@ package com.avst.meetingcontrol.feignclient.ec;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.req.*;
-import com.avst.meetingcontrol.feignclient.ec.req.asr.AddOrUpdateToOutAsrParam;
-import com.avst.meetingcontrol.feignclient.ec.req.asr.GetToOutAsrListParam;
+import com.avst.meetingcontrol.feignclient.ec.req.GetAsrServerBySsidParam;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.*;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.*;
@@ -41,9 +41,14 @@ public interface EquipmentControl {
     @ResponseBody
     public RResult startAsr(@RequestBody ReqParam<StartAsrParam> param);
 
+    @RequestMapping("/asr/v1/pauseOrContinueAsr")
+    @ResponseBody
+    public RResult pauseOrContinueAsr(@RequestBody ReqParam<PauseOrContinueAsrParam> param);
+
     @RequestMapping("/asr/v1/overAsr")
     @ResponseBody
     public RResult overAsr(@RequestBody ReqParam<OverAsrParam> param);
+
 
     @RequestMapping("/asr/v1/getAsrServerBySsid")
     @ResponseBody
@@ -71,6 +76,11 @@ public interface EquipmentControl {
     @RequestMapping("/flushbonading/v1/workOver")
     @ResponseBody
     public RResult workOver(@RequestBody ReqParam<WorkOverParam> param);
+
+    //暂停/继续工作
+    @RequestMapping("/flushbonading/v1/workPauseOrContinue")
+    @ResponseBody
+    public RResult workPauseOrContinue(@RequestBody ReqParam<WorkPauseOrContinueParam> param);
 
 
 

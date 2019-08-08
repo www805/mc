@@ -49,16 +49,14 @@ public class Base_mtinfo extends Model<Base_mtinfo> {
     private Integer userecord;
 
     /**
-     * 录制开始时间
+     * 会议开始时间 ms
      */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date recordstarttime;
+    private long mtstarttime;
 
     /**
-     * 录制结束时间
+     * 会议结束时间 ms
      */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date recordendtime;
+    private long mtendtime;
 
     /**
      * 创建时间
@@ -127,20 +125,23 @@ public class Base_mtinfo extends Model<Base_mtinfo> {
     public void setUserecord(Integer userecord) {
         this.userecord = userecord;
     }
-    public Date getRecordstarttime() {
-        return recordstarttime;
+
+    public long getMtstarttime() {
+        return mtstarttime;
     }
 
-    public void setRecordstarttime(Date recordstarttime) {
-        this.recordstarttime = recordstarttime;
-    }
-    public Date getRecordendtime() {
-        return recordendtime;
+    public void setMtstarttime(long mtstarttime) {
+        this.mtstarttime = mtstarttime;
     }
 
-    public void setRecordendtime(Date recordendtime) {
-        this.recordendtime = recordendtime;
+    public long getMtendtime() {
+        return mtendtime;
     }
+
+    public void setMtendtime(long mtendtime) {
+        this.mtendtime = mtendtime;
+    }
+
     public Date getCreatetime() {
         return createtime;
     }
@@ -210,8 +211,8 @@ public class Base_mtinfo extends Model<Base_mtinfo> {
         ", filesavessid=" + filesavessid +
         ", opened=" + opened +
         ", userecord=" + userecord +
-        ", recordstarttime=" + recordstarttime +
-        ", recordendtime=" + recordendtime +
+        ", recordstarttime=" + mtstarttime +
+        ", recordendtime=" + mtendtime +
         ", createtime=" + createtime +
         ", string1=" + string1 +
         ", string2=" + string2 +

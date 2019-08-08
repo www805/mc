@@ -6,8 +6,6 @@ import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
-import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.BaseDealMCInterface;
 import com.avst.meetingcontrol.outside.interfacetoout.v1.service.ToOutMCService_avst;
@@ -57,6 +55,23 @@ public class ToOutAction extends BaseAction {
         RResult result=createNewResultOfFail();
 
         result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).overMC(param,result);
+        return result;
+    }
+
+    /**
+     * 会议暂停或者继续
+     * @param param
+     * @return
+     */
+    @RequestMapping("/pauseOrContinueMC")
+    @ResponseBody
+    public RResult pauseOrContinueMC(@RequestBody ReqParam<PauseOrContinueMCParam_out> param) {
+        RResult result=createNewResultOfFail();
+        if(null!=param&&null!=param.getParam()){
+            result= getBaseDealMCInterfaceImpl(param.getParam().getMcType()).pauseOrContinueMC(param.getParam(),result);
+        }else{
+            result.setMessage("参数异常");
+        }
         return result;
     }
 

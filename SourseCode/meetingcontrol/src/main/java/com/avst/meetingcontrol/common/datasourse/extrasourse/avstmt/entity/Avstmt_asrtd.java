@@ -35,11 +35,6 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
     private String asrserverssid;
 
     /**
-     * 实时录音/像地址,本次识别的全程录音/像
-     */
-    private String filesavessid;
-
-    /**
      * 录音时长,Ms本次识别的总时长
      */
     private Integer recordtime;
@@ -54,7 +49,10 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
      */
     private Date createtime;
 
-    private long startrecordtime;
+    /**
+     * 本次会议的录像开始时间
+     */
+    private long mtstartrecordtime;
 
     private String string1;
 
@@ -73,12 +71,12 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
      */
     private String asrid;
 
-    public long getStartrecordtime() {
-        return startrecordtime;
+    public long getMtstartrecordtime() {
+        return mtstartrecordtime;
     }
 
-    public void setStartrecordtime(long startrecordtime) {
-        this.startrecordtime = startrecordtime;
+    public void setMtstartrecordtime(long mtstartrecordtime) {
+        this.mtstartrecordtime = mtstartrecordtime;
     }
 
     public String getAsrid() {
@@ -122,13 +120,6 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
 
     public void setMttduserssid(String mttduserssid) {
         this.mttduserssid = mttduserssid;
-    }
-    public String getFilesavessid() {
-        return filesavessid;
-    }
-
-    public void setFilesavessid(String filesavessid) {
-        this.filesavessid = filesavessid;
     }
     public Integer getRecordtime() {
         return recordtime;
@@ -199,7 +190,6 @@ public class Avstmt_asrtd extends Model<Avstmt_asrtd> {
         return "Avstmt_asrtd{" +
         "id=" + id +
         ", mttduserssid=" + mttduserssid +
-        ", filesavessid=" + filesavessid +
         ", recordtime=" + recordtime +
         ", starttime=" + starttime +
         ", createtime=" + createtime +

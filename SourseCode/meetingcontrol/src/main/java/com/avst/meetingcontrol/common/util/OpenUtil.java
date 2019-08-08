@@ -264,7 +264,7 @@ public class OpenUtil {
 	public static String createpath_fileByBasepath(String basepath){
 		
 		Date dd=new Date();	
-		String path=basepath+DateUtil.getYear(dd)+"/"+DateUtil.getMonth(dd)+"/"+DateUtil.getDay(dd)+"/";
+		String path=zjpath_fileByBasepath(basepath);
 		File file =new File(path); 
 		//如果文件夹不存在则创建    
 		if  (! file.exists()  && !file.isDirectory())      
@@ -276,6 +276,18 @@ public class OpenUtil {
 		    LogUtil.intoLog(OpenUtil.class,file+"//文件夹存在");  
 		}
 		 return path;
+	}
+
+	/**
+	 * 组建文件夹，以日期格式为目录结构
+	 * @param basepath
+	 * @return
+	 */
+	public static String zjpath_fileByBasepath(String basepath){
+
+		Date dd=new Date();
+		String path=basepath+DateUtil.getYear(dd)+"/"+DateUtil.getMonth(dd)+"/"+DateUtil.getDay(dd)+"/";
+		return path;
 	}
 	
 

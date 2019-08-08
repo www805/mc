@@ -37,6 +37,7 @@ public interface BaseDealMCInterface {
 
     public RResult getTDCacheParamByMTssid(ReqParam<GetTDCacheParamByMTssidParam_out> param,RResult result);
 
+    public RResult pauseOrContinueMC(PauseOrContinueMCParam_out param,RResult result);
 
 
 }

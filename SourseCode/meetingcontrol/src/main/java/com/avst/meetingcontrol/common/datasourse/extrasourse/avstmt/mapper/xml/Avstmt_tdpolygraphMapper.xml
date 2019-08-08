@@ -13,7 +13,7 @@
         <result column="integer1" property="integer1" />
         <result column="integer2" property="integer2" />
         <result column="starttime" property="starttime" />
-        <result column="startrecordtime" property="startrecordtime" />
+        <result column="mtstarttime" property="mtstarttime" />
         <result column="ssid" property="ssid" />
         <result column="iid" property="iid" />
     </resultMap>

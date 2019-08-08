@@ -24,8 +24,8 @@ import java.util.List;
 public interface Avstmt_tduserMapper extends BaseMapper<Avstmt_tduser> {
 
 
-    @Select("select tu.*,at.asrserverssid asrserverssid ,at.filesavessid filesavessid,at.recordtime filesavessid," +
-            "at.starttime starttime,at.startrecordtime startrecordtime,at.ssid asrtdssid,at.asrid asrid from avstmt_tduser tu " +
+    @Select("select tu.*,at.asrserverssid asrserverssid ,at.recordtime filesavessid," +
+            "at.starttime starttime,at.mtstartrecordtime mtstartrecordtime,at.ssid asrtdssid,at.asrid asrid from avstmt_tduser tu " +
             "  left join avstmt_asrtd at on tu.ssid=at.mttduserssid " +
             "  where 1=1 ${ew.sqlSegment} ")
     public List<Avstmt_tduserAll> getAvstmt_tduserAll(@Param("ew") EntityWrapper ew);

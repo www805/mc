@@ -45,7 +45,7 @@ public class Avstmt_realtimrecord extends Model<Avstmt_realtimrecord> {
     private Long recordtime;
 
     /**
-     * 录音开始时间
+     * 语音识别开始时间
      */
     private Long starttime;
 

@@ -68,7 +68,7 @@ public class MC_Ph_AddThread extends Thread{
                     }
 
                     String filename=iid+".txt";
-                    String sourseRelativePath= OpenUtil.createpath_fileByBasepath(staticpath)+filename;
+                    String sourseRelativePath= OpenUtil.zjpath_fileByBasepath(staticpath)+filename;//只是组建路径不创建，这个是相对路径
 
                     SaveFile_localParam param=new SaveFile_localParam();
                     param.setIid(iid);

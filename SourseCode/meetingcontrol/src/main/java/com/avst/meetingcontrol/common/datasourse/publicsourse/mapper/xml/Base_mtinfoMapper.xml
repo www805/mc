@@ -11,8 +11,8 @@
         <result column="opened" property="opened" />
         <result column="mtstate" property="mtstate" />
         <result column="userecord" property="userecord" />
-        <result column="recordstarttime" property="recordstarttime" />
-        <result column="recordendtime" property="recordendtime" />
+        <result column="mtstarttime" property="mtstarttime" />
+        <result column="mtendtime" property="mtendtime" />
         <result column="createtime" property="createtime" />
         <result column="string1" property="string1" />
         <result column="string2" property="string2" />

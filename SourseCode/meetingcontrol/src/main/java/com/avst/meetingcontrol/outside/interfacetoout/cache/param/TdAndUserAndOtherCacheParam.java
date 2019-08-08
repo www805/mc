@@ -17,7 +17,7 @@ public class TdAndUserAndOtherCacheParam {
 
     private int fdrecord;//是否需要录像，1使用，-1 不使用
 
-    private long fdrecordstarttime;//录像开始时间
+    private long fdrecordstarttime;//本次会议录像开始时间
 
     private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
 

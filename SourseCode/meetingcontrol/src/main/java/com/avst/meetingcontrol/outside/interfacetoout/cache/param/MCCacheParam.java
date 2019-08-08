@@ -21,6 +21,16 @@ public class MCCacheParam {
     private int asrnum=0;//本次会议开启的语音识别个数
     private int polygraphnum=0;//本次会议开启的测谎仪个数
 
+    private long mtstarttime;//会议开始时间，标记会议的开始时间，关联asr、ph、录像的开始时间，用于同步
+
+    public long getMtstarttime() {
+        return mtstarttime;
+    }
+
+    public void setMtstarttime(long mtstarttime) {
+        this.mtstarttime = mtstarttime;
+    }
+
     public int getRecordnum() {
         return recordnum;
     }

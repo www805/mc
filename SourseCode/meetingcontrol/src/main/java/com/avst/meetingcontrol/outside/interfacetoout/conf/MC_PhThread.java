@@ -9,8 +9,10 @@ import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
 import com.avst.meetingcontrol.feignclient.ec.req.ph.GetPolygraphAnalysisParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.ph.GetPolygraphAnalysisVO;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.AsrForMCCache;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.MCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.PhForMCCache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
+import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.PhDataParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import com.google.gson.Gson;
@@ -53,37 +55,47 @@ public class MC_PhThread extends Thread{
             //请求测谎仪服务获取数据
             LogUtil.intoLog(this.getClass(),phssid+"------phssid  userssid:"+userssid);
             try {
+                MCCacheParam mc=MCCache.getMCCacheParam(mtssid);
+                if(null==mc){
+                    LogUtil.intoLog(this.getClass(),phssid+"---会议缓存为找到直接退出  mtssid:"+mtssid);
+                    return ;
+                }
+                if(mc.getMtstate()!=1){
+                    LogUtil.intoLog(3,this.getClass(),phssid+"----会议状态不是进行中不需要去获取--phssid  mc.getMtstate():"+mc.getMtstate());
+                }else{
 
-                ReqParam<GetPolygraphAnalysisParam> param=new ReqParam<GetPolygraphAnalysisParam>();
-                GetPolygraphAnalysisParam getPolygraphAnalysisParam=new GetPolygraphAnalysisParam();
-                getPolygraphAnalysisParam.setPhType(phtype);
-                getPolygraphAnalysisParam.setPolygraphssid(phssid);
-                param.setParam(getPolygraphAnalysisParam);
+                    ReqParam<GetPolygraphAnalysisParam> param=new ReqParam<GetPolygraphAnalysisParam>();
+                    GetPolygraphAnalysisParam getPolygraphAnalysisParam=new GetPolygraphAnalysisParam();
+                    getPolygraphAnalysisParam.setPhType(phtype);
+                    getPolygraphAnalysisParam.setPolygraphssid(phssid);
+                    param.setParam(getPolygraphAnalysisParam);
 
-                long reqtime= DateUtil.getSeconds();//请求时间()
-                RResult<GetPolygraphAnalysisVO> rr= equipmentControl.getPolygraphAnalysis(param);
-                if(null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
-                    try {
-                        GetPolygraphAnalysisVO vo=rr.getData();
-                        if(null!=vo&&null!=vo.getT()){
-                            PhDataParam_toout phDataParam_toout=new PhDataParam_toout();
-                            phDataParam_toout.setReqTime((reqtime-starttime)/1000);//这是一个秒数，
-                            phDataParam_toout.setT(vo.getT());
-                            PhForMCCache.addPhDataParam_toout2Cache(phDataParam_toout,mtssid,phssid,userssid);
-                        }else{
-                            LogUtil.intoLog(this.getClass(),"MC_PhThread equipmentControl.getPolygraphAnalysis 异常 rr.getData() is null："+rr.getData());
+                    long reqtime= DateUtil.getSeconds();//请求时间()
+                    RResult<GetPolygraphAnalysisVO> rr= equipmentControl.getPolygraphAnalysis(param);
+                    if(null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
+                        try {
+                            GetPolygraphAnalysisVO vo=rr.getData();
+                            if(null!=vo&&null!=vo.getT()){
+                                PhDataParam_toout phDataParam_toout=new PhDataParam_toout();
+                                phDataParam_toout.setReqTime((reqtime-starttime)/1000);//这是一个秒数，
+                                phDataParam_toout.setT(vo.getT());
+                                PhForMCCache.addPhDataParam_toout2Cache(phDataParam_toout,mtssid,phssid,userssid);
+                            }else{
+                                LogUtil.intoLog(this.getClass(),"MC_PhThread equipmentControl.getPolygraphAnalysis 异常 rr.getData() is null："+rr.getData());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                    }else{
+                        LogUtil.intoLog(this.getClass(),"MC_PhThread equipmentControl.getPolygraphAnalysis 异常 rr.getMessage()："+rr.getMessage()+"---phssid:"+phssid);
                     }
 
-                }else{
-                    LogUtil.intoLog(this.getClass(),"MC_PhThread equipmentControl.getPolygraphAnalysis 异常 rr.getMessage()："+rr.getMessage()+"---phssid:"+phssid);
+                    if(!bool){
+                        break;
+                    }
                 }
 
-                if(!bool){
-                    break;
-                }
                 try {
                     Thread.sleep(1000);//1s请求一次测谎仪
                 } catch (InterruptedException e) {

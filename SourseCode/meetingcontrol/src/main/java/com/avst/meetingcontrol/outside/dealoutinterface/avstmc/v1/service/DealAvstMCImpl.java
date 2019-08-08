@@ -90,9 +90,8 @@ public class DealAvstMCImpl {
 
 //是否需要检测通道的唯一性，一个通道是否可以被多次同时使用
 
-        //并新建会议
+        //新建会议
         //新建会议人员设备通道
-        //测试暂时不管检测的事
         int mttype=param.getMeetingtype();
         int modelbool=param.getModelbool();
         String  mtmodelssid=param.getMtmodelssid();
@@ -164,7 +163,7 @@ public class DealAvstMCImpl {
         }
 
         String ssid= OpenUtil.getUUID_32();//会议ssid
-
+        base_mtinfo.setCreatetime(new Date());
         base_mtinfo.setSsid(ssid);
         int insertbool=base_mtinfoMapper.insert(base_mtinfo);
         LogUtil.intoLog(this.getClass(),insertbool+":insertbool,----base_mtinfoMapper.insert ssid:"+ssid );
@@ -223,6 +222,7 @@ public class DealAvstMCImpl {
                 mcCacheParam.setTdList(tdList);
 
             }
+
             MCCache.setMCCacheParam(mcCacheParam);//插入会议缓存
 
             //插入会议活动
@@ -247,6 +247,9 @@ public class DealAvstMCImpl {
         //对每一个会议通道进行处理，该asr的要新建语言识别记录，开启asr识别；测谎也是一样的
         List<TdAndAsrParam> tdUserList=param.getTdAserList();
         if(null!=tdUserList&&tdUserList.size() > 0){
+
+            long mtstarttime=(new Date()).getTime();;//会议开始时间 ms
+
             int asrerrorcount=0;//asr语音识别错误路数
             String livingurl=null;
             String previewurl=null;
@@ -272,6 +275,54 @@ public class DealAvstMCImpl {
                     LogUtil.intoLog(this.getClass(),"跳出，不开启会议其他组件---");
                     continue;
                 }
+
+                //是否需要录音
+                //会议开启的时候的录像时间才会是会议录像开始时间，暂停，继续之后的录像开始时间不是会议录像开始时间（重点记号）
+                long startrecordtime=(new Date()).getTime();
+                try {
+                    if(td.getUserecord()==1){
+
+                        ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
+                        WorkStartParam startParam=new WorkStartParam();
+                        startParam.setFdid(mtssid);//就是会议ssid
+                        startParam.setFdType(td.getFdtype());
+                        startParam.setFlushbonadingetinfossid(td.getFdssid());
+                        workStartParam.setParam(startParam);
+                        RResult result=equipmentControl.workStart(workStartParam);
+                        if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())&&null!=result.getData()){
+                            try {
+                                Gson gson=new Gson();
+                                WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
+                                iid=workStartVO.getIid();//设备录像的唯一识别码
+                                livingurl=workStartVO.getFdlivingurl();//设备直播地址
+                                previewurl=workStartVO.getFdpreviewurl();//设备直播预览地址
+
+                                startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
+                                tdcacheParam.setFdrecordstarttime(startrecordtime);
+                                //现在同步点都用录像时间
+//                                if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){
+//                                    avstmt_asrtd.setStartrecordtime(startrecordtime);
+//                                    int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
+//                                    LogUtil.intoLog(this.getClass(),i_updateById+":i_updateById 修改语音识别记录中的startrecordtime");
+//                                }else{
+//                                    LogUtil.intoLog(this.getClass(),startrecordtime+":startrecordtime  会议用户语音识别对象没有找到，不进行修改操作 avstmt_asrtd："+avstmt_asrtd);
+//
+//                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            recordnum++;
+
+                        }else{
+                            LogUtil.intoLog(this.getClass(),"设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
+                        }
+                    }else{
+                        LogUtil.intoLog(this.getClass(),"不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
 
                 //检测是否需要asr，要新建语言识别记录，并开启asr
@@ -310,6 +361,7 @@ public class DealAvstMCImpl {
                                 avstmt_asrtd.setStarttime(asrStartTime_long);//开始时间保存为long类型
                                 tdcacheParam.setAsrid(asrid);//缓存中放一份
                                 tdcacheParam.setAsrStartTime(asrStartTime_long);
+                                avstmt_asrtd.setMtstartrecordtime(startrecordtime);
                                 int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
                                 LogUtil.intoLog(this.getClass(),i_updateById+":i_updateById 修改语音识别记录中的asrid");
 
@@ -334,53 +386,6 @@ public class DealAvstMCImpl {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-
-
-
-                //是否需要录音
-                long startrecordtime=0;
-                try {
-                    if(td.getUserecord()==1){
-
-                        ReqParam<WorkStartParam> workStartParam=new ReqParam<WorkStartParam>();
-                        WorkStartParam startParam=new WorkStartParam();
-                        startParam.setFdid(mtssid);//就是会议ssid
-                        startParam.setFdType(td.getFdtype());
-                        startParam.setFlushbonadingetinfossid(td.getFdssid());
-                        workStartParam.setParam(startParam);
-                        RResult result=equipmentControl.workStart(workStartParam);
-                        if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())&&null!=result.getData()){
-                            try {
-                                Gson gson=new Gson();
-                                WorkStartVO workStartVO=gson.fromJson(gson.toJson(result.getData()),WorkStartVO.class);
-                                iid=workStartVO.getIid();//设备录像的唯一识别码
-                                livingurl=workStartVO.getFdlivingurl();//设备直播地址
-                                previewurl=workStartVO.getFdpreviewurl();//设备直播预览地址
-
-                                startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
-                                tdcacheParam.setFdrecordstarttime(startrecordtime);
-                                if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){
-                                    avstmt_asrtd.setStartrecordtime(startrecordtime);
-                                    int i_updateById=avstmt_asrtdMapper.updateById(avstmt_asrtd);
-                                    LogUtil.intoLog(this.getClass(),i_updateById+":i_updateById 修改语音识别记录中的startrecordtime");
-                                }else{
-                                    LogUtil.intoLog(this.getClass(),startrecordtime+":startrecordtime  会议用户语音识别对象没有找到，不进行修改操作 avstmt_asrtd："+avstmt_asrtd);
-
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            recordnum++;
-
-                        }else{
-                            LogUtil.intoLog(this.getClass(),"设备录音失败 mtssid："+mtssid+"--fdssid:"+td.getFdssid());
-                        }
-                    }else{
-                        LogUtil.intoLog(this.getClass(),"不需要开启fd录像--td.getMttduserssid()："+td.getMttduserssid());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
 
 
@@ -412,13 +417,11 @@ public class DealAvstMCImpl {
                                     Avstmt_tdpolygraph avstmt_tdpolygraph=new Avstmt_tdpolygraph();
                                     avstmt_tdpolygraph.setMttduserssid(td.getMttduserssid());
                                     avstmt_tdpolygraph.setPolygraphssid(td.getPolygraphssid());
-                                    if(0==startrecordtime){
-                                        startrecordtime=(new Date()).getTime();//ms
-                                    }
-                                    avstmt_tdpolygraph.setStartrecordtime(startrecordtime);
+                                    avstmt_tdpolygraph.setMtstartrecordtime(startrecordtime);
                                     avstmt_tdpolygraph.setStarttime(phstarttime);
                                     avstmt_tdpolygraph.setIid(phiid);
                                     avstmt_tdpolygraph.setSsid(OpenUtil.getUUID_32());
+                                    avstmt_tdpolygraph.setCreatetime(new Date());
                                     int insert_ph=avstmt_tdpolygraphMapper.insert(avstmt_tdpolygraph);
                                     if(insert_ph <= 0){//注意测试，这里，是0还是1
                                         LogUtil.intoLog(this.getClass(),"测谎仪关联用户通道失败，没有新增到数据库， mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
@@ -463,8 +466,6 @@ public class DealAvstMCImpl {
                 }
                 useretlist.add(userETParam);
 
-                //修改录音时间，asr识别时间，测谎仪时间
-
                 //刷新会议缓存
                 MCCache.setMCTDCacheParam(mtssid,tdcacheParam);
 
@@ -472,9 +473,9 @@ public class DealAvstMCImpl {
 
             //添加会议数据存储对应
             Base_mttodatasave base_mttodatasave=new Base_mttodatasave();
-            base_mttodatasave.setCreatetime(new Date());
             base_mttodatasave.setMtssid(mtssid);
             base_mttodatasave.setIid(iid);
+            base_mttodatasave.setCreatetime(new Date());
             base_mttodatasave.setSsid(OpenUtil.getUUID_32());
             int mttodatasaveinsert_bool=base_mttodatasaveMapper.insert(base_mttodatasave);
             LogUtil.intoLog(this.getClass(),"mttodatasaveinsert_bool__"+mttodatasaveinsert_bool);
@@ -496,18 +497,12 @@ public class DealAvstMCImpl {
 //                    LogUtil.intoLog(this.getClass(),"会议开启失败 修改会议状态 开始 updatebool："+updatebool);
 //
 //                }else{
-                    //暂时去掉组件开始失败
-                    StartMCVO startMCVO=new StartMCVO();
-                    startMCVO.setAsrnum(asrnum);
-                    startMCVO.setMtssid(mtssid);
-                    startMCVO.setPolygraphnum(polygraphnum);
-                    startMCVO.setRecordnum(recordnum);
-                    startMCVO.setUseretlist(useretlist);
-                    rrParam.changeTrue(startMCVO);
-                    //修改会议
-                    try {
 
+                //修改会议
+                try {
+                    if(null!=base_mtinfo){
                         base_mtinfo.setMtstate(1);
+                        base_mtinfo.setMtstarttime(mtstarttime);
                         int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
                         LogUtil.intoLog(this.getClass(),"会议开启成功 修改会议状态 开始 updatebool："+updatebool);
 
@@ -517,13 +512,26 @@ public class DealAvstMCImpl {
                         mcCacheParam.setPolygraphnum(polygraphnum);
                         mcCacheParam.setAsrnum(asrnum);
                         mcCacheParam.setRecordnum(recordnum);
+                        mcCacheParam.setMtstarttime(mtstarttime);//赋予开启会议的时间 ms
 
                         //更新会议缓存状态和组件服务数量
                         MCCache.setMCCacheParam(mcCacheParam);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                        //暂时去掉组件开始失败
+                        StartMCVO startMCVO=new StartMCVO();
+                        startMCVO.setAsrnum(asrnum);
+                        startMCVO.setMtssid(mtssid);
+                        startMCVO.setPolygraphnum(polygraphnum);
+                        startMCVO.setRecordnum(recordnum);
+                        startMCVO.setUseretlist(useretlist);
+                        rrParam.changeTrue(startMCVO);
+
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 //                }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -586,6 +594,7 @@ public class DealAvstMCImpl {
             entityWrapper.eq("ssid",mtssid);
             Base_mtinfo base_mtinfo =base_mtinfoMapper.selectList(entityWrapper).get(0);
             base_mtinfo.setMtstate(2);
+            base_mtinfo.setMtendtime((new Date()).getTime());
             int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
             LogUtil.intoLog(this.getClass(),"修改会议状态--结束-- updatebool："+updatebool);
         } catch (Exception e) {

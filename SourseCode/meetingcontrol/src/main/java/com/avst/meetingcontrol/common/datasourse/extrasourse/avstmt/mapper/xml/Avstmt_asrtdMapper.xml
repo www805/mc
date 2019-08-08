@@ -6,7 +6,6 @@
     <resultMap id="BaseResultMap" type="com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_asrtd">
         <id column="id" property="id" />
         <result column="mttduserssid" property="mttduserssid" />
-        <result column="filesavessid" property="filesavessid" />
         <result column="recordtime" property="recordtime" />
         <result column="starttime" property="starttime" />
         <result column="createtime" property="createtime" />
@@ -18,7 +17,7 @@
         <result column="backtxtinterface" property="backtxtinterface" />
         <result column="asrserverssid" property="asrserverssid" />
         <result column="asrid" property="asrid" />
-        <result column="startrecordtime" property="startrecordtime" />
+        <result column="startmttime" property="startmttime" />
 
     </resultMap>
 

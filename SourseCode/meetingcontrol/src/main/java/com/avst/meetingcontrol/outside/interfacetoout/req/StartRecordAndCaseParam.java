@@ -26,7 +26,6 @@ public class StartRecordAndCaseParam {
     //案件类型
     private String casetypename;
 
-
     /**
      * 笔录
      */

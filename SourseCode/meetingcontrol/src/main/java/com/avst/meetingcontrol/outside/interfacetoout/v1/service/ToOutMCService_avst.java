@@ -1,5 +1,7 @@
 package com.avst.meetingcontrol.outside.interfacetoout.v1.service;
 
+import com.avst.meetingcontrol.common.conf.ASRType;
+import com.avst.meetingcontrol.common.conf.FDType;
 import com.avst.meetingcontrol.common.conf.SSType;
 import com.avst.meetingcontrol.common.conf.YWType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.*;
@@ -11,13 +13,17 @@ import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
+import com.avst.meetingcontrol.common.util.JacksonUtil;
 import com.avst.meetingcontrol.common.util.LogUtil;
+import com.avst.meetingcontrol.common.util.ReadWriteFile;
 import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.bl.REMControl;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
+import com.avst.meetingcontrol.feignclient.ec.req.asr.PauseOrContinueAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkPauseOrContinueParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ss.GetSavePathParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.ss.GetSavepathVO;
 import com.avst.meetingcontrol.feignclient.ec.vo.ss.param.RecordSavepathParam;
@@ -189,6 +195,17 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         if(null==mcAsrTxtBackParam_out.getAsrTxtParam_toout()){
             return false;
         }
+
+        MCCacheParam mc=MCCache.getMCCacheParam(mtssid);
+        if(null==mc){
+            LogUtil.intoLog(this.getClass(),"--setMCAsrTxtBack-会议缓存为找到直接退出  mtssid:"+mtssid);
+            return false;
+        }
+        if(mc.getMtstate()!=1){
+            LogUtil.intoLog(3,this.getClass(),"--setMCAsrTxtBack--会议状态不是进行中不需要去获取--phssid  mc.getMtstate():"+mc.getMtstate());
+            return false;
+        }
+
         String userssid=MCCache.getUserSsidByAsrid(mtssid,asrid);
 
         AsrTxtParam_toout asrtxt= null;
@@ -231,6 +248,102 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return false;
     }
 
+
+    @Override
+    public RResult pauseOrContinueMC(PauseOrContinueMCParam_out param,RResult result){
+
+        String mtssid=param.getMtssid();
+        int pauseOrContinue=param.getPauseOrContinue();
+        //更新缓存状态
+        MCCacheParam mc=MCCache.getMCCacheParam(mtssid);
+        if(null==mc){
+            LogUtil.intoLog(this.getClass(),"--pauseOrContinueMC-会议缓存为找到直接退出  mtssid:"+mtssid);
+            result.setMessage("会议缓存未找到直接退出");
+            return result;
+        }
+        if(mc.getMtstate()==pauseOrContinue){
+            LogUtil.intoLog(3,this.getClass(),"--pauseOrContinueMC--会议状态不需要重复修改--phssid  mc.getMtstate():"+mc.getMtstate());
+            result.setMessage("会议状态不需要重复修改");
+            result.changeToTrue();
+            return result;
+        }
+
+        List<TdAndUserAndOtherCacheParam> tdlist=mc.getTdList();
+        if(null==tdlist||tdlist.size() == 0){
+            int asrbool=0;////成功语音识别执行个数
+            int phbool=0;////成功执行测谎仪个数
+            int recordbool=0;//成功执行设备录像个数
+            for(TdAndUserAndOtherCacheParam td:tdlist){
+
+                if(td.getUsepolygraph()==1){//测谎仪这个不需要判断和请求，因为mc状态变了就不会去主动请求
+                    phbool++;
+                }
+
+                //推送asr识别服务暂停
+                ReqParam<PauseOrContinueAsrParam> pparam=new ReqParam<PauseOrContinueAsrParam>();
+                PauseOrContinueAsrParam pauseOrContinueAsrParam=new PauseOrContinueAsrParam();
+                pauseOrContinueAsrParam.setAsrid(td.getAsrid());
+                pauseOrContinueAsrParam.setPauseOrContinue(pauseOrContinue);
+                pauseOrContinueAsrParam.setAsrEquipmentssid(td.getAsrssid());
+                pauseOrContinueAsrParam.setAsrtype(ASRType.AVST);
+                pparam.setParam(pauseOrContinueAsrParam);
+                RResult resultASR=equipmentControl.pauseOrContinueAsr(pparam);
+                if(null!=resultASR){
+                    if(resultASR.getActioncode().equals(Code.SUCCESS.toString())){
+                        LogUtil.intoLog(4,this.getClass(),td.getAsrid()+"td.getAsrid() 暂停成功");
+                        asrbool++;
+                    }else{
+                        LogUtil.intoLog(4,this.getClass(),"请求asr暂停失败，请求返回的resultASR："+ JacksonUtil.objebtToString(resultASR));
+                    }
+                }else{
+                    LogUtil.intoLog(4,this.getClass(),"请求asr暂停失败，请求返回的resultASR is null");
+                }
+
+                //推送嵌入式设备停止/继续录像
+                ReqParam<WorkPauseOrContinueParam> wparam=new ReqParam<WorkPauseOrContinueParam>();
+                WorkPauseOrContinueParam workPauseOrContinueParam=new WorkPauseOrContinueParam();
+                workPauseOrContinueParam.setFdid(mtssid);
+                String iid=mtssid+"_"+td.getFdssid();
+                workPauseOrContinueParam.setIid(iid);
+                workPauseOrContinueParam.setPauseOrContinue(pauseOrContinue);
+                workPauseOrContinueParam.setFlushbonadingetinfossid(td.getFdssid());
+                workPauseOrContinueParam.setFdType(FDType.FD_AVST);
+                wparam.setParam(workPauseOrContinueParam);
+                RResult resultfd=equipmentControl.workPauseOrContinue(wparam);
+                if(null!=resultfd){
+                    if(resultfd.getActioncode().equals(Code.SUCCESS.toString())){
+                        LogUtil.intoLog(4,this.getClass(),td.getFdssid()+"td.getFdssid() 暂停成功");
+                        recordbool++;
+                    }else{
+                        LogUtil.intoLog(4,this.getClass(),"请求fd暂停失败，请求返回的resultfd："+ JacksonUtil.objebtToString(resultfd));
+                    }
+                }else{
+                    LogUtil.intoLog(4,this.getClass(),"请求fd暂停失败，请求返回的resultfd is null");
+                }
+
+            }
+
+            PauseOrContinueMCVO pauseOrContinueMCVO=new PauseOrContinueMCVO();
+            pauseOrContinueMCVO.setAsrnum(asrbool);
+            pauseOrContinueMCVO.setPolygraphnum(phbool);
+            pauseOrContinueMCVO.setRecordnum(recordbool);
+            //不管组件是否关闭这里一定会显示修改会议状态
+            mc.setMtstate(pauseOrContinue);
+            result.changeToTrue(pauseOrContinueMCVO);
+
+        }else{
+            LogUtil.intoLog(4,this.getClass(),"没有好到任何一个用户通道，请仔细查看");
+        }
+
+
+
+
+
+
+
+        return result;
+    }
+
     @Override
     public RResult getMC(ReqParam<GetMCParam_out> param,RResult result) {
         GetMCVO getMCVO=new GetMCVO();
@@ -262,7 +375,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                             l.setUserssid(a.getMtuserssid());
                             l.setAsrtime(a.getString1());//时间
                             l.setAsrstartime(tu.getStarttime());
-                            l.setSubtractime(tu.getStarttime()-tu.getStartrecordtime());
+                            l.setSubtractime(tu.getStarttime()-tu.getMtstartrecordtime());/*计算差这个要重写，语音识别、录像的开始时间的计算*/
                             list.add(l);
                         }
                     }else{
@@ -398,19 +511,31 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                                         String savepath=recordSavepathParam.getSavepath();
                                         if (null!=savepath){
                                             try {
-                                                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(savepath)),"UTF-8"));
-                                                String lineTxt = null;
-                                                while ((lineTxt = br.readLine()) != null) {
-                                                    PHDataBackVoParam phDataBackVoParam=new PHDataBackVoParam();
-                                                    String[] txts = lineTxt.split(";");
-                                                    phDataBackVoParam.setNum(txts[0]);
-                                                    phDataBackVoParam.setPhBataBackJson(txts[1]);
-                                                    phdatabackList.add(phDataBackVoParam);
+
+                                                List<String> strlist= ReadWriteFile.readTxtFileToList(savepath,"utf8");
+                                                if(null!=strlist&&strlist.size() > 0){
+                                                    for (String str:strlist){
+                                                        if(StringUtils.isEmpty(str)){
+                                                            continue;
+                                                        }
+                                                        PHDataBackVoParam phDataBackVoParam=new PHDataBackVoParam();
+                                                        String[] txts = str.split(";");
+                                                        if(null==txts||txts.length ==0){
+                                                            continue;
+                                                        }
+                                                        phDataBackVoParam.setNum(txts[0].trim());
+                                                        phDataBackVoParam.setPhBataBackJson(txts[1].trim());
+                                                        phdatabackList.add(phDataBackVoParam);
+                                                    }
+                                                }else{
+                                                    LogUtil.intoLog(4,this.getClass(),savepath+":savepath,ReadWriteFile.readTxtFileToList strlist is null");
                                                 }
-                                                br.close();
                                             } catch (Exception e) {
-                                                System.err.println("read errors :" + e);
+                                                System.err.println("strlist read errors :" + e);
+                                                e.printStackTrace();
                                             }
+                                        }else{
+                                            LogUtil.intoLog(4,this.getClass(),"savepath is null,读取不到ph的点播txt文件");
                                         }
                                     }
                                 }

@@ -284,17 +284,38 @@ public class ReadWriteFile {
         	}
         	
         	FileOutputStream out = new FileOutputStream(path,false);
-        	out.write(new String("utf-8").getBytes());
-        	out.close(); 
-        	
-        	
-        	File f = new File(path);
+			try {
+				out.write(new String("utf-8").getBytes());
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					out.flush();
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			File f = new File(path);
         	FileWriter fw =  new FileWriter(f);
-        	
-        	fw.write(newStr);
-        	fw.close();
-        	return true;
-        } catch (IOException e1) {
+
+			try {
+				fw.write(newStr);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					fw.flush();
+					fw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return true;
+        } catch (Exception e1) {
             e1.printStackTrace();
         } 
         return false;

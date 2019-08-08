@@ -49,7 +49,6 @@ public class Base_mttodatasave extends Model<Base_mttodatasave> {
 
     private String ssid;
 
-
     public String getIid() {
         return iid;
     }
