@@ -261,15 +261,15 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             result.setMessage("会议缓存未找到直接退出");
             return result;
         }
-        if(mc.getMtstate()==pauseOrContinue){
+       /* if(mc.getMtstate()==pauseOrContinue){  //pauseOrContinue=1（1请求暂停 2请求继续） mc.state=1(进行中)
             LogUtil.intoLog(3,this.getClass(),"--pauseOrContinueMC--会议状态不需要重复修改--phssid  mc.getMtstate():"+mc.getMtstate());
             result.setMessage("会议状态不需要重复修改");
             result.changeToTrue();
             return result;
-        }
+        }*/
 
         List<TdAndUserAndOtherCacheParam> tdlist=mc.getTdList();
-        if(null==tdlist||tdlist.size() == 0){
+        if(null!=tdlist&&tdlist.size() > 0){
             int asrbool=0;////成功语音识别执行个数
             int phbool=0;////成功执行测谎仪个数
             int recordbool=0;//成功执行设备录像个数
@@ -328,15 +328,13 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             pauseOrContinueMCVO.setPolygraphnum(phbool);
             pauseOrContinueMCVO.setRecordnum(recordbool);
             //不管组件是否关闭这里一定会显示修改会议状态
-            mc.setMtstate(pauseOrContinue);
+            mc.setMtstate(pauseOrContinue==1?3:1);//1 暂停改为3 继续改为1  配合客户端按钮显示
+           MCCache.setMCCacheParam(mc);//更新缓存
             result.changeToTrue(pauseOrContinueMCVO);
-
+            System.out.println(pauseOrContinueMCVO.toString());
         }else{
             LogUtil.intoLog(4,this.getClass(),"没有好到任何一个用户通道，请仔细查看");
         }
-
-
-
 
 
 
@@ -375,7 +373,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                             l.setUserssid(a.getMtuserssid());
                             l.setAsrtime(a.getString1());//时间
                             l.setAsrstartime(tu.getStarttime());
-                            l.setSubtractime(tu.getStarttime()-tu.getMtstartrecordtime());/*计算差这个要重写，语音识别、录像的开始时间的计算*/
+                            /*差值：计算视频开始录制时间与语音开始识别时间相减*/
+                            l.setSubtractime(tu.getStarttime()-tu.getMtstartrecordtime());/*计算差这个要重写，语音识别、录像的开始时间的计算   */
                             list.add(l);
                         }
                     }else{
@@ -523,7 +522,10 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                                                         if(null==txts||txts.length ==0){
                                                             continue;
                                                         }
-                                                        phDataBackVoParam.setNum(txts[0].trim());
+                                                        //加上测谎仪开始时间与录像开始时间差
+                                                        Long subtractime=avstmt_tdpolygraph.getStarttime()-avstmt_tdpolygraph.getMtstartrecordtime();
+                                                        Long num=(subtractime/1000)+Integer.valueOf(txts[0].trim());
+                                                        phDataBackVoParam.setNum(num.toString());
                                                         phDataBackVoParam.setPhBataBackJson(txts[1].trim());
                                                         phdatabackList.add(phDataBackVoParam);
                                                     }

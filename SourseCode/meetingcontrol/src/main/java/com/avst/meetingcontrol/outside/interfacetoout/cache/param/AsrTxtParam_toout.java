@@ -21,7 +21,6 @@ public class AsrTxtParam_toout {
 
     private long subtractime;//时间差 statrtime-startrecordtime
 
-
     public long getSubtractime() {
         return subtractime;
     }

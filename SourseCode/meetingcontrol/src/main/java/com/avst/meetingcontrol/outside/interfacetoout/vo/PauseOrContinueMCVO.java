@@ -31,4 +31,6 @@ public class PauseOrContinueMCVO {
     public void setPolygraphnum(int polygraphnum) {
         this.polygraphnum = polygraphnum;
     }
+
+
 }
