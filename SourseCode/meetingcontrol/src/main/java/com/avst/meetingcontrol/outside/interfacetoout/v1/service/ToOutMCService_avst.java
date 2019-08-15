@@ -57,6 +57,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -535,6 +536,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                                                         Long num=(subtractime/1000)+Integer.valueOf(txts[0].trim());
                                                         phDataBackVoParam.setNum(num.toString());
                                                         phDataBackVoParam.setPhBataBackJson(txts[1].trim());
+                                                        SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
+                                                        phDataBackVoParam.setPhdate(df.format(new Date(avstmt_tdpolygraph.getStarttime()+Long.parseLong(txts[0].trim())*1000)));
                                                         phdatabackList.add(phDataBackVoParam);
                                                     }
                                                 }else{
