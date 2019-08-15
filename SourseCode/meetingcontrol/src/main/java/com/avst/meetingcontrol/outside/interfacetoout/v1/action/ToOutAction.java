@@ -201,7 +201,18 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
-
+    /**
+     * 获取到模板-通道列表-单通道（所有信息）
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getTDByMTList")
+    @ResponseBody
+    public RResult getTDByMTList(@RequestBody ReqParam<GetTDCacheParamByMTssidParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).getTDByMTList(param,result);
+        return result;
+    }
 
 
 

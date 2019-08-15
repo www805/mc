@@ -327,8 +327,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             pauseOrContinueMCVO.setAsrnum(asrbool);
             pauseOrContinueMCVO.setPolygraphnum(phbool);
             pauseOrContinueMCVO.setRecordnum(recordbool);
-            //不管组件是否关闭这里一定会显示修改会议状态
-            mc.setMtstate(pauseOrContinue==1?3:1);//1 暂停改为3 继续改为1  配合客户端按钮显示
+            /**不管组件是否关闭这里一定会显示修改会议状态**/
+            mc.setMtstate(pauseOrContinue==1?3:1);/**1 暂停改为3 继续改为1  配合客户端按钮显示**/
            MCCache.setMCCacheParam(mc);//更新缓存
             result.changeToTrue(pauseOrContinueMCVO);
             System.out.println(pauseOrContinueMCVO.toString());
@@ -336,9 +336,17 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             LogUtil.intoLog(4,this.getClass(),"没有好到任何一个用户通道，请仔细查看");
         }
 
+        return result;
+    }
 
+    @Override
+    public RResult getTDByMTList(ReqParam<GetTDCacheParamByMTssidParam_out> param, RResult result) {
 
+        /**查询模板列表，查询模板里的通道列表，查询每个通道（所有信息）**/
+        List<getTDByMTListVO> tdByMTList = avstmt_modelMapper.getTDByMTList();
 
+        result.setData(tdByMTList);
+        result.changeToTrue();
         return result;
     }
 
@@ -352,13 +360,13 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             String iid=null;
             List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
 
-            //根据mtssid获取会议所有的通道/用户
+            /**根据mtssid获取会议所有的通道/用户**/
             EntityWrapper ew=new EntityWrapper();
             ew.eq("tu.mtssid",mtssid);
             List<Avstmt_tduserAll> tulist=avstmt_tduserMapper.getAvstmt_tduserAll(ew);
             if(null!=tulist&&tulist.size() > 0){
                 for(Avstmt_tduserAll tu:tulist){
-                    //根据会议ssid获取用户本次会议对话
+                    /**根据会议ssid获取用户本次会议对话**/
                     ew=new EntityWrapper();
                     ew.orderBy("ordernum",true);
                     ew.eq("mtssid",mtssid);

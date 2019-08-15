@@ -39,5 +39,6 @@ public interface BaseDealMCInterface {
 
     public RResult pauseOrContinueMC(PauseOrContinueMCParam_out param,RResult result);
 
+    public RResult getTDByMTList(ReqParam<GetTDCacheParamByMTssidParam_out> param, RResult result);
 
 }
