@@ -17,7 +17,7 @@
 
     <form class="layui-form  layui-form-pane layui-main site-inline" action="" style="margin-top: 30px;">
         <div class="layui-form-item">
-            <label class="layui-form-label">会议类型</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>会议类型</label>
             <div class="layui-input-block">
                 <select name="meetingtype" lay-verify="required" id="meetingtype"  lay-search>
                     <option value="">请选择会议类型</option>
@@ -28,14 +28,14 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">人员数量</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>人员数量</label>
             <div class="layui-input-block">
                 <input type="number" name="usernum" id="usernum" required  lay-verify="required" placeholder="请输入人员数量" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">是否公开</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>是否公开</label>
             <div class="layui-input-block">
                 <select name="opened" lay-verify="" id="opened"  >
                     <option value="">请选择是否公开</option>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">是否录制</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>是否录制</label>
             <div class="layui-input-block">
                 <select name="userecord" lay-verify="" id="userecord"  >
                     <option value="">请选择是否录制</option>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">模板说明</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>模板说明</label>
             <div class="layui-input-block">
                 <textarea placeholder="请输入模板说明" class="layui-textarea"  name="explain" id="explain" ></textarea>
             </div>

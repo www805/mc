@@ -53,6 +53,11 @@ function callgetNavList(data) {
                 var bottom_url = appCache.data.bottom.url;
                 var bottom_html = bottom_declaration + " <a href=\"" + bottom_url + "\">" + bottom_name + "</a>";
                 $("#bottom_mian").html(bottom_html);
+
+            }
+            if (isNotEmpty(appCache.data.guidepageUrl)) {
+                //设置引导页a标签
+                $("#guidepage").attr("href", appCache.data.guidepageUrl);
             }
         }
         layui.use('element', function(){

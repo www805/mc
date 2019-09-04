@@ -1,6 +1,7 @@
 package com.avst.meetingcontrol.common.conf;
 
 import java.io.*;
+import java.net.InetAddress;
 
 public class NetTool {
 
@@ -93,4 +94,15 @@ public class NetTool {
 		return null;
 
 	}
+
+	//取得LOCALHOST的IP地址
+	public static String getMyIP() {
+		InetAddress myIPaddress=null;
+		try {
+			myIPaddress=InetAddress.getLocalHost();
+		}
+		catch (Exception e) {}
+		return (myIPaddress.getHostAddress());
+	}
+
 }  

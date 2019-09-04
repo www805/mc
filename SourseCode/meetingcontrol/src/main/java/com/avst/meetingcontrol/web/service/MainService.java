@@ -3,6 +3,7 @@ package com.avst.meetingcontrol.web.service;
 import com.avst.meetingcontrol.common.cache.AppCache;
 import com.avst.meetingcontrol.common.cache.param.AppCacheParam;
 import com.avst.meetingcontrol.common.conf.Constant;
+import com.avst.meetingcontrol.common.conf.NetTool;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modelMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modeltdMapper;
@@ -170,6 +171,12 @@ public class MainService extends BaseService {
                 Map<String,Object> map = yaml.load(fis);
 
                 Map<String,Object> avstYml = (Map<String, Object>) map.get(application_name);
+                Map<String,Object> zkYml = (Map<String, Object>) map.get("zk");
+                Map<String,Object> guidepage = (Map<String, Object>) zkYml.get("guidepage");
+                String guidepageUrl = (String) guidepage.get("url");
+                String myIP = NetTool.getMyIP();
+                avstYml.put("guidepageUrl" , "http://" + myIP + guidepageUrl);
+
                 avstYml.put("bottom", map.get("bottom"));
                 if (null != map && map.size() > 0) {
                     cacheParam.setTitle((String) avstYml.get("title"));
