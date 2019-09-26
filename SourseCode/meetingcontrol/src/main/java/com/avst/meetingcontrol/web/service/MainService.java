@@ -50,6 +50,12 @@ public class MainService extends BaseService {
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
 
+        if (StringUtils.isBlank(loginParam.getLoginaccount())||StringUtils.isBlank(loginParam.getPassword())){
+            result.setMessage("账号密码不能为空");
+            return result;
+        }
+
+
         AppCacheParam cacheParam = AppCache.getAppCacheParam();
         if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
             RResult rr = new RResult();
@@ -63,12 +69,12 @@ public class MainService extends BaseService {
         String password = (String) loginData.get("password");
 
         if(!loginParam.getLoginaccount().equals(loginaccount)){
-            result.setMessage("用户不存在");
+            result.setMessage("未找到该用户");
             return result;
         }
 
         if(!loginParam.getPassword().equals(password)){
-            result.setMessage("用户名或密码错误");
+            result.setMessage("密码错误");
             return result;
         }
 

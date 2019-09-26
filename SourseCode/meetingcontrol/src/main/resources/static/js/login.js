@@ -26,7 +26,7 @@ function callbacklogining(data){
         var url=getUrl_manage().main;
         window.location.href=url;
     }else{
-        layer.msg(data.message, {icon: 2});
+        layer.msg(data.message, {icon: 2,offset: 't'});
     }
 }
 
@@ -88,7 +88,7 @@ function callLogout(data){
         var url=getUrl_manage().gotologin;
         window.location.href=url;
     }else{
-        layer.msg(data.message, {time: 5000, icon:6});
+        layer.msg(data.message, {time: 5000, icon:5});
     }
 }
 
