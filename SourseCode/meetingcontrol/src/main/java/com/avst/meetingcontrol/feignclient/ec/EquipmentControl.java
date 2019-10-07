@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 设备控制的代理
  */
-@FeignClient(value="ec",url="localhost:8081/")
+@FeignClient(value="ec")
 public interface EquipmentControl {
 
     //asr
