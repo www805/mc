@@ -151,7 +151,7 @@ public class PhForMCCache {
         if(null==phDataParam_tooutList){
             phDataParam_tooutList=new ArrayList<PhDataParam_toout>();
         }else{
-            System.out.println(phDataParam_tooutList.size()+":phDataParam_tooutList.size()---maxHCPhDataNum:"+maxHCPhDataNum);
+//            System.out.println(phDataParam_tooutList.size()+":phDataParam_tooutList.size()---maxHCPhDataNum:"+maxHCPhDataNum);
             if(phDataParam_tooutList.size() >=maxHCPhDataNum){//达到临界值了
                final List<PhDataParam_toout> phDataParam_tooutList_add=phDataParam_tooutList;
 

@@ -63,6 +63,7 @@ public class Avstmt_modeltd extends Model<Avstmt_modeltd> {
 
     /**
      * 通道级别,1主麦/2副麦（用于关联特殊的处理，比如只有被提讯人才会进行测谎）
+     * 现在改成 1/2/3/4/5/6/7.。。一直往后累加，1还是主麦
      */
     private Integer grade;
 

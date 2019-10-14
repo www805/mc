@@ -115,13 +115,11 @@ public class DealAvstMCImpl {
                 List<Avstmt_modeltd> modeltdList=avstmt_modeltdMapper.selectList(entityWrapper);
                 if(null!=tulist&&tulist.size()> 0 && null!=modeltdList&&modeltdList.size()> 0){
 
-                    //先设置主麦
+                    //麦的设置是从1开始一直往后，1麦默认是主麦
                     for(TdAndUserParam tu:tulist){
-                        if(tu.getGrade()==1){
-                            int i=0;
-                            for(Avstmt_modeltd mtu:modeltdList){
-                                if(mtu.getGrade()==1){
 
+                            for(Avstmt_modeltd mtu:modeltdList){
+                                if(tu.getGrade()==mtu.getGrade()){
                                     String tdssid=mtu.getTdssid();
 
                                     tu.setTdssid(tdssid);//把模板的通道赋予会议用户通道
@@ -132,29 +130,10 @@ public class DealAvstMCImpl {
                                     tu.setUserecord(base_mtinfo.getUserecord());
                                     tu.setFdeuipmentssid(mtu.getFdssid());
                                     tu.setGrade(mtu.getGrade());
-                                    modeltdList.remove(i);
                                     break;
                                 }
-                                i++;
                             }
-                            break;
-                        }
-                    }
 
-                    //再把剩下的麦的通道给其他用户
-                    for(TdAndUserParam tu:tulist){
-                        if(tu.getGrade()==1){//主麦已经设置了，不需要重新设置,主麦只能有一个，不然会有问题
-                            continue;
-                        }
-                        tu.setTdssid(modeltdList.get(0).getTdssid());
-                        tu.setAsrssid(modeltdList.get(0).getAsrssid());
-                        tu.setPolygraphssid(modeltdList.get(0).getPolygraphssid());
-                        tu.setUsepolygraph(modeltdList.get(0).getUsepolygraph());
-                        tu.setUseasr(modeltdList.get(0).getUseasr());
-                        tu.setFdeuipmentssid(modeltdList.get(0).getFdssid());
-                        tu.setGrade(modeltdList.get(0).getGrade());
-                        tu.setUserecord(base_mtinfo.getUserecord());
-                        modeltdList.remove(0);
                     }
                 }
             }else{

@@ -72,7 +72,7 @@ public class AsrForMCCache {
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null!=list&&list.size() > 0){
             for(AsrForMCCache_oneParam asr:list){
-                LogUtil.intoLog(AsrForMCCache.class,asr.getAsrid()+":asr.getAsrid()---"+asrid);
+//                LogUtil.intoLog(AsrForMCCache.class,asr.getAsrid()+":asr.getAsrid()---"+asrid);
 
                 if(asr.getAsrid().equals(asrid)){
                     return asr;
@@ -93,7 +93,7 @@ public class AsrForMCCache {
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null!=list&&list.size() > 0){
             for(AsrForMCCache_oneParam asr:list){
-                LogUtil.intoLog(AsrForMCCache.class,asr.getUserssid()+":asr.getuserssid()---"+userssid);
+//                LogUtil.intoLog(AsrForMCCache.class,asr.getUserssid()+":asr.getuserssid()---"+userssid);
 
                 if(null!=asr.getUserssid()&&asr.getUserssid().equals(userssid)){
                     return asr;
@@ -183,7 +183,7 @@ public class AsrForMCCache {
      */
     public static synchronized  boolean setMTAsrOneUserAsr(String mtssid,AsrForMCCache_oneParam oneasr){
 
-        LogUtil.intoLog(AsrForMCCache.class,oneasr.getAsrid()+"-----");
+//        LogUtil.intoLog(AsrForMCCache.class,oneasr.getAsrid()+"-----");
 
         List<AsrForMCCache_oneParam> list=getMTAsrAllUserAsrByMTSsid(mtssid);
         if(null==list){
@@ -248,10 +248,10 @@ public static boolean runbool=true;
 
                 //只需要比较最后一句,asr识别是会一直往后加的，只有最后一句话才会有可能还在识别中
                 AsrTxtParam_toout txt=txtList.get(txtList.size()-1);
-                LogUtil.intoLog(AsrForMCCache.class,txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
+//                LogUtil.intoLog(AsrForMCCache.class,txt.getStarttime()+"--"+asrtxt.getStarttime()+"---"+txtList.size());
                 if(txt.getStarttime().hashCode() == asrtxt.getStarttime().hashCode()){//比较这句话开始识别的时间，一样的话就还是这句话的识别直接覆盖
                     txtList.remove(txtList.size()-1);
-                    LogUtil.intoLog(AsrForMCCache.class,txtList.size()-1+"-txtList.remove--"+txtList.size());
+//                    LogUtil.intoLog(AsrForMCCache.class,txtList.size()-1+"-txtList.remove--"+txtList.size());
 
                 }
 

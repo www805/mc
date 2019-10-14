@@ -106,7 +106,7 @@ function getAvstmt_modeltdListByParam(){
     var len=arguments.length;
     if(len==0){
         var currPage=1;
-        var pageSize=3;//测试
+        var pageSize=10;
         getAvstmt_modeltdList_init(currPage,pageSize);
     }else if (len==2){
         getAvstmt_modeltdList('',arguments[0],arguments[1]);

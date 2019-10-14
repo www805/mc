@@ -46,7 +46,16 @@
                 <select name="grade" lay-verify="" id="grade" lay-filter="grade_filter" >
                     <option value="">全部</option>
                     <option value="1">主麦</option>
-                    <option value="2">副麦</option>
+                    <option value="2">二麦</option>
+                    <option value="3">三麦</option>
+                    <option value="4">四麦</option>
+                    <option value="5">五麦</option>
+                    <option value="6">六麦</option>
+                    <option value="7">七麦</option>
+                    <option value="8">八麦</option>
+                    <option value="9">九麦</option>
+                    <option value="10">十麦</option>
+
                 </select>
             </div>
 
@@ -90,7 +99,7 @@
             <td title='{{value.phexplain==null?"":value.phexplain}}'>{{value.phexplain==null?"":value.phexplain}}</td>
             <td title='{{value.asrexplain==null?"":value.asrexplain}}'> {{value.asrexplain==null?"":value.asrexplain}}</td>
             <td title='{{value.tdexplain==null?"":value.tdexplain}}'>{{value.tdexplain==null?"":value.tdexplain}}</td>
-            <td>{{value.grade==null?"":(value.grade==1?"主麦":(value.grade==2?"副麦":"未知"))}}</td>
+            <td>{{value.grade==null?"":(value.grade==1?"主麦":(value.grade+"麦"))}}</td>
             <td><input type="checkbox" name="usepolygraph" lay-skin="switch" lay-filter="switchUsepolygraph" lay-text="需要|不需要" {{value.usepolygraph==-1?'':'checked'}} value="{{value.ssid}}"/></td>
             <td><input type="checkbox" name="useasr" lay-skin="switch" lay-filter="switchUseasr" lay-text="是|否" {{value.useasr==-1?'':'checked'}} value="{{value.ssid}}"/></td>
             <td>{{value.createtime==null?"":value.createtime}}</td>

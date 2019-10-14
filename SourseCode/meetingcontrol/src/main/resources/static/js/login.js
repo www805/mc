@@ -44,7 +44,7 @@ function callgetNavList(data) {
             }
 
             if (isNotEmpty(appCache.data.bottom)) {
-                if (!isNotEmpty(appCache.data.bottom) || !isNotEmpty(appCache.data.bottom.name) || !isNotEmpty(appCache.data.bottom.declaration)) {
+                if (!isNotEmpty(appCache.data.bottom) || !isNotEmpty(appCache.data.bottom.name) || !isNotEmpty(appCache.data.bottom.declaration) ) {
                     return;
                 }
                 //页脚
