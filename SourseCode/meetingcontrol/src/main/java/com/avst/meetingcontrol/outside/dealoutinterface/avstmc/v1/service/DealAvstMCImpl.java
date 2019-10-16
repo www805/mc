@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.outside.dealoutinterface.avstmc.v1.service;
 
+import com.avst.meetingcontrol.common.conf.ASRType;
 import com.avst.meetingcontrol.common.conf.MCType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.*;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
@@ -195,6 +196,7 @@ public class DealAvstMCImpl {
                         TdAndUserAndOtherCacheParam tdcache=gson.fromJson(gson.toJson(tu),TdAndUserAndOtherCacheParam.class);
                         tdcache.setMttduserssid(tussid);
                         tdcache.setFdssid(tu.getFdeuipmentssid());
+                        tdcache.setAsrtype(ASRType.AVST);
                         tdList.add(tdcache);
                     }
                 }
