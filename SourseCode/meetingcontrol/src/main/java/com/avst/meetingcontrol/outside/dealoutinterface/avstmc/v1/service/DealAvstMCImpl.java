@@ -42,8 +42,10 @@ import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_AsrThread;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.param.UserETParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.ctc.wstx.util.StringUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,7 +119,8 @@ public class DealAvstMCImpl {
                 if(null!=tulist&&tulist.size()> 0 && null!=modeltdList&&modeltdList.size()> 0){
 
                     //麦的设置是从1开始一直往后，1麦默认是主麦
-                    for(TdAndUserParam tu:tulist){
+                    for(int i=0;i<tulist.size();i++){
+                        TdAndUserParam tu=tulist.get(i);
 
                             for(Avstmt_modeltd mtu:modeltdList){
                                 if(tu.getGrade()==mtu.getGrade()){
@@ -134,6 +137,12 @@ public class DealAvstMCImpl {
                                     break;
                                 }
                             }
+
+                        //如果实际的路数的grade在模型中没有对应的grade，就是找不到对应的tdssid（通道ssid）就去掉这一路
+                        if(StringUtils.isEmpty(tu.getTdssid())){
+                            tulist.remove(i);
+                            i--;
+                        };
 
                     }
                 }
@@ -196,7 +205,7 @@ public class DealAvstMCImpl {
                         TdAndUserAndOtherCacheParam tdcache=gson.fromJson(gson.toJson(tu),TdAndUserAndOtherCacheParam.class);
                         tdcache.setMttduserssid(tussid);
                         tdcache.setFdssid(tu.getFdeuipmentssid());
-                        tdcache.setAsrtype(ASRType.AVST);
+//                        tdcache.setAsrtype(ASRType.AVST);
                         tdList.add(tdcache);
                     }
                 }
