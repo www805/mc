@@ -79,7 +79,6 @@ public class Avstmt_modeltdService extends BaseService {
         int count=avstmt_modeltdMapper.selectCount(ew);
         param.setRecordCount(count);
 
-
         Page<Avstmt_modeltd> page=new Page<>(param.getCurrPage(),param.getPageSize());
         List<Avstmt_modeltd> oldpagelist=avstmt_modeltdMapper.selectPage(page,ew);
         List<Avstmt_modeltdAll> pagelist=new ArrayList<>();
@@ -97,7 +96,7 @@ public class Avstmt_modeltdService extends BaseService {
                 if (StringUtils.isNotBlank(dqfdssid)){
                     GetToOutFlushbonadingListParam param1=new GetToOutFlushbonadingListParam();
                     param1.setFdType(FDType.FD_AVST);
-                    param1.setSsid(dqfdssid);
+                    param1.setFlushbonadingetinfossid(dqfdssid);
                     ReqParam reqParam1=new ReqParam();
                     reqParam1.setParam(param1);
                     RResult rr1 =  equipmentControl.getToOutFlushbonadingById(reqParam1);

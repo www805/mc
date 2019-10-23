@@ -8,10 +8,8 @@ import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.AddOrUpdateToOutFlushbonadingParam;
-import com.avst.meetingcontrol.feignclient.ec.req.fd.GetToOutFlushbonadingEttdListParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.GetToOutFlushbonadingListParam;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,14 +42,14 @@ public class FlushbonadingService extends BaseService {
 
 
     public void getToOutFlushbonadingById(RResult result,GetToOutFlushbonadingListParam param){
-        String ssid=param.getSsid();
+        String ssid=param.getFlushbonadingetinfossid();
         if (StringUtils.isBlank(ssid)){
             result.setMessage("参数为空");
             LogUtil.intoLog(this.getClass(),"getToOutFlushbonadingById__ssid"+ssid);
             return;
         }
         param.setFdType(FDType.FD_AVST);
-        param.setSsid(ssid);
+        param.setFlushbonadingetinfossid(ssid);
         ReqParam reqParam=new ReqParam();
         reqParam.setParam(param);
         RResult fh_rr = equipmentControl.getToOutFlushbonadingById(reqParam);

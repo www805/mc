@@ -287,7 +287,7 @@ function getToOutFlushbonadingById(ssid) {
         var url=getUrl_manage().getToOutFlushbonadingById;
         var data={
             param:{
-                ssid:ssid
+                flushbonadingetinfossid:ssid
             }
         };
         ajaxSubmitByJson(url,data,callbackgetToOutFlushbonadingById);
