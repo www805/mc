@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 设备控制的代理
  */
-@FeignClient(value="ec")
+@FeignClient(name = "ec", url = "localhost:8081/")
 public interface EquipmentControl {
 
     //asr
@@ -171,6 +171,11 @@ public interface EquipmentControl {
     @RequestMapping("/flushbonading/v1/updateToOutFlushbonading")
     @ResponseBody
     public RResult updateToOutFlushbonading(@RequestBody ReqParam<AddOrUpdateToOutFlushbonadingParam> param);
+
+    @RequestMapping("/flushbonading/v1/workOver_Accident")
+
+    @ResponseBody
+    public RResult workOver_Accident(@RequestBody ReqParam<WorkOver_AccidentParam> param);
 
     //测谎仪
     @RequestMapping("/polygraph/v1/getToOutPolygraphList")

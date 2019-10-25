@@ -53,4 +53,14 @@ public class AvstMCImpl {
         RRParam<Boolean> rrParam=new RRParam<Boolean>();
         return getDealAvstMCImpl().overMC(param,rrParam);
     }
+
+    /**
+     * 结束会议（对于意外时间的处理）
+     * @return
+     */
+    public static RRParam<Boolean> overMC_Accident(OverMCParam param){
+
+        RRParam<Boolean> rrParam=new RRParam<Boolean>();
+        return getDealAvstMCImpl().overMC_Accident(param,rrParam);
+    }
 }
