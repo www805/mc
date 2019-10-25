@@ -244,7 +244,18 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
-
+    /**
+     *  提供给上层业务平台，用于关闭突然中断的会议以及设备
+     * @param param
+     * @return
+     */
+    @RequestMapping("/overAccidentMT")
+    @ResponseBody
+    public RResult overAccidentMT(@RequestBody ReqParam<OverAccidentMTParam_out> param) {
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).overAccidentMT(param.getParam(),result);
+        return result;
+    }
 
 
     /**

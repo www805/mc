@@ -41,4 +41,6 @@ public interface BaseDealMCInterface {
 
     public RResult getTDByMTList(ReqParam<GetTDCacheParamByMTssidParam_out> param, RResult result);
 
+    public RResult overAccidentMT(OverAccidentMTParam_out param, RResult result);
+
 }

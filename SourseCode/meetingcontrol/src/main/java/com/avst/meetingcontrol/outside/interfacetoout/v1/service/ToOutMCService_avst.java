@@ -88,6 +88,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
     @Autowired
     private Avstmt_modeltdMapper avstmt_modeltdMapper;
 
+    @Autowired
+    private Avstmt_asrtdMapper avstmt_asrtdMapper;
+
     @Override
     public RResult startMC(ReqParam<StartMCParam_out> param, RResult result) {
 
@@ -692,5 +695,27 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         return result;
     }
 
+    //关闭会议
+    @Override
+    public RResult overAccidentMT(OverAccidentMTParam_out param, RResult result) {
+        String mtssid=param.getMtssid();
 
+        RRParam<Boolean> rr=new RRParam<Boolean>();
+        OverMCParam overparam=new OverMCParam();
+        overparam.setMtssid(mtssid);
+        //查询缓存是否有这个mtssid，有的话正常关闭
+        if(null!=MCCache.getMCCacheParam(mtssid)){
+            rr= AvstMCImpl.overMC(overparam);
+        }else{
+            //请求异常关闭处理
+            rr= AvstMCImpl.overMC_Accident(overparam);
+        }
+
+        if(null!=rr&&rr.getCode()==1&&null!=rr.getT()&&rr.getT().equals(true)){//关闭会议成功
+            result.changeToTrue(true);//返回
+        }else{
+
+        }
+        return result;
+    }
 }

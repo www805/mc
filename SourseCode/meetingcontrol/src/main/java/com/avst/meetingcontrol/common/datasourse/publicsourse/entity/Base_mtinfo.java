@@ -202,6 +202,7 @@ public class Base_mtinfo extends Model<Base_mtinfo> {
         this.mtstate = mtstate;
     }
 
+
     @Override
     public String toString() {
         return "Base_mtinfo{" +

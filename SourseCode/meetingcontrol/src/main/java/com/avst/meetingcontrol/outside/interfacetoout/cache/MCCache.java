@@ -3,9 +3,12 @@ package com.avst.meetingcontrol.outside.interfacetoout.cache;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.MCCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.TdAndUserAndOtherCacheParam;
 import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 会议缓存，主控会议过程中的信息
@@ -138,6 +141,29 @@ public class MCCache {
         return null;
     }
 
+    /**
+     * 获取会议缓存中所有设备的ssid
+     * @return
+     */
+    public static  synchronized Set<String> getFDSsidList(){
+
+        List<MCCacheParam> mclist=getMCList();
+        if(null==mclist||mclist.size()==0){
+            return null;
+        }
+        for(MCCacheParam mcCacheParam:mclist){
+            List<TdAndUserAndOtherCacheParam> tdlist=mcCacheParam.getTdList();
+            if(null!=tdlist&&tdlist.size() > 0){
+                Set<String> set=new HashSet<String>();
+                for(TdAndUserAndOtherCacheParam cacheParam:mcCacheParam.getTdList()){
+                    if(StringUtils.isNotEmpty(cacheParam.getFdssid())){
+                        set.add(cacheParam.getFdssid());
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     public static  synchronized  boolean setMCCacheParam(MCCacheParam mcCacheParam){
 

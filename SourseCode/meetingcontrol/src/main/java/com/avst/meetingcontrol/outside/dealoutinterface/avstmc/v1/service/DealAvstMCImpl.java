@@ -1,8 +1,10 @@
 package com.avst.meetingcontrol.outside.dealoutinterface.avstmc.v1.service;
 
 import com.avst.meetingcontrol.common.conf.ASRType;
+import com.avst.meetingcontrol.common.conf.FDType;
 import com.avst.meetingcontrol.common.conf.MCType;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.*;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
@@ -18,11 +20,14 @@ import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.GetToOutFlushbonadingEttdListParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOverParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkOver_AccidentParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.WorkStartParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ph.CheckPolygraphStateParam;
 import com.avst.meetingcontrol.feignclient.ec.req.ph.StartPolygraphParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.fd.WorkStartVO;
+import com.avst.meetingcontrol.feignclient.ec.vo.fd.param.Flushbonading_ettd;
 import com.avst.meetingcontrol.feignclient.ec.vo.ph.CheckPolygraphStateVO;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.InitMCParam;
 import com.avst.meetingcontrol.outside.dealoutinterface.avstmc.req.OverMCParam;
@@ -47,9 +52,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 处理avst会议系统的接口请求
@@ -81,7 +84,7 @@ public class DealAvstMCImpl {
     @Autowired
     private Base_mttodatasaveMapper base_mttodatasaveMapper;
 
-
+private Gson gson=new Gson();
 
     public RRParam<InitMCVO> initMC(InitMCParam param, RRParam<InitMCVO> rrParam){
 
@@ -585,6 +588,110 @@ public class DealAvstMCImpl {
             base_mtinfo.setMtendtime((new Date()).getTime());
             int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
             LogUtil.intoLog(this.getClass(),"修改会议状态--结束-- updatebool："+updatebool);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return rrParam;
+    }
+
+    public RRParam<Boolean> overMC_Accident(OverMCParam param, RRParam<Boolean> rrParam){
+
+        //查询数据库，找到所有设备的ssid
+        //查询缓存看这些设备ssid有没有正在用的， 没有的话就直接关闭掉,在avstmt_asrtd里面找mcrecordtime,有的话就带上
+        //暂时没有语音识别和身心监护的数据保存
+
+
+//修改会议状态
+        //关闭第三方的应用
+        String mtssid=param.getMtssid();
+
+        //找出所有设备ssid
+        EntityWrapper ew=new EntityWrapper();
+        ew.eq("tu.mtssid",mtssid);
+        List<Avstmt_tduserAll> tulist=avstmt_tduserMapper.getAvstmt_tduserAll(ew);
+        if(null!=tulist&&tulist.size() > 0){
+
+            Set<String> fdSsidList=new HashSet<String>();
+
+            for(Avstmt_tduserAll tu:tulist){//Avstmt_tduserAll asr或者ph的mtrecordtime可以被找到
+                String tdssid=tu.getEquipmenttdssid();
+                if(StringUtils.isNotEmpty(tdssid)){
+                    ReqParam<GetToOutFlushbonadingEttdListParam> tdparam=new ReqParam<GetToOutFlushbonadingEttdListParam>();
+                    GetToOutFlushbonadingEttdListParam getToOutFlushbonadingEttdListParam=new GetToOutFlushbonadingEttdListParam();
+                    getToOutFlushbonadingEttdListParam.setSsid(tdssid);
+                    getToOutFlushbonadingEttdListParam.setFdType(FDType.FD_AVST);
+                    tdparam.setParam(getToOutFlushbonadingEttdListParam);
+                    RResult rr4=equipmentControl.getToOutFlushbonadingEttdById(tdparam);
+                    if (null!=rr4&&rr4.getActioncode().equals(Code.SUCCESS.toString())&&null!=rr4.getData()){
+                        Flushbonading_ettd flushbonading_ettd=gson.fromJson(gson.toJson(rr4.getData()), Flushbonading_ettd.class);
+                        if(null!=flushbonading_ettd&&StringUtils.isNotEmpty(flushbonading_ettd.getFlushbonadingssid())){
+                            fdSsidList.add(flushbonading_ettd.getFlushbonadingssid());
+                        }
+                    }else {
+                        LogUtil.intoLog(this.getClass(),"设备通道getToOutFlushbonadingEttdById__请求失败");
+                    }
+                }
+            }
+
+            //关闭设备
+            if(null!=fdSsidList&&fdSsidList.size() > 0){
+                Set<String> ssidlist=MCCache.getFDSsidList();//查找所有正在使用的设备
+                for(String fdssid:fdSsidList){//关闭设备
+
+                    //关闭设备录像
+                    ReqParam<WorkOver_AccidentParam> workOverParamReqParam=new ReqParam<WorkOver_AccidentParam>();
+                    WorkOver_AccidentParam workOverParam=new WorkOver_AccidentParam();
+                    workOverParam.setFdid(mtssid);//就是会议ssid
+                    workOverParam.setFdType(FDType.FD_AVST);
+                    workOverParam.setFlushbonadingetinfossid(fdssid);
+                    workOverParam.setIid(mtssid+"_"+fdssid);//iid其实就是 会议ssid_设备ssid
+//                    workOverParam.setMtRecordTime();//这个参数只会是在要保存语音识别和身心监护数据的时候才会有用，从tulist中得到,
+
+                    //查询缓存看这些设备ssid有没有正在用的
+                    if(null!=ssidlist&&ssidlist.size() > 0){
+
+                        for(String fdssid_c:ssidlist){
+                            if(fdssid_c.equals(fdssid)){//说明暂时不能关闭这个
+                                workOverParam.setCloaseRecbool(false);
+                                break;
+                            }
+                        }
+                    }
+
+                    workOverParamReqParam.setParam(workOverParam);
+                    RResult worr=equipmentControl.workOver_Accident(workOverParamReqParam);
+                    if(null!=worr&&null!=worr.getActioncode()&&worr.getActioncode().equals(Code.SUCCESS.toString())){
+                        String iid=worr.getData().toString();//录音的唯一标识码
+                        //是否需要对录音进行处理
+                        LogUtil.intoLog(this.getClass(),"关闭录像成功 mtssid："+mtssid+"----iid:"+iid);
+
+                    }else{
+                        LogUtil.intoLog(this.getClass(),"关闭录像失败 mtssid："+mtssid+"----fdssid:"+fdssid);
+                    }
+                }
+            }else{
+                LogUtil.intoLog(this.getClass(),"没有找到会议缓存或者会议通道缓存为空，不需要通知第三方");
+            }
+
+        }else{//没有设备需要关闭
+            rrParam.setMessage("没有设备需要关闭");
+            LogUtil.intoLog(4,this.getClass(),"overMC_Accident 关闭异常会议的时候，没有设备需要关闭，mtssid="+mtssid);
+            return rrParam;
+        }
+
+        //修改会议
+        try {
+            EntityWrapper<Base_mtinfo> entityWrapper=new EntityWrapper<Base_mtinfo>();
+            entityWrapper.eq("ssid",mtssid);
+            Base_mtinfo base_mtinfo =base_mtinfoMapper.selectList(entityWrapper).get(0);
+            base_mtinfo.setMtstate(2);
+            base_mtinfo.setMtendtime((new Date()).getTime());
+            int updatebool=base_mtinfoMapper.update(base_mtinfo,entityWrapper);
+            LogUtil.intoLog(this.getClass(),"修改会议状态--结束-- updatebool："+updatebool);
+
+            rrParam.changeTrue(true);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
