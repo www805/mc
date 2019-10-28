@@ -4,6 +4,8 @@ public class TDAndUserParam {
 
     private String tdssid;
 
+    private int tdnum;//通道编号
+
     private String fdssid;
 
     private String mttduserssid;
@@ -19,6 +21,14 @@ public class TDAndUserParam {
     private String polygraphssid;//测谎仪ssid
 
     private String asrssid;//语言识别ssid
+
+    public int getTdnum() {
+        return tdnum;
+    }
+
+    public void setTdnum(int tdnum) {
+        this.tdnum = tdnum;
+    }
 
     public int getUserecord() {
         return userecord;

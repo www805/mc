@@ -9,7 +9,17 @@ public class InitMCVO {
 
     private String mtssid;
 
+    private int asrtype=1;//1对单单语音识别，2单对多语音识别
+
     private List<TDAndUserParam> tdlist;
+
+    public int getAsrtype() {
+        return asrtype;
+    }
+
+    public void setAsrtype(int asrtype) {
+        this.asrtype = asrtype;
+    }
 
     public String getMtssid() {
         return mtssid;
