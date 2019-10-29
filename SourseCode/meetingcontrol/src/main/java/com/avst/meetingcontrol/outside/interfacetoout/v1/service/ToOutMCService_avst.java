@@ -131,7 +131,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             startMCParam.setModelbool(startMCParam_out.getModelbool());
             startMCParam.setMtmodelssid(startMCParam_out.getMtmodelssid());
             startMCParam.setMtssid(mtssid);//实例化返回的会议ssid
-            startMCParam.setAsrtype(rr.getT().getAsrtype());//这个不是tdlist里面的语音识别的类型，而是用于表示语音识别是一个会话的对应关系，1对1还会1对多
+            startMCParam.setAsrServerModel(rr.getT().getAsrServerModel());//这个不是tdlist里面的语音识别的类型，而是用于表示语音识别是一个会话的对应关系，1对1还会1对多
             List<TdAndAsrParam> tdAndAsrList=new ArrayList<TdAndAsrParam>();
             gson = new Gson();
             for(TdAndUserAndOtherParam td:tdlist){
@@ -147,7 +147,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                         tdAndAsrParam.setPolygraphssid(p.getPolygraphssid());
                         tdAndAsrParam.setAsrssid(p.getAsrssid());
                         tdAndAsrParam.setFdssid(p.getFdssid());
-                        tdAndAsrParam.setTdnum(p.getTdnum());
+                        tdAndAsrParam.setTdgreade(td.getGrade());
                         break;
                     }
                 }
@@ -184,7 +184,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         String mtssid=overMCParam_out.getMtssid();
         OverMCParam overparam=new OverMCParam();
         overparam.setMtssid(mtssid);
-        RRParam<Boolean> rr= AvstMCImpl.overMC(overparam);;
+        RRParam<Boolean> rr= AvstMCImpl.overMC(overparam);
         if(null!=rr&&rr.getCode()==1&&null!=rr.getT()&&rr.getT().equals(true)){//关闭会议成功
             result.changeToTrue(true);//返回
         }

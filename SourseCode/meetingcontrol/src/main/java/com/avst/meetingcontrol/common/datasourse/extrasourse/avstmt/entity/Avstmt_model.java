@@ -55,7 +55,7 @@ public class Avstmt_model extends Model<Avstmt_model> {
     /**
      * 1对单单语音识别，2单对多语音识别
      */
-    private Integer asrtype;
+    private Integer asrservermodel;
 
     /**
      * 模板中文说明
@@ -76,12 +76,12 @@ public class Avstmt_model extends Model<Avstmt_model> {
         return serialVersionUID;
     }
 
-    public Integer getAsrtype() {
-        return asrtype;
+    public Integer getAsrservermodel() {
+        return asrservermodel;
     }
 
-    public void setAsrtype(Integer asrtype) {
-        this.asrtype = asrtype;
+    public void setAsrservermodel(Integer asrservermodel) {
+        this.asrservermodel = asrservermodel;
     }
 
     public Integer getId() {

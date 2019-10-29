@@ -112,7 +112,7 @@ private Gson gson=new Gson();
                 base_mtinfo.setOpened(avstmt_model.getOpened());
                 base_mtinfo.setUserecord(avstmt_model.getUserecord());
 
-                initMCVO.setAsrtype(avstmt_model.getAsrtype());//这个参数决定了asr语音识别使用的类型，单对单还是单对多
+                initMCVO.setAsrServerModel(avstmt_model.getAsrservermodel());//这个参数决定了asr语音识别使用的类型，单对单还是单对多
 
                 //查找会议通道模板
                 Avstmt_modeltd avstmt_modeltd=new Avstmt_modeltd();
@@ -167,6 +167,7 @@ private Gson gson=new Gson();
             MCCacheParam mcCacheParam=new MCCacheParam();
             mcCacheParam.setMeetingtype(mttype);
             mcCacheParam.setMtssid(ssid);
+            mcCacheParam.setAsrServerModel(initMCVO.getAsrServerModel());
             mcCacheParam.setMcType(MCType.AVST);//在avstmc的处理类中，类型就肯定是这个
             mcCacheParam.setYwSystemType(param.getYwSystemType());//业务系统的类型
             mcCacheParam.setMtstate(base_mtinfo.getMtstate());//状态初始化
@@ -194,7 +195,6 @@ private Gson gson=new Gson();
                         TDAndUserParam tdAndUserParam=new TDAndUserParam();
                         tdAndUserParam.setMttduserssid(tussid);
                         tdAndUserParam.setTdssid(tu.getTdssid());
-                        tdAndUserParam.setTdnum(tu.getGrade());
                         tdAndUserParam.setMtuserssid(tu.getUserssid());
                         tdAndUserParam.setUsepolygraph(tu.getUsepolygraph());
                         tdAndUserParam.setUseasr(tu.getUseasr());
@@ -233,7 +233,7 @@ private Gson gson=new Gson();
         String mtssid=param.getMtssid();
         int modelbool=param.getModelbool();
         String mtmodelssid=param.getMtmodelssid();
-        int asrtype=param.getAsrtype();
+        int asrServerModel=param.getAsrServerModel();
         int recordnum=0;//录音/像个数
         int asrnum=0;//语音识别个数
         int polygraphnum=0;//测谎仪个数
@@ -254,13 +254,13 @@ private Gson gson=new Gson();
             //1对单单语音识别，2单对多语音识别
             String tdssids="";
             String asrid_asrtype2=null;//当有值的时候就不需要再去请求设备
-            if(asrtype==2){//需要把所有的tdssid一次都传过去
+            if(asrServerModel==2){//需要把所有的tdssid一次都传过去
                 for(TdAndAsrParam td:tdUserList){
                     if(td.getUseasr()==1){
-                        tdssids+=td.getTdssid()+",";
+                        tdssids+=td.getTdgreade()+","+td.getTdssid()+";";
                     }
                 }
-                tdssids=OpenUtil.strtrim(tdssids,",");
+                tdssids=OpenUtil.strtrim(tdssids,";");
             }
 
             for(TdAndAsrParam td:tdUserList){
@@ -356,16 +356,16 @@ private Gson gson=new Gson();
                             String asrid=null;
 
                             //这里只需要给通道的ssid，设备微服务自己处理
-                            if(asrtype==2){
+                            if(asrServerModel==2){
                                 if(null==asrid_asrtype2){
                                     result=asrStart(tdssids,td.getAsrssid(),td.getAsrtype());
                                     if(null!=result){
                                         asrid_asrtype2=result.getData().toString();
-                                        asrid=asrid_asrtype2+"_"+td.getTdnum();
+                                        asrid=asrid_asrtype2+"_"+td.getTdgreade();
                                         asrStartTime_asrtype2=result.getEndtime();
                                     }
                                 }else{
-                                    asrid=asrid_asrtype2+"_"+td.getTdnum();
+                                    asrid=asrid_asrtype2+"_"+td.getTdgreade();
                                 }
                             }else{
                                 result=asrStart(td.getTdssid(),td.getAsrssid(),td.getAsrtype());
@@ -588,6 +588,7 @@ private Gson gson=new Gson();
         MCCacheParam mcCacheParam=MCCache.getMCCacheParam(mtssid);
         if(null!=mcCacheParam&&null!=mcCacheParam.getTdList()){
             List<TdAndUserAndOtherCacheParam> tdlist=mcCacheParam.getTdList();
+            int asrServerModel=mcCacheParam.getAsrServerModel();
             for(TdAndUserAndOtherCacheParam cachetd:tdlist){
 
                 //关闭asr
@@ -596,6 +597,7 @@ private Gson gson=new Gson();
                 overAsrParam.setAsrid(cachetd.getAsrid());
                 overAsrParam.setAsrEquipmentssid(cachetd.getAsrssid());
                 overAsrParam.setAsrtype(cachetd.getAsrtype());
+                overAsrParam.setAsrServerModel(asrServerModel);
                 overparam.setParam(overAsrParam);
                 RResult result=equipmentControl.overAsr(overparam);
                 if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){

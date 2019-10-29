@@ -9,7 +9,7 @@ public class TdAndAsrParam {
 
     private String tdssid;//通道ssid
 
-    private int tdnum;//通道的编号
+    private int tdgreade;//通道的编号
 
     private String fdssid;//设备ssid
 
@@ -29,12 +29,12 @@ public class TdAndAsrParam {
 
     private String asrtype;//采用的是哪一种语音识别服务，avst公司自制的语音服务
 
-    public int getTdnum() {
-        return tdnum;
+    public int getTdgreade() {
+        return tdgreade;
     }
 
-    public void setTdnum(int tdnum) {
-        this.tdnum = tdnum;
+    public void setTdgreade(int tdgreade) {
+        this.tdgreade = tdgreade;
     }
 
     public String getPolygraphtype() {

@@ -17,14 +17,14 @@ public class StartMCParam extends  BaseReqParam {
 
     private String mtmodelssid;//会议模板ssid
 
-    private int asrtype=1;//1对单单语音识别，2单对多语音识别
+    private int asrServerModel=1;//1对单单语音识别，2单对多语音识别
 
-    public int getAsrtype() {
-        return asrtype;
+    public int getAsrServerModel() {
+        return asrServerModel;
     }
 
-    public void setAsrtype(int asrtype) {
-        this.asrtype = asrtype;
+    public void setAsrServerModel(int asrServerModel) {
+        this.asrServerModel = asrServerModel;
     }
 
     public int getModelbool() {
