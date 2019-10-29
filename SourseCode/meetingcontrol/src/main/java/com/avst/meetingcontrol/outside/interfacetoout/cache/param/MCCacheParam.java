@@ -21,7 +21,17 @@ public class MCCacheParam {
     private int asrnum=0;//本次会议开启的语音识别个数
     private int polygraphnum=0;//本次会议开启的测谎仪个数
 
+    private int asrServerModel=1;//1对单单语音识别，2单对多语音识别
+
     private long mtstarttime;//会议开始时间，标记会议的开始时间，关联asr、ph、录像的开始时间，用于同步
+
+    public int getAsrServerModel() {
+        return asrServerModel;
+    }
+
+    public void setAsrServerModel(int asrServerModel) {
+        this.asrServerModel = asrServerModel;
+    }
 
     public long getMtstarttime() {
         return mtstarttime;
