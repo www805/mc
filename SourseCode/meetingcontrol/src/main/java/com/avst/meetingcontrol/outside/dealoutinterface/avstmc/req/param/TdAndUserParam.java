@@ -11,7 +11,7 @@ public class TdAndUserParam {
 
     private String userssid;//会议用户的ssid
 
-    private int grade;//1主麦，2副麦，有时需要一些特殊的处理(主麦只有一个)
+    private int grade;//1主麦，2/3/4/5/6/7副麦，有时需要一些特殊的处理(主麦只有一个)
 
     private int usepolygraph;//是否使用测谎仪
 

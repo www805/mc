@@ -9,6 +9,8 @@ public class TdAndAsrParam {
 
     private String tdssid;//通道ssid
 
+    private int tdnum;//通道的编号
+
     private String fdssid;//设备ssid
 
     private int userecord;//是否需要录像，1使用，-1 不使用
@@ -19,13 +21,21 @@ public class TdAndAsrParam {
 
     private String polygraphtype;//采用的是哪一种测谎仪服务
 
-    private int useasr;//是否使用语言识别，1使用，-1 不使用
+    private int useasr;//是否使用语音识别，1使用，-1 不使用
 
     private String polygraphssid;//测谎仪ssid
 
     private String asrssid;//语言识别ssid
 
     private String asrtype;//采用的是哪一种语音识别服务，avst公司自制的语音服务
+
+    public int getTdnum() {
+        return tdnum;
+    }
+
+    public void setTdnum(int tdnum) {
+        this.tdnum = tdnum;
+    }
 
     public String getPolygraphtype() {
         return polygraphtype;

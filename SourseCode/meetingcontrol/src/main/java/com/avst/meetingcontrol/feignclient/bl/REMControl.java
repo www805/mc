@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 笔录系统的接口
  */
-@FeignClient(value="trm")
+@FeignClient(value="trm", url = "http://localhost:8080/")
 public interface REMControl {
 
     //trm

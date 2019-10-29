@@ -53,6 +53,11 @@ public class Avstmt_model extends Model<Avstmt_model> {
     private Date createtime;
 
     /**
+     * 1对单单语音识别，2单对多语音识别
+     */
+    private Integer asrtype;
+
+    /**
      * 模板中文说明
      */
     private String explain;
@@ -66,6 +71,18 @@ public class Avstmt_model extends Model<Avstmt_model> {
     private Integer integer2;
 
     private String ssid;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getAsrtype() {
+        return asrtype;
+    }
+
+    public void setAsrtype(Integer asrtype) {
+        this.asrtype = asrtype;
+    }
 
     public Integer getId() {
         return id;
