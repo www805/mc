@@ -80,6 +80,7 @@
             <th>人员数量</th>
             <th>是否公开</th>
             <th>是否录制</th>
+            <th>语音识别类型</th>
             <th>模板说明</th>
             <th>创建时间</th>
             <th>模板通道数</th>
@@ -94,6 +95,7 @@
             <td>{{value.usernum==null?"0":value.usernum}}</td>
             <td>{{value.opened==null?"":(value.opened==1?"开放":(value.opened==-1?"不开放":"未知"))}}</td>
             <td>{{value.userecord==null?"":(value.userecord==1?"录制":(value.userecord==-1?"不录制":"未知"))}}</td>
+            <td>{{value.asrservermodel==null?"":(value.asrservermodel==1?"单对单语音识别":(value.asrservermodel==2?"单对多语音识别":"未知"))}}</td>
             <td title="{{value.explain}}">{{value.explain==null?"":value.explain}}</td>
             <td>{{value.createtime==null?"":value.createtime}}</td>
             <td>{{value.avstmt_modeltdAlls==null?"0":value.avstmt_modeltdAlls.length}}</td>

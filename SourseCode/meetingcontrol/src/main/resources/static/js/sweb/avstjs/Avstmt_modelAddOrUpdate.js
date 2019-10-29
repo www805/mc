@@ -19,6 +19,7 @@ function callbackgetAvstmt_modelByssid(data) {
                 $("#opened").val(avstmt_model.opened);
                 $("#userecord").val(avstmt_model.userecord);
                 $("#explain").val(avstmt_model.explain);
+                $("#asrservermodel").val(avstmt_model.asrservermodel);
             }
         }
     }else{
@@ -42,6 +43,7 @@ function Avstmt_modelAddOrUpdate() {
     var opened = $("#opened").val();
     var userecord = $("#userecord").val();
     var explain = $("#explain").val();
+    var asrservermodel = $("#asrservermodel").val();
 
     if (!isNotEmpty(meetingtype)) {
         layer.msg("请选择会议类型",{icon: 2});
@@ -59,12 +61,17 @@ function Avstmt_modelAddOrUpdate() {
         layer.msg("请输入是否录制",{icon: 2});
         return;
     }
+    if (!isNotEmpty(asrservermodel)) {
+        layer.msg("请选择语音识别类型",{icon: 2});
+        return;
+    }
 
     var data={
         meetingtype:meetingtype,
         usernum:usernum,
         opened:opened,
         userecord:userecord,
+        asrservermodel:asrservermodel,
         explain:explain,
         ssid:ssid
     };
