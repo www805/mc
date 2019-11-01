@@ -60,7 +60,7 @@ public class Avstmt_model extends Model<Avstmt_model> {
     /**
      * 单对多语音识别模式下才有效，用于标记，开启几路语音识别给这个会话
      */
-    private Integer asrNum=1;
+    private Integer asrnum;
 
     /**
      * 模板中文说明
@@ -77,12 +77,12 @@ public class Avstmt_model extends Model<Avstmt_model> {
 
     private String ssid;
 
-    public int getAsrNum() {
-        return asrNum;
+    public Integer getAsrnum() {
+        return asrnum;
     }
 
-    public void setAsrNum(Integer asrNum) {
-        this.asrNum = asrNum;
+    public void setAsrnum(Integer asrnum) {
+        this.asrnum = asrnum;
     }
 
     public static long getSerialVersionUID() {

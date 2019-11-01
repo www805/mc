@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@FeignClient(name = "zk", url = "localhost:8079/")
+@FeignClient(name = "zk", url = "localhost:8079")
 public interface ZkControl {
 
     //获取注册的服务器

@@ -20,6 +20,7 @@ function callbackgetAvstmt_modelByssid(data) {
                 $("#userecord").val(avstmt_model.userecord);
                 $("#explain").val(avstmt_model.explain);
                 $("#asrservermodel").val(avstmt_model.asrservermodel);
+                $("#asrnum").val(avstmt_model.asrnum);
             }
         }
     }else{
@@ -44,6 +45,7 @@ function Avstmt_modelAddOrUpdate() {
     var userecord = $("#userecord").val();
     var explain = $("#explain").val();
     var asrservermodel = $("#asrservermodel").val();
+    var asrnum = $("#asrnum").val();
 
     if (!isNotEmpty(meetingtype)) {
         layer.msg("请选择会议类型",{icon: 2});
@@ -72,7 +74,7 @@ function Avstmt_modelAddOrUpdate() {
         opened:opened,
         userecord:userecord,
         asrservermodel:asrservermodel,
-        explain:explain,
+        asrnum:asrnum,
         ssid:ssid
     };
     ajaxSubmit(url,data,callbackAvstmt_modelAddOrUpdate);

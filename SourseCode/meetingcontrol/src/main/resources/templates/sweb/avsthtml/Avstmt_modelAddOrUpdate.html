@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="/uimaker/css/common.css">
 </head>
 <style>
+    .layui-form-pane .layui-form-label {
+        width: 150px;
+    }
+    .layui-form-pane .layui-input-block {
+        margin-left: 150px;
+    }
 </style>
 <body>
 <div style="margin: 15px;">
@@ -64,6 +70,13 @@
                     <option value="1">单对单语音识别</option>
                     <option value="2">单对多语音识别</option>
                 </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>最大语音识别路数</label>
+            <div class="layui-input-block">
+                <input type="number" name="asrnum" id="asrnum" required  lay-verify="required" placeholder="请输入最大语音识别路数" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
             </div>
         </div>
 

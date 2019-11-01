@@ -113,7 +113,7 @@ private Gson gson=new Gson();
                 base_mtinfo.setUserecord(avstmt_model.getUserecord());
 
                 initMCVO.setAsrServerModel(avstmt_model.getAsrservermodel());//这个参数决定了asr语音识别使用的类型，单对单还是单对多
-                initMCVO.setAsrNum(avstmt_model.getAsrNum());
+                initMCVO.setAsrNum(avstmt_model.getAsrnum());
 
                 //查找会议通道模板
                 Avstmt_modeltd avstmt_modeltd=new Avstmt_modeltd();
