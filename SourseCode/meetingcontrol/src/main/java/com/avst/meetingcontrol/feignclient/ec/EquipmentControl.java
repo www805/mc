@@ -263,11 +263,20 @@ public interface EquipmentControl {
 
 
     //设备数
-
     @RequestMapping("/base/v1/main/gethome")
     @ResponseBody
     public RResult gethome(@RequestBody ReqParam param);
     /*--------------------------------以下为：提供给会议后台显示的接口---end--------------------------------------*/
+
+    /**
+     * 提供查询基本类型的接口
+     * @param param
+     * @return
+     */
+    @RequestMapping("/base/v1/main/getToOutBaseList")
+    @ResponseBody
+    public RResult getToOutBaseList(@RequestBody GetToOutBaseListParam param);
+
 
 
 

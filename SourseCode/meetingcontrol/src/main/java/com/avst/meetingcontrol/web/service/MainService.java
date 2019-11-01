@@ -2,9 +2,11 @@ package com.avst.meetingcontrol.web.service;
 
 import com.avst.meetingcontrol.common.cache.AppCache;
 import com.avst.meetingcontrol.common.cache.param.AppCacheParam;
+import com.avst.meetingcontrol.common.conf.BASEType;
 import com.avst.meetingcontrol.common.conf.Constant;
 import com.avst.meetingcontrol.common.conf.NetTool;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.Avstmt_model;
+import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modelAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modelMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modeltdMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
@@ -17,12 +19,16 @@ import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
+import com.avst.meetingcontrol.feignclient.ec.req.GetToOutBaseListParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.fd.param.Flushbonadinginfo;
+import com.avst.meetingcontrol.web.req.GetBaseListParam;
 import com.avst.meetingcontrol.web.req.GetHomeParam;
 import com.avst.meetingcontrol.web.req.LoginParam;
+import com.avst.meetingcontrol.web.vo.GetBaseListVO;
 import com.avst.meetingcontrol.web.vo.GetHomeVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +38,7 @@ import org.yaml.snakeyaml.Yaml;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -204,6 +211,28 @@ public class MainService extends BaseService {
         }
         result.setData(cacheParam);
         result.changeToTrue();
+
+    }
+
+    public void getBaseList(RResult result, GetBaseListParam param){
+        GetToOutBaseListParam getToOutBaseListParam=new GetToOutBaseListParam();
+        getToOutBaseListParam.setBaseType(BASEType.Base);
+        RResult rr =  equipmentControl.getToOutBaseList(getToOutBaseListParam);
+        if (null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
+            if(null!=rr.getData()){
+                Gson gson=new Gson();
+                List<GetBaseListVO> vos=gson.fromJson(gson.toJson(rr.getData()), new TypeToken<List<GetBaseListVO>>(){}.getType());
+                if (null!=vos&&vos.size()>0){
+                    result.setData(vos);
+                }
+            }
+            changeResultToSuccess(result);
+            LogUtil.intoLog(this.getClass(),"审讯设备getToOutBaseList__请求成功");
+        }else {
+            String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+            result.setMessage(msg);
+            LogUtil.intoLog(this.getClass(),"审讯设备getToOutBaseList__请求失败");
+        }
 
     }
 }

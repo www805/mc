@@ -1,12 +1,23 @@
 package com.avst.meetingcontrol.web.action;
 
+import com.avst.meetingcontrol.common.util.LogUtil;
+import com.avst.meetingcontrol.common.util.baseaction.Code;
+import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
+import com.avst.meetingcontrol.web.req.GetBaseListParam;
+import com.avst.meetingcontrol.web.service.MainService;
+import com.avst.meetingcontrol.web.vo.GetBaseListVO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 关于会议的页面跳转
@@ -14,6 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/page/mtpage")
 @Controller
 public class MtPageAction {
+
+    @Autowired
+    private MainService mainService;
 
 
     @GetMapping("/toAvstmt_modelList")
@@ -63,7 +77,24 @@ public class MtPageAction {
     public ModelAndView toaddOrUpdateFlushbonading(Model model,String ssid) {
         model.addAttribute("title", "审讯设备新增/修改");
         model.addAttribute("ssid",ssid);
-        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("flushbonading_etypessid"));
+
+        RResult result=new RResult<>();
+        GetBaseListParam param=new GetBaseListParam();
+        mainService.getBaseList(result,param);
+        if (null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+            Gson gson=new Gson();
+            List<GetBaseListVO> vos=gson.fromJson(gson.toJson(result.getData()), new TypeToken<List<GetBaseListVO>>(){}.getType());
+            if (null!=vos&&vos.size()>0){
+                for (GetBaseListVO vo : vos) {
+                    if ("flushbonading".equals(vo.getEttypenum())){
+                        model.addAttribute("etypessid", vo.getSsid());
+                    }
+                }
+            }
+        }else {
+            String msg=result.getMessage()==null?result.getMessage():result.getMessage();
+            LogUtil.intoLog(this.getClass(),"getBaseList__请求失败__"+msg);
+        }
         return new ModelAndView("sweb/avsthtml/echtml/addOrUpdateFlushbonading", "addOrUpdateFlushbonadingModel", model);
     }
 
@@ -72,7 +103,23 @@ public class MtPageAction {
         model.addAttribute("title", "设备通道 新增/修改");
         model.addAttribute("ssid",ssid);
         model.addAttribute("masterssid",masterssid);
-        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("flushbonading_etypessid"));
+        RResult result=new RResult<>();
+        GetBaseListParam param=new GetBaseListParam();
+        mainService.getBaseList(result,param);
+        if (null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+            Gson gson=new Gson();
+            List<GetBaseListVO> vos=gson.fromJson(gson.toJson(result.getData()), new TypeToken<List<GetBaseListVO>>(){}.getType());
+            if (null!=vos&&vos.size()>0){
+                for (GetBaseListVO vo : vos) {
+                    if ("flushbonading".equals(vo.getEttypenum())){
+                        model.addAttribute("etypessid", vo.getSsid());
+                    }
+                }
+            }
+        }else {
+            String msg=result.getMessage()==null?result.getMessage():result.getMessage();
+            LogUtil.intoLog(this.getClass(),"getBaseList__请求失败__"+msg);
+        }
         return new ModelAndView("sweb/avsthtml/echtml/addOrUpdateFlushbonadingEttd", "addOrUpdateFlushbonadingEttdModel", model);
     }
 
@@ -80,7 +127,23 @@ public class MtPageAction {
     public ModelAndView toaddOrUpdatePolygraph(Model model,String ssid) {
         model.addAttribute("title", "测谎仪新增/修改");
         model.addAttribute("ssid",ssid);
-        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("polygraph_etypessid"));
+        RResult result=new RResult<>();
+        GetBaseListParam param=new GetBaseListParam();
+        mainService.getBaseList(result,param);
+        if (null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+            Gson gson=new Gson();
+            List<GetBaseListVO> vos=gson.fromJson(gson.toJson(result.getData()), new TypeToken<List<GetBaseListVO>>(){}.getType());
+            if (null!=vos&&vos.size()>0){
+                for (GetBaseListVO vo : vos) {
+                    if ("polygraph".equals(vo.getEttypenum())){
+                        model.addAttribute("etypessid", vo.getSsid());
+                    }
+                }
+            }
+        }else {
+            String msg=result.getMessage()==null?result.getMessage():result.getMessage();
+            LogUtil.intoLog(this.getClass(),"getBaseList__请求失败__"+msg);
+        }
         return new ModelAndView("sweb/avsthtml/echtml/addOrUpdatePolygraph", "addOrUpdatePolygraphModel", model);
     }
 
@@ -88,7 +151,23 @@ public class MtPageAction {
     public ModelAndView toaddOrUpdateAsr(Model model,String ssid) {
         model.addAttribute("title", "语音服务器 新增/修改");
         model.addAttribute("ssid",ssid);
-        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("asr_etypessid"));
+        RResult result=new RResult<>();
+        GetBaseListParam param=new GetBaseListParam();
+        mainService.getBaseList(result,param);
+        if (null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+            Gson gson=new Gson();
+            List<GetBaseListVO> vos=gson.fromJson(gson.toJson(result.getData()), new TypeToken<List<GetBaseListVO>>(){}.getType());
+            if (null!=vos&&vos.size()>0){
+                for (GetBaseListVO vo : vos) {
+                    if ("asr".equals(vo.getEttypenum())){
+                        model.addAttribute("etypessid", vo.getSsid());
+                    }
+                }
+            }
+        }else {
+            String msg=result.getMessage()==null?result.getMessage():result.getMessage();
+            LogUtil.intoLog(this.getClass(),"getBaseList__请求失败__"+msg);
+        }
         return new ModelAndView("sweb/avsthtml/echtml/addOrUpdateAsr", "addOrUpdateAsrModel", model);
     }
 

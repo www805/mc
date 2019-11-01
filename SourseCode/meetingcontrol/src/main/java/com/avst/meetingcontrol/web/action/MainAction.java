@@ -5,6 +5,7 @@ import com.avst.meetingcontrol.common.conf.Constant;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
+import com.avst.meetingcontrol.web.req.GetBaseListParam;
 import com.avst.meetingcontrol.web.req.GetHomeParam;
 import com.avst.meetingcontrol.web.req.LoginParam;
 import com.avst.meetingcontrol.web.service.MainService;
@@ -117,6 +118,22 @@ public class MainAction extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
+
+    /**
+     *获取 对接设备的请求必须参数：基础类型
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getBaseList")
+    @ResponseBody
+    public RResult getBaseList(@RequestBody GetBaseListParam param){
+        RResult result=this.createNewResultOfFail();
+        mainService.getBaseList(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
 
 
 
