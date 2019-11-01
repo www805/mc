@@ -113,6 +113,7 @@ private Gson gson=new Gson();
                 base_mtinfo.setUserecord(avstmt_model.getUserecord());
 
                 initMCVO.setAsrServerModel(avstmt_model.getAsrservermodel());//这个参数决定了asr语音识别使用的类型，单对单还是单对多
+                initMCVO.setAsrNum(avstmt_model.getAsrNum());
 
                 //查找会议通道模板
                 Avstmt_modeltd avstmt_modeltd=new Avstmt_modeltd();
@@ -126,7 +127,7 @@ private Gson gson=new Gson();
                         TdAndUserParam tu=tulist.get(i);
 
                             for(Avstmt_modeltd mtu:modeltdList){
-                                if(tu.getGrade()==mtu.getGrade()){
+                                if(tu.getGrade()==mtu.getGrade()){//mtu.getGrade()注意这是一个integer
                                     String tdssid=mtu.getTdssid();
 
                                     tu.setTdssid(tdssid);//把模板的通道赋予会议用户通道
@@ -136,7 +137,7 @@ private Gson gson=new Gson();
                                     tu.setUseasr(mtu.getUseasr());
                                     tu.setUserecord(base_mtinfo.getUserecord());
                                     tu.setFdeuipmentssid(mtu.getFdssid());
-                                    tu.setGrade(mtu.getGrade());
+
                                     break;
                                 }
                             }
@@ -234,6 +235,7 @@ private Gson gson=new Gson();
         int modelbool=param.getModelbool();
         String mtmodelssid=param.getMtmodelssid();
         int asrServerModel=param.getAsrServerModel();
+        int mtmodelasrnum=param.getAsrNum();//这个会话最多可以调用语音识别的路数
         int recordnum=0;//录音/像个数
         int asrnum=0;//语音识别个数
         int polygraphnum=0;//测谎仪个数
@@ -356,9 +358,9 @@ private Gson gson=new Gson();
                             String asrid=null;
 
                             //这里只需要给通道的ssid，设备微服务自己处理
-                            if(asrServerModel==2){
+                            if(asrServerModel==2){//单对多asr识别模式
                                 if(null==asrid_asrtype2){
-                                    result=asrStart(tdssids,td.getAsrssid(),td.getAsrtype());
+                                    result=asrStart(tdssids,td.getAsrssid(),td.getAsrtype(),mtmodelasrnum);
                                     if(null!=result){
                                         asrid_asrtype2=result.getData().toString();
                                         asrid=asrid_asrtype2+"_"+td.getTdgreade();
@@ -368,7 +370,7 @@ private Gson gson=new Gson();
                                     asrid=asrid_asrtype2+"_"+td.getTdgreade();
                                 }
                             }else{
-                                result=asrStart(td.getTdssid(),td.getAsrssid(),td.getAsrtype());
+                                result=asrStart(td.getTdssid(),td.getAsrssid(),td.getAsrtype(),0);
                                 if(null!=result){
                                     asrid=result.getData().toString();
                                     asrStartTime_asrtype2=result.getEndtime();
@@ -563,7 +565,7 @@ private Gson gson=new Gson();
         return rrParam;
     }
 
-    private RResult asrStart(String tdssid,String asrssid,String asrtype){
+    private RResult asrStart(String tdssid,String asrssid,String asrtype,int asrnum){
         //有语音识别的开启语音识别
         ReqParam<StartAsrParam> startparam=new ReqParam<StartAsrParam>();
         StartAsrParam startAsrParam=new StartAsrParam();
@@ -571,6 +573,7 @@ private Gson gson=new Gson();
         startAsrParam.setTdssid(tdssid);
         startAsrParam.setAsrEquipmentssid(asrssid);
         startAsrParam.setAsrtype(asrtype);
+        startAsrParam.setAsrchannel(asrnum);
         startparam.setParam(startAsrParam);
         RResult result=equipmentControl.startAsr(startparam);
         if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())&&null!=result.getData()){
