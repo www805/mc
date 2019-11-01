@@ -60,11 +60,11 @@ function getUrl_manage() {
         toAvstmt_modelAddOrUpdate:getPath()+pagepath+"mtpage/toAvstmt_modelAddOrUpdate",//跳转会议模板编辑页
         toAvstmt_modeltdAddOrUpdate:getPath()+pagepath+"mtpage/toAvstmt_modeltdAddOrUpdate",//跳转会议模板通道编辑页
 
-
-
-
-
-
+        //设备跳转
+        toaddOrUpdateFlushbonading:getPath()+pagepath+"mtpage/toaddOrUpdateFlushbonading",
+        toaddOrUpdateFlushbonadingEttd:getPath()+pagepath+"mtpage/toaddOrUpdateFlushbonadingEttd",
+        toaddOrUpdatePolygraph:getPath()+pagepath+"mtpage/toaddOrUpdatePolygraph",
+        toaddOrUpdateAsr:getPath()+pagepath+"mtpage/toaddOrUpdateAsr",
 
 
 
@@ -74,6 +74,9 @@ function getUrl_manage() {
         getToOutFlushbonadingById:getPath()+basepath+"flushbonading/getToOutFlushbonadingById",
         addToOutFlushbonading:getPath()+basepath+"flushbonading/addToOutFlushbonading",
         updateToOutFlushbonading:getPath()+basepath+"flushbonading/updateToOutFlushbonading",
+        getptdjconst:getPath()+basepath+"flushbonading/getptdjconst",
+        getMiddleware_FTP:getPath()+basepath+"flushbonading/getMiddleware_FTP",
+        setMiddleware_FTP:getPath()+basepath+"flushbonading/setMiddleware_FTP",
         //测谎仪
         getToOutPolygraphList:getPath()+basepath+"polygraph/getToOutPolygraphList",
         getToOutPolygraphById:getPath()+basepath+"polygraph/getToOutPolygraphById",

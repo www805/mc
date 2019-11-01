@@ -35,6 +35,8 @@ public class AsrService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"语音识别getToOutAsrList__请求成功");
         }else {
+            String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"语音识别getToOutAsrList__请求失败");
         }
         return;
@@ -58,6 +60,8 @@ public class AsrService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"语音识别getToOutAsrById__请求成功");
         }else {
+            String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"语音识别getToOutAsrById__请求失败");
         }
         return;
@@ -74,6 +78,8 @@ public class AsrService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__请求成功");
         }else {
+            String msg=addrr.getMessage()==null?result.getMessage():addrr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__请求失败");
         }
         return;
@@ -97,6 +103,8 @@ public class AsrService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"语音识别updateToOutAsr__请求成功");
         }else {
+            String msg=updrr.getMessage()==null?result.getMessage():updrr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"语音识别updateToOutAsr__请求失败");
         }
         return;

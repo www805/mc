@@ -6,6 +6,9 @@ import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.AddOrUpdateToOutFlushbonadingParam;
 import com.avst.meetingcontrol.feignclient.ec.req.fd.GetToOutFlushbonadingListParam;
+import com.avst.meetingcontrol.web.req.GetMiddlewareFTPParam;
+import com.avst.meetingcontrol.web.req.GetptdjconstParam;
+import com.avst.meetingcontrol.web.req.SetMiddlewareFTPParam;
 import com.avst.meetingcontrol.web.service.flushbonading.FlushbonadingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +79,48 @@ public class FlushbonadingAction extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
+
+
+    @RequestMapping("/getptdjconst")
+    @ResponseBody
+    public RResult getptdjconst(@RequestBody ReqParam<GetptdjconstParam> param){
+        RResult result=this.createNewResultOfFail();
+        if (null!=param){
+            flushbonadingService.getptdjconst(result,param.getParam());
+        }else {
+            result.setMessage("参数为空");
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/getMiddleware_FTP")
+    @ResponseBody
+    public RResult getMiddleware_FTP(@RequestBody ReqParam<GetMiddlewareFTPParam> param){
+        RResult result=this.createNewResultOfFail();
+        if (null!=param){
+            flushbonadingService.getMiddleware_FTP(result,param.getParam());
+        }else {
+            result.setMessage("参数为空");
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/setMiddleware_FTP")
+    @ResponseBody
+    public RResult setMiddleware_FTP(@RequestBody ReqParam<SetMiddlewareFTPParam> param){
+        RResult result=this.createNewResultOfFail();
+        if (null!=param){
+            flushbonadingService.setMiddleware_FTP(result,param.getParam());
+        }else {
+            result.setMessage("参数为空");
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
 
 
 }

@@ -17,7 +17,6 @@ import com.avst.meetingcontrol.feignclient.ec.req.tts.AddOrUpdateToOutTtsEtinfoP
 import com.avst.meetingcontrol.feignclient.ec.req.tts.GetToOutTtsEtinfoListParam;
 import com.avst.meetingcontrol.feignclient.ec.vo.ph.*;
 import com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout;
-import com.avst.meetingcontrol.feignclient.ec.vo.ss.GetURLToPlayVO;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -150,7 +149,9 @@ public interface EquipmentControl {
     @ResponseBody
     public RResult getFlushbonadingEttdByMcSsid(@RequestBody ReqParam<GetToOutFlushbonadingEttdByListParam> param);
 
-
+    @RequestMapping("/flushbonading/v1/workOver_Accident")
+    @ResponseBody
+    public RResult workOver_Accident(@RequestBody ReqParam<WorkOver_AccidentParam> param);
 
 
     /*--------------------------------以下为：提供给会议后台显示的接口---start--------------------------------------*/
@@ -172,10 +173,19 @@ public interface EquipmentControl {
     @ResponseBody
     public RResult updateToOutFlushbonading(@RequestBody ReqParam<AddOrUpdateToOutFlushbonadingParam> param);
 
-    @RequestMapping("/flushbonading/v1/workOver_Accident")
 
+    @RequestMapping("/flushbonading/v1/getptdjconst")
     @ResponseBody
-    public RResult workOver_Accident(@RequestBody ReqParam<WorkOver_AccidentParam> param);
+    public RResult getptdjconst(@RequestBody ReqParam<GetToOutptdjconstParam> param);
+
+    @RequestMapping("/flushbonading/v1/getToOutMiddleware_FTP")
+    @ResponseBody
+    public RResult getToOutMiddleware_FTP(@RequestBody ReqParam<GetToOutMiddleware_FTPParam> param);
+
+    @RequestMapping("/flushbonading/v1/setToOutMiddleware_FTP")
+    @ResponseBody
+    public RResult setToOutMiddleware_FTP(@RequestBody ReqParam<SetToOutMiddleware_FTPParam> param);
+
 
     //测谎仪
     @RequestMapping("/polygraph/v1/getToOutPolygraphList")
@@ -194,6 +204,8 @@ public interface EquipmentControl {
     @ResponseBody
     public RResult updateToOutPolygraph(@RequestBody ReqParam<AddOrUpdateToOutPolygraphParam> param);
 
+
+
     //语音识别服务
     @RequestMapping("/asr/v1/getToOutAsrList")
     @ResponseBody
@@ -210,6 +222,8 @@ public interface EquipmentControl {
     @RequestMapping("/asr/v1/updateToOutAsr")
     @ResponseBody
     public RResult updateToOutAsr(@RequestBody ReqParam<AddOrUpdateToOutAsrParam> param);
+
+
 
     //设备通道
     @RequestMapping("/flushbonadingEttd/v1/getToOutFlushbonadingEttdList")

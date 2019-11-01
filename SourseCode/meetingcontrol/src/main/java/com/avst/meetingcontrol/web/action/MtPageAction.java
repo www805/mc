@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.web.action;
 
+import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,6 +57,41 @@ public class MtPageAction {
         model.addAttribute("title","模板通道编辑");
         return new ModelAndView("sweb/avsthtml/Avstmt_modeltdAddOrUpdate", "Avstmt_modeltdAddOrUpdate", model);
     }
+
+    //设备跳转
+    @RequestMapping(value = "/toaddOrUpdateFlushbonading")
+    public ModelAndView toaddOrUpdateFlushbonading(Model model,String ssid) {
+        model.addAttribute("title", "审讯设备新增/修改");
+        model.addAttribute("ssid",ssid);
+        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("flushbonading_etypessid"));
+        return new ModelAndView("sweb/avsthtml/echtml/addOrUpdateFlushbonading", "addOrUpdateFlushbonadingModel", model);
+    }
+
+    @RequestMapping(value = "/toaddOrUpdateFlushbonadingEttd")
+    public ModelAndView toaddOrUpdateFlushbonadingEttd(Model model,String ssid,String masterssid) {
+        model.addAttribute("title", "设备通道 新增/修改");
+        model.addAttribute("ssid",ssid);
+        model.addAttribute("masterssid",masterssid);
+        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("flushbonading_etypessid"));
+        return new ModelAndView("sweb/avsthtml/echtml/addOrUpdateFlushbonadingEttd", "addOrUpdateFlushbonadingEttdModel", model);
+    }
+
+    @RequestMapping(value = "/toaddOrUpdatePolygraph")
+    public ModelAndView toaddOrUpdatePolygraph(Model model,String ssid) {
+        model.addAttribute("title", "测谎仪新增/修改");
+        model.addAttribute("ssid",ssid);
+        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("polygraph_etypessid"));
+        return new ModelAndView("sweb/avsthtml/echtml/addOrUpdatePolygraph", "addOrUpdatePolygraphModel", model);
+    }
+
+    @RequestMapping(value = "/toaddOrUpdateAsr")
+    public ModelAndView toaddOrUpdateAsr(Model model,String ssid) {
+        model.addAttribute("title", "语音服务器 新增/修改");
+        model.addAttribute("ssid",ssid);
+        model.addAttribute("etypessid", PropertiesListenerConfig.getProperty("asr_etypessid"));
+        return new ModelAndView("sweb/avsthtml/echtml/addOrUpdateAsr", "addOrUpdateAsrModel", model);
+    }
+
 
 
 

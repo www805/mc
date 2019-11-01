@@ -7,14 +7,14 @@ import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
-import com.avst.meetingcontrol.feignclient.ec.req.fd.AddOrUpdateToOutFlushbonadingParam;
-import com.avst.meetingcontrol.feignclient.ec.req.fd.GetToOutFlushbonadingListParam;
+import com.avst.meetingcontrol.feignclient.ec.req.fd.*;
+import com.avst.meetingcontrol.web.req.GetMiddlewareFTPParam;
+import com.avst.meetingcontrol.web.req.GetptdjconstParam;
+import com.avst.meetingcontrol.web.req.SetMiddlewareFTPParam;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class FlushbonadingService extends BaseService {
@@ -58,6 +58,8 @@ public class FlushbonadingService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"审讯设备getToOutFlushbonadingById__请求成功");
         }else {
+            String msg=fh_rr.getMessage()==null?result.getMessage():fh_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"审讯设备getToOutFlushbonadingById__请求失败");
         }
         return;
@@ -74,6 +76,8 @@ public class FlushbonadingService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"审讯设备addToOutFlushbonading__请求成功");
         }else {
+            String msg=addfh_rr.getMessage()==null?result.getMessage():addfh_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"审讯设备addToOutFlushbonading__请求失败");
         }
         return;
@@ -97,7 +101,78 @@ public class FlushbonadingService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"审讯设备updateToOutFlushbonading__请求成功");
         }else {
+            String msg=updfh_rr.getMessage()==null?result.getMessage():updfh_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"审讯设备updateToOutFlushbonading__请求失败");
+        }
+        return;
+    }
+
+
+
+    public void getptdjconst(RResult result, GetptdjconstParam param){
+         String flushbonadingetinfossid=param.getFlushbonadingetinfossid();//嵌入式设备ssid
+         boolean mustUpdateBool=param.isMustUpdateBool();//是否强制修改数据库中保存的片头
+
+        if (StringUtils.isNotEmpty(flushbonadingetinfossid)){
+            ReqParam reqParam=new ReqParam<>();
+            GetToOutptdjconstParam getToOutptdjconstParam =new GetToOutptdjconstParam();
+            getToOutptdjconstParam.setFdType(FDType.FD_AVST);
+            getToOutptdjconstParam.setFlushbonadingetinfossid(flushbonadingetinfossid);
+            getToOutptdjconstParam.setMustUpdateBool(mustUpdateBool);
+            reqParam.setParam(getToOutptdjconstParam);
+            RResult rr =  equipmentControl.getptdjconst(reqParam);
+            if (null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
+                result.setData(rr.getData());
+                changeResultToSuccess(result);
+                LogUtil.intoLog(this.getClass(),"审讯设备getptdjconst__请求成功");
+            }else {
+                String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+                result.setMessage(msg);
+                LogUtil.intoLog(this.getClass(),"审讯设备getptdjconst__请求失败");
+            }
+        }
+        return;
+    }
+    public void getMiddleware_FTP(RResult result, GetMiddlewareFTPParam param){
+         String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isNotEmpty(fdssid)){
+            ReqParam reqParam=new ReqParam<>();
+            GetToOutMiddleware_FTPParam getMiddleware_ftpParam=new GetToOutMiddleware_FTPParam();
+            getMiddleware_ftpParam.setFlushbonadingetinfossid(fdssid);
+            getMiddleware_ftpParam.setFdType(FDType.FD_AVST);
+            reqParam.setParam(getMiddleware_ftpParam);
+            RResult rr =  equipmentControl.getToOutMiddleware_FTP(reqParam);
+            if (null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
+                result.setData(rr.getData());
+                changeResultToSuccess(result);
+                LogUtil.intoLog(this.getClass(),"审讯设备getToOutMiddleware_FTP__请求成功");
+            }else {
+                String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+                result.setMessage(msg);
+                LogUtil.intoLog(this.getClass(),"审讯设备getToOutMiddleware_FTP__请求失败");
+            }
+        }else {
+            result.setMessage("设备未找到");
+            LogUtil.intoLog(this.getClass(),"审讯设备ssid is null"+fdssid);
+        }
+        return;
+    }
+
+    public void setMiddleware_FTP(RResult result, SetMiddlewareFTPParam param){
+        ReqParam reqParam=new ReqParam<>();
+        param.setFdType(FDType.FD_AVST);
+        SetToOutMiddleware_FTPParam setMiddleware_ftpParam=gson.fromJson(gson.toJson(param),SetToOutMiddleware_FTPParam.class);
+        reqParam.setParam(setMiddleware_ftpParam);
+        RResult rr =  equipmentControl.setToOutMiddleware_FTP(reqParam);
+        if (null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
+            result.setData(rr.getData());
+            changeResultToSuccess(result);
+            LogUtil.intoLog(this.getClass(),"审讯设备setToOutMiddleware_FTP__请求成功");
+        }else {
+            String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+            result.setMessage(msg);
+            LogUtil.intoLog(this.getClass(),"审讯设备setToOutMiddleware_FTP__请求失败");
         }
         return;
     }

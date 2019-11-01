@@ -120,6 +120,8 @@ public class Avstmt_modeltdService extends BaseService {
                         avstmt_modeltdAll.setPhexplain(polygraphInfo.getExplain());
                         LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphById__请求成功");
                     }else {
+                        String msg=rr2.getMessage()==null?result.getMessage():rr2.getMessage();
+                        result.setMessage(msg);
                         LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphById__请求失败");
                     }
                 }

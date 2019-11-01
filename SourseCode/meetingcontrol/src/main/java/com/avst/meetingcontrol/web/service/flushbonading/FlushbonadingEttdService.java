@@ -37,6 +37,8 @@ public class FlushbonadingEttdService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"设备通道getToOutFlushbonadingEttdList__请求成功");
         }else {
+            String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"设备通道getToOutFlushbonadingEttdList__请求失败");
         }
         return;
@@ -61,6 +63,8 @@ public class FlushbonadingEttdService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"设备通道getToOutFlushbonadingEttdById__请求成功");
         }else {
+            String msg=rr.getMessage()==null?result.getMessage():rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"设备通道getToOutFlushbonadingEttdById__请求失败");
         }
         return;
@@ -77,6 +81,8 @@ public class FlushbonadingEttdService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"设备通道addToOutFlushbonadingEttd__请求成功");
         }else {
+            String msg=addrr.getMessage()==null?result.getMessage():addrr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"设备通道addToOutFlushbonadingEttd__请求失败");
         }
         return;
@@ -100,6 +106,8 @@ public class FlushbonadingEttdService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"设备通道updateToOutFlushbonadingEttd__请求成功");
         }else {
+            String msg=updrr.getMessage()==null?result.getMessage():updrr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"设备通道updateToOutFlushbonadingEttd__请求失败");
         }
         return;

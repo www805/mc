@@ -31,6 +31,8 @@ public class PolygraphService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求成功");
         }else {
+            String msg=ph_rr.getMessage()==null?result.getMessage():ph_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求失败");
         }
         return;
@@ -54,6 +56,8 @@ public class PolygraphService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求成功");
         }else {
+            String msg=ph_rr.getMessage()==null?result.getMessage():ph_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求失败");
         }
         return;
@@ -70,6 +74,8 @@ public class PolygraphService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"测谎仪addToOutPolygraph__请求成功");
         }else {
+            String msg=addph_rr.getMessage()==null?result.getMessage():addph_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"测谎仪addToOutFlushbonading__请求失败");
         }
         return;
@@ -93,6 +99,8 @@ public class PolygraphService extends BaseService {
             changeResultToSuccess(result);
             LogUtil.intoLog(this.getClass(),"测谎仪updateToOutPolygraph__请求成功");
         }else {
+            String msg=updph_rr.getMessage()==null?result.getMessage():updph_rr.getMessage();
+            result.setMessage(msg);
             LogUtil.intoLog(this.getClass(),"测谎仪updateToOutPolygraph__请求失败");
         }
         return;
