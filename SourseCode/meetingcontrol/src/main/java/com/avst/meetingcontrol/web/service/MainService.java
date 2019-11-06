@@ -171,44 +171,6 @@ public class MainService extends BaseService {
     public void getNavList(RResult result) {
 
         AppCacheParam cacheParam = AppCache.getAppCacheParam();
-        if(null == cacheParam.getData()){
-            String application_name = PropertiesListenerConfig.getProperty("spring.application.name");
-            String nav_file_name = PropertiesListenerConfig.getProperty("nav.file.name");
-
-            String path = OpenUtil.getXMSoursePath() + "\\" + nav_file_name + ".yml";
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(path);
-
-                Yaml yaml = new Yaml();
-                Map<String,Object> map = yaml.load(fis);
-
-                Map<String,Object> avstYml = (Map<String, Object>) map.get(application_name);
-                Map<String,Object> zkYml = (Map<String, Object>) map.get("zk");
-                Map<String,Object> guidepage = (Map<String, Object>) zkYml.get("guidepage");
-                Map<String,Object> client_button = (Map<String, Object>) guidepage.get("client_button");
-                String guidepageUrl = (String) client_button.get("url");
-                String myIP = NetTool.getMyIP();
-                avstYml.put("guidepageUrl" , "http://" + myIP + guidepageUrl);
-
-                avstYml.put("bottom", map.get("bottom"));
-                if (null != map && map.size() > 0) {
-                    cacheParam.setTitle((String) avstYml.get("title"));
-                }
-                cacheParam.setData(avstYml);
-
-            } catch (IOException e) {
-                LogUtil.intoLog(4, this.getClass(), "没找到外部配置文件：" + path);
-            }finally {
-                if(null != fis){
-                    try {
-                        fis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
         result.setData(cacheParam);
         result.changeToTrue();
 
