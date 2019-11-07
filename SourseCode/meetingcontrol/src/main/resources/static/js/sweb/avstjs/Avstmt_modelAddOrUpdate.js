@@ -75,6 +75,7 @@ function Avstmt_modelAddOrUpdate() {
         userecord:userecord,
         asrservermodel:asrservermodel,
         asrnum:asrnum,
+        explain:explain,
         ssid:ssid
     };
     ajaxSubmit(url,data,callbackAvstmt_modelAddOrUpdate);
