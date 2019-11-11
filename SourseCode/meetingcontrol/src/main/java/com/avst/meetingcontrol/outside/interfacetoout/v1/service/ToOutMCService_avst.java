@@ -542,7 +542,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                                                         }
                                                         //加上测谎仪开始时间与录像开始时间差
                                                         Long subtractime=avstmt_tdpolygraph.getStarttime()-avstmt_tdpolygraph.getMtstartrecordtime();
-                                                        Long num=(subtractime/1000)+Integer.valueOf(txts[0].trim());
+                                                        Long num=(subtractime/1000)+Integer.valueOf(txts[0].trim());//测谎仪差值
                                                         phDataBackVoParam.setNum(num.toString());
                                                         phDataBackVoParam.setPhBataBackJson(txts[1].trim());
                                                         SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
@@ -619,6 +619,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         GetTdByModelSsidParam_out out=param.getParam();
         if (null!=out){
             String ssid=out.getModelssid();
+            LogUtil.intoLog(this.getClass(),"getTdByModelSsid__获取模板通道__ssid__"+ssid);
             if (StringUtils.isNotBlank(ssid)){
                 try {
                     EntityWrapper entityWrapper=new EntityWrapper();
