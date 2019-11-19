@@ -26,6 +26,7 @@ import com.avst.meetingcontrol.web.req.GetHomeParam;
 import com.avst.meetingcontrol.web.req.LoginParam;
 import com.avst.meetingcontrol.web.vo.GetBaseListVO;
 import com.avst.meetingcontrol.web.vo.GetHomeVO;
+import com.avst.meetingcontrol.web.vo.GetLoginCookieVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +36,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -55,7 +58,7 @@ public class MainService extends BaseService {
     @Autowired
     private Base_mtinfoMapper base_mtinfoMapper;
 
-    public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
+    public RResult logining(RResult result, HttpServletRequest request, HttpServletResponse response, LoginParam loginParam){
 
         if (StringUtils.isBlank(loginParam.getLoginaccount())||StringUtils.isBlank(loginParam.getPassword())){
             result.setMessage("账号密码不能为空");
@@ -85,6 +88,26 @@ public class MainService extends BaseService {
             return result;
         }
 
+        boolean rememberpassword=loginParam.isRememberpassword();
+        if (rememberpassword){
+            Cookie mcloginaccount=new Cookie("MCLOGINACCOUNT",loginaccount);
+            mcloginaccount.setMaxAge(60*60*24*7);
+            mcloginaccount.setPath("/");
+            Cookie mcrememberme=new Cookie("MCREMEMBERME","YES");
+            mcrememberme.setMaxAge(60*60*24*7);
+            mcrememberme.setPath("/");
+            response.addCookie(mcloginaccount);
+            response.addCookie(mcrememberme);
+        }else {
+            Cookie mcloginaccount=new Cookie("MCLOGINACCOUNT",null);
+            mcloginaccount.setMaxAge(0);
+            mcloginaccount.setPath("/");
+            Cookie mcrememberme=new Cookie("MCREMEMBERME",null);
+            mcrememberme.setMaxAge(0);
+            mcrememberme.setPath("/");
+            response.addCookie(mcloginaccount);
+            response.addCookie(mcrememberme);
+        }
         result.changeToTrue();
         request.getSession().setAttribute(Constant.MANAGE_WEB, loginParam);
 
@@ -196,5 +219,42 @@ public class MainService extends BaseService {
             LogUtil.intoLog(this.getClass(),"审讯设备getToOutBaseList__请求失败");
         }
 
+    }
+
+    public void getLoginCookie(RResult result,HttpServletRequest request){
+        GetLoginCookieVO vo=new GetLoginCookieVO();
+        String loginaccount = "";
+        String password = "";
+
+        //获取当前站点的所有Cookie
+        String rememberme=null;
+        Cookie[] cookies = request.getCookies();
+        if (null != cookies && cookies.length > 0) {
+            for (int i = 0; i < cookies.length; i++) {//对cookies中的数据进行遍历，找到用户名、密码的数据
+                if ("MCLOGINACCOUNT".equals(cookies[i].getName())) {
+                    loginaccount = cookies[i].getValue();
+                } else if ("MCREMEMBERME".equals(cookies[i].getName())) {
+                    rememberme = cookies[i].getValue();
+                }
+            }
+        }
+
+        if (StringUtils.isNotEmpty(rememberme)&&rememberme.equals("YES")&&StringUtils.isNotEmpty(loginaccount)){
+            AppCacheParam cacheParam = AppCache.getAppCacheParam();
+            if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
+                RResult rr = new RResult();
+                this.getNavList(rr);
+            }
+
+            Map<String, Object> loginData = cacheParam.getData();
+            password = (String) loginData.get("password");
+        }
+
+
+        vo.setLoginaccount(loginaccount);
+        vo.setPassword(password);
+        result.setData(vo);
+        result.changeToTrue();
+       return;
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping("/mc/main")
 @Controller
@@ -69,9 +70,9 @@ public class MainAction extends BaseAction {
 
     @PostMapping(value = "/logining")
     @ResponseBody
-    public RResult checklogin(Model model, HttpServletRequest request, LoginParam loginParam) {
+    public RResult checklogin(Model model, HttpServletRequest request, HttpServletResponse response, LoginParam loginParam) {
         RResult result=createNewResultOfFail();
-        mainService.logining(result,request,loginParam);
+        mainService.logining(result,request,response,loginParam);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
@@ -129,6 +130,19 @@ public class MainAction extends BaseAction {
     public RResult getBaseList(@RequestBody GetBaseListParam param){
         RResult result=this.createNewResultOfFail();
         mainService.getBaseList(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/getLoginCookie")
+    @ResponseBody
+    public  RResult getLoginCookie(HttpServletRequest request) {
+        RResult result = this.createNewResultOfFail();
+        try {
+            mainService.getLoginCookie(result,request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
