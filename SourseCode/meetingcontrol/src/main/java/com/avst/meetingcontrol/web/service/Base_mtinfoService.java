@@ -16,6 +16,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -49,12 +52,42 @@ public class Base_mtinfoService extends BaseService {
         }
 
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         if(StringUtils.isNotEmpty(param.getRecordstarttime_startdate()) && StringUtils.isNotEmpty(param.getRecordstarttime_enddate())){
-            ew.between("DATE(recordstarttime)", param.getRecordstarttime_startdate(), param.getRecordstarttime_enddate());
+
+            try {
+                Date startdate = simpleDateFormat.parse(param.getRecordstarttime_startdate());
+                long ts = startdate.getTime();
+                String head = String.valueOf(ts);
+
+                Date lastdate = simpleDateFormat.parse(param.getRecordstarttime_enddate());
+                ts = lastdate.getTime();
+                String end = String.valueOf(ts);
+
+                ew.between("mtstarttime", head, end);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         if(StringUtils.isNotEmpty(param.getRecordendtime_startdate()) && StringUtils.isNotEmpty(param.getRecordendtime_enddate())){
-            ew.between("DATE(recordendtime)", param.getRecordendtime_startdate(), param.getRecordendtime_enddate());
+            try {
+                Date startdate = simpleDateFormat.parse(param.getRecordendtime_startdate());
+                long ts = startdate.getTime();
+                String head = String.valueOf(ts);
+
+                Date lastdate = simpleDateFormat.parse(param.getRecordendtime_enddate());
+                ts = lastdate.getTime();
+                String end = String.valueOf(ts);
+
+                ew.between("mtendtime", head, end);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+//            ew.between("DADE(mtendtime)", param.getRecordendtime_startdate(), param.getRecordendtime_enddate());
         }
 
         int count=base_mtinfoMapper.selectCount(ew);
