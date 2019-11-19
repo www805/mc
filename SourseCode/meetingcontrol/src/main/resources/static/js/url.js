@@ -102,6 +102,8 @@ function getUrl_manage() {
         updateToOutTtsEtinfo:getPath()+basepath+"tts/updateToOutTtsEtinfo",
 
         /*--------------------------------以下为：提供给会议后台显示的接口---end--------------------------------------*/
+
+        getLoginCookie:getPath()+basepath+"main/getLoginCookie",
 	};
 }
 
