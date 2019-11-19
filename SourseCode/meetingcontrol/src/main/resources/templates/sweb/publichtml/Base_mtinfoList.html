@@ -56,14 +56,14 @@
                 </select>
             </div>
 
-            <label class="layui-form-label" style="width: auto;">录制开始时间</label>
+            <label class="layui-form-label" style="width: auto;">会议开始时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="recordstarttime" id="recordstarttime" lay-verify="required" placeholder="请输入录制开始时间" autocomplete="off" class="layui-input" >
+                <input type="text" name="recordstarttime" id="recordstarttime" lay-verify="required" placeholder="请输入会议开始时间" autocomplete="off" class="layui-input" >
             </div>
 
-            <label class="layui-form-label" style="width: auto;">录制结束时间</label>
+            <label class="layui-form-label" style="width: auto;">会议结束时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="recordendtime" id="recordendtime" lay-verify="required" placeholder="请输入录制结束时间" autocomplete="off" class="layui-input" >
+                <input type="text" name="recordendtime" id="recordendtime" lay-verify="required" placeholder="请输入会议结束时间" autocomplete="off" class="layui-input" >
             </div>
             <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="getBase_mtinfoListByParam();" >
         </div>
@@ -149,7 +149,6 @@
         S=S<10?("0"+S):S;
         return y+"-"+m+"-"+d+" "+h+":"+M+":"+S;
     };
-
     layui.use(['layer','element','laydate'], function(){
         var layer = layui.layer; //获得layer模块
         var element = layui.element;
@@ -173,7 +172,6 @@
             }
         });
     });
-
 </script>
 </body>
 </html>
