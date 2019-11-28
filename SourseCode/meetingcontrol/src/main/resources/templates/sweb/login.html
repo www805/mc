@@ -45,7 +45,7 @@
         <ul>
             <li><input name="loginaccount" type="text" class="loginuser" value="" lay-verify="loginaccount"/></li>
             <li><input name="password" type="password" class="loginpwd" value="" lay-verify="password"/></li>
-            <li><button type="button" id="loginbtn" class="loginbtn"    lay-filter="loginbtn" lay-submit="" style="margin-right: 10px;" onclick=" logining();">登录</button>
+            <li><button type="button" id="loginbtn" class="loginbtn"    lay-filter="logining" lay-submit="" style="margin-right: 10px;" >登录</button>
                 <input name="" type="checkbox" title="记住密码"  lay-skin="primary" id="rememberpassword"/>
                 <a href="#" style="color: #666;font-size: 14px;position: relative;top: 2px;">忘记密码？</a>
             </li>
@@ -81,7 +81,7 @@
             var e = event || window.event;
             if (e && e.keyCode == 13) { //回车键的键值为13
                 event.preventDefault();
-                logining();
+                $("#loginbtn").click();
             }
         };
 
@@ -100,7 +100,32 @@
         }
     });
 
+    layui.use(['layer','element','laydate','form'], function(){
+        var layer = layui.layer; //获得layer模块
+        var element = layui.element;
+        var laydate = layui.laydate;
+        var form = layui.form;
+        //使用模块
 
+        form.verify({
+            loginaccount: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(''==value){
+                    return "请输入登录账户";
+                }
+            },
+            password: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(''==value){
+                    return "请输入密码";
+                }
+            }
+        });
+
+        form.on('submit(logining)', function (data) {
+            logining();
+            return false;
+        });
+
+    });
 
 </script>
 
