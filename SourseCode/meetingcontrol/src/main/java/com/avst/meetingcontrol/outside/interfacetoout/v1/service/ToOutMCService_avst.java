@@ -672,8 +672,10 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         GetTDCacheParamByMTssidParam_out out=param.getParam();
         String mtssid=out.getMtssid();
         String userssid=out.getUserssid();
+        LogUtil.intoLog(1,this.getClass(),"getTDCacheParamByMTssid__获取会议通道参数__mtssid__"+mtssid+"__userssid__"+userssid);
         TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamByUserssid(mtssid,userssid);
         if(null!=tdAndUserAndOtherCacheParam){
+            LogUtil.intoLog(1,this.getClass(),"getTDCacheParamByMTssid__获取会议通道__成功");
             vo.setAsrid(tdAndUserAndOtherCacheParam.getAsrid());
             vo.setAsrRun(tdAndUserAndOtherCacheParam.isAsrRun());
             vo.setAsrssid(tdAndUserAndOtherCacheParam.getAsrssid());
@@ -698,6 +700,8 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             vo.setUsername(tdAndUserAndOtherCacheParam.getUsername());
             vo.setUserssid(tdAndUserAndOtherCacheParam.getUserssid());
             result.changeToTrue(vo);
+        }else {
+            result.setMessage("getTDCacheParamByMTssid__未找到对应的通道 is null");
         }
         return result;
     }
