@@ -271,6 +271,24 @@ public class ToOutAction extends BaseAction {
     }
 
 
+    /**
+     * 更新会议缓存语音识别打点标记文本
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setMCTagTxt")
+    @ResponseBody
+    public RResult setMCTagTxt(@RequestBody ReqParam<SetMCTagTxtParam_out> param){
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getParam().getMcType()).setMCTagTxt(param.getParam(),result);
+        return result;
+    }
+
+
+
+
+
+
     @RequestMapping("/ceshimc")
     public RResult ceshi(int type,String mtssid ) {
         RResult rResult=createNewResultOfFail();

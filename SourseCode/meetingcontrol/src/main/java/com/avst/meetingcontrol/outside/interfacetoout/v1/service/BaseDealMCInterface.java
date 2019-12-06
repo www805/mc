@@ -43,4 +43,7 @@ public interface BaseDealMCInterface {
 
     public RResult overAccidentMT(OverAccidentMTParam_out param, RResult result);
 
+    public RResult setMCTagTxt(SetMCTagTxtParam_out param, RResult result);
+
+
 }

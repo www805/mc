@@ -312,4 +312,37 @@ public static boolean runbool=true;
     }
 
 
+    /**
+     * 更新打点标记文本到缓存：打点标记
+     * @param mtssid
+     * @param userssid
+     * @param tagtxt
+     * @return
+     */
+    public static synchronized boolean setMCTagTxt(String mtssid,String userssid,String tagtxt,String starttime){
+        AsrForMCCache_oneParam asrForMCCache_oneParam=getMTAsrOneUserAsrByUserid(mtssid,userssid);
+        if (null==asrForMCCache_oneParam) {
+            return false;
+        }
+        List<AsrTxtParam_toout> oldtxtList=asrForMCCache_oneParam.getAsrTxtList();
+        List<AsrTxtParam_toout> newtxtList=new ArrayList<AsrTxtParam_toout>();
+        if(null==oldtxtList){
+            oldtxtList=new ArrayList<AsrTxtParam_toout>();
+        }else{
+             if(oldtxtList.size() > 0){
+                 for (AsrTxtParam_toout asrTxtParam_toout : oldtxtList) {
+                     if(asrTxtParam_toout.getStarttime().hashCode() == starttime.hashCode()){//比较这句话开始识别的时间，一样的话就还是这句话的识别直接覆盖
+                         asrTxtParam_toout.setTagtext(tagtxt);
+                     }
+                     newtxtList.add(asrTxtParam_toout);
+                 }
+             }
+        }
+        asrForMCCache_oneParam.setAsrTxtList(newtxtList);
+        setMTAsrOneUserAsr(mtssid,asrForMCCache_oneParam);
+       return true;
+    }
+
+
+
 }

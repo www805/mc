@@ -388,6 +388,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                             l.setStarttime(a.getStarttime().toString());
                             l.setAsrsort(a.getOrdernum());
                             l.setTxt(a.getTranslatext());
+                            l.setTagtext(a.getString2());
                             l.setUserssid(a.getMtuserssid());
                             l.setAsrtime(a.getString1());//时间
                             l.setAsrstartime(tu.getStarttime());
@@ -726,6 +727,27 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             result.changeToTrue(true);//返回
         }else{
 
+        }
+        return result;
+    }
+
+    //更新会议缓存语音识别打点标记文本
+    @Override
+    public RResult setMCTagTxt(SetMCTagTxtParam_out param, RResult result) {
+        String mtssid=param.getMtssid();
+        String starttime=param.getStarttime();
+        String tagtxt=param.getTagtxt();
+        String userssid=param.getUserssid();
+        LogUtil.intoLog(1,this.getClass(),"setMCTagTxt参数：__mtssid："+mtssid+"__starttime："+starttime+"__tagtxt："+tagtxt+"__userssid："+userssid);
+        if (StringUtils.isNotEmpty(mtssid)&&StringUtils.isNotEmpty(starttime)&&StringUtils.isNotEmpty(tagtxt)&&StringUtils.isNotEmpty(userssid)){
+            boolean setMCTagTxtbool=AsrForMCCache.setMCTagTxt(mtssid,userssid,tagtxt,starttime);
+            if (!setMCTagTxtbool){
+                result.setMessage("更新有误");
+            }
+            result.changeToTrue(true);
+        }else {
+            LogUtil.intoLog(1,this.getClass(),"setMCTagTxt参数不全");
+            result.setMessage("参数为空");
         }
         return result;
     }
