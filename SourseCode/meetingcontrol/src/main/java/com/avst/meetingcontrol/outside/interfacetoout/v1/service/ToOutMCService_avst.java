@@ -47,6 +47,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.req.*;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.*;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.param.PHDataBackVoParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang.StringUtils;
@@ -749,6 +750,31 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             LogUtil.intoLog(1,this.getClass(),"setMCTagTxt参数不全");
             result.setMessage("参数为空");
         }
+        return result;
+    }
+
+    @Override
+    public RResult getDefaultMTModel(GetDefaultMTModelParam param, RResult result) {
+
+        Wrapper<Avstmt_model> wrapper=new EntityWrapper<Avstmt_model>();
+        wrapper.eq("modelstate",1);
+        wrapper.eq("defaultmtmodelbool",1);
+        List<Avstmt_model> modellist=avstmt_modelMapper.selectList(wrapper);
+        if(null!=modellist&&modellist.size() > 0){
+
+            if(modellist.size()!=1){
+                LogUtil.intoLog(3,this.getClass(),modellist.size()+":modellist.size() getDefaultMTModel可用的默认模板通道不止一个，警告");
+            }
+            GetDefaultMTModelVO modelVO=new GetDefaultMTModelVO();
+            Gson gson = new Gson();
+            modelVO=gson.fromJson(gson.toJson(modellist.get(0)),GetDefaultMTModelVO.class);
+            result.changeToTrue(modelVO);
+
+        }else{
+            result.setMessage("没有可用的默认模板通道，请联系管理员");
+            LogUtil.intoLog(4,this.getClass(),"getDefaultMTModel 没有可用的默认模板通道，请联系管理员");
+        }
+
         return result;
     }
 }

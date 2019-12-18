@@ -284,7 +284,18 @@ public class ToOutAction extends BaseAction {
         return result;
     }
 
-
+    /**
+     * 获取默认会议模板
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getDefaultMTModel")
+    @ResponseBody
+    public RResult getDefaultMTModel(@RequestBody GetDefaultMTModelParam param){
+        RResult result=createNewResultOfFail();
+        result=getBaseDealMCInterfaceImpl(param.getMcType()).getDefaultMTModel(param,result);
+        return result;
+    }
 
 
 

@@ -17,6 +17,7 @@ import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RRParam;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
+import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.OverAsrParam;
 import com.avst.meetingcontrol.feignclient.ec.req.asr.StartAsrParam;
@@ -113,7 +114,7 @@ private Gson gson=new Gson();
                 base_mtinfo.setUserecord(avstmt_model.getUserecord());
 
                 initMCVO.setAsrServerModel(avstmt_model.getAsrservermodel());//这个参数决定了asr语音识别使用的类型，单对单还是单对多
-                initMCVO.setAsrNum(avstmt_model.getAsrnum());
+                initMCVO.setAsrNum(avstmt_model.getAsrnum()==null?1:avstmt_model.getAsrnum());
 
                 //查找会议通道模板
                 Avstmt_modeltd avstmt_modeltd=new Avstmt_modeltd();
@@ -289,6 +290,7 @@ private Gson gson=new Gson();
                 //是否需要录音
                 //会议开启的时候的录像时间才会是会议录像开始时间，暂停，继续之后的录像开始时间不是会议录像开始时间（重点记号）
                 long startrecordtime=(new Date()).getTime();
+
                 try {
                     if(td.getUserecord()==1){
 
@@ -308,6 +310,7 @@ private Gson gson=new Gson();
                                 previewurl=workStartVO.getFdpreviewurl();//设备直播预览地址
 
                                 startrecordtime=workStartVO.getStartrecordtime();//录像开始时间
+
                                 tdcacheParam.setFdrecordstarttime(startrecordtime);
                                 //现在同步点都用录像时间
 //                                if(null!=avstmt_asrtd&&null!=avstmt_asrtd.getId()&&0!=startrecordtime){

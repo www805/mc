@@ -45,5 +45,14 @@ public interface BaseDealMCInterface {
 
     public RResult setMCTagTxt(SetMCTagTxtParam_out param, RResult result);
 
+    /**
+     * 获取默认会议模板
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult getDefaultMTModel(GetDefaultMTModelParam param, RResult result);
+
+
 
 }
