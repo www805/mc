@@ -63,6 +63,21 @@ public class Avstmt_model extends Model<Avstmt_model> {
     private Integer asrnum;
 
     /**
+     * 模版状态，1可以使用，0暂停使用，-1删除
+     */
+    private Integer modelstate;
+
+    /**
+     * 默认会议模板，1是，0不是
+     */
+    private Integer defaultmtmodelbool;
+
+    /**
+     * 模板类型编号,0/1/2/3/4(一般0是默认)
+     */
+    private Integer modeltypenum;
+
+    /**
      * 模板中文说明
      */
     private String explain;
@@ -187,21 +202,50 @@ public class Avstmt_model extends Model<Avstmt_model> {
         return this.id;
     }
 
+    public Integer getModelstate() {
+        return modelstate;
+    }
+
+    public void setModelstate(Integer modelstate) {
+        this.modelstate = modelstate;
+    }
+
+    public Integer getDefaultmtmodelbool() {
+        return defaultmtmodelbool;
+    }
+
+    public void setDefaultmtmodelbool(Integer defaultmtmodelbool) {
+        this.defaultmtmodelbool = defaultmtmodelbool;
+    }
+
+    public Integer getModeltypenum() {
+        return modeltypenum;
+    }
+
+    public void setModeltypenum(Integer modeltypenum) {
+        this.modeltypenum = modeltypenum;
+    }
+
     @Override
     public String toString() {
         return "Avstmt_model{" +
-        "id=" + id +
-        ", meetingtype=" + meetingtype +
-        ", usernum=" + usernum +
-        ", opened=" + opened +
-        ", userecord=" + userecord +
-        ", createtime=" + createtime +
-        ", explain=" + explain +
-        ", string1=" + string1 +
-        ", string2=" + string2 +
-        ", integer1=" + integer1 +
-        ", integer2=" + integer2 +
-        ", ssid=" + ssid +
-        "}";
+                "id=" + id +
+                ", meetingtype=" + meetingtype +
+                ", usernum=" + usernum +
+                ", opened=" + opened +
+                ", userecord=" + userecord +
+                ", createtime=" + createtime +
+                ", asrservermodel=" + asrservermodel +
+                ", asrnum=" + asrnum +
+                ", modelstate=" + modelstate +
+                ", defaultmtmodelbool=" + defaultmtmodelbool +
+                ", modeltypenum=" + modeltypenum +
+                ", explain='" + explain + '\'' +
+                ", string1='" + string1 + '\'' +
+                ", string2='" + string2 + '\'' +
+                ", integer1=" + integer1 +
+                ", integer2=" + integer2 +
+                ", ssid='" + ssid + '\'' +
+                '}';
     }
 }
