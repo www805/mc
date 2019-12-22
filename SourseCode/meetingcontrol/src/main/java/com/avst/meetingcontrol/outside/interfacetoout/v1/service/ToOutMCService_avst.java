@@ -593,24 +593,35 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             ew.eq("ssid",modelssid);//公开的
         }
         List<Avstmt_model> models=avstmt_modelMapper.selectList(ew);
-        List<Avstmt_modelAll>  modelAlls=new ArrayList<>();
-        Gson gson=new Gson();
-        modelAlls =gson.fromJson(gson.toJson(models), new TypeToken<List<Avstmt_modelAll>>(){}.getType());
-        if (null!=modelAlls&&modelAlls.size()>0){
-            for (Avstmt_modelAll avstmt_modelAll : modelAlls) {
-                String mtmodelssid=avstmt_modelAll.getSsid();
-                EntityWrapper ew1=new EntityWrapper();
-                ew1.orderBy("createtime",false);
-                ew1.eq(true,"mtmodelssid",mtmodelssid);
-                List<Avstmt_modeltdAll> avstmt_modeltdAlls=avstmt_modeltdMapper.selectList(ew1);
-                if (null!=avstmt_modeltdAlls&&avstmt_modeltdAlls.size()>0){
-                    avstmt_modelAll.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
-                }
-            }
-
-            result.changeToTrue(modelAlls);
+        if(null==models||models.size()==0){
+            result.setMessage("请求的模板数据没有找到");
+            return result;
         }
-        LogUtil.intoLog(this.getClass(),"获取全部会议模板__getMc_modeltd"+modelAlls);
+        Gson gson=new Gson();
+        List<Avstmt_modelAll> modelAlls=new ArrayList<Avstmt_modelAll>();
+        for(Avstmt_model avstmt_modelAll : models){
+            Avstmt_modelAll model=new Avstmt_modelAll();
+            model=gson.fromJson(gson.toJson(avstmt_modelAll),Avstmt_modelAll.class);
+            model.setCreatetime(null);
+            String mtmodelssid=avstmt_modelAll.getSsid();
+            EntityWrapper ew1=new EntityWrapper();
+            ew1.orderBy("createtime",false);
+            ew1.eq(true,"mtmodelssid",mtmodelssid);
+            List<Avstmt_modeltd> avstmt_modeltds=avstmt_modeltdMapper.selectList(ew1);
+            if (null!=avstmt_modeltds&&avstmt_modeltds.size()>0){
+                List<Avstmt_modeltdAll> avstmt_modeltdAlls=new ArrayList<Avstmt_modeltdAll>();
+                for(Avstmt_modeltd td:avstmt_modeltds){
+                    Avstmt_modeltdAll avstmt_modeltdAll=new Avstmt_modeltdAll();
+                    td.setCreatetime(null);
+                    avstmt_modeltdAll=gson.fromJson(gson.toJson(td),Avstmt_modeltdAll.class);
+                    avstmt_modeltdAlls.add(avstmt_modeltdAll);
+                }
+                model.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
+            }
+            modelAlls.add(model);
+        }
+        result.changeToTrue(modelAlls);
+        LogUtil.intoLog(this.getClass(),"获取全部会议模板__getMc_modeltd"+JacksonUtil.objebtToString(modelAlls));
         return result;
     }
 
@@ -767,7 +778,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             }
             GetDefaultMTModelVO modelVO=new GetDefaultMTModelVO();
             Gson gson = new Gson();
-            modelVO=gson.fromJson(gson.toJson(modellist.get(0)),GetDefaultMTModelVO.class);
+            Avstmt_model model=modellist.get(0);
+            model.setCreatetime(null);
+            modelVO=gson.fromJson(gson.toJson(model),GetDefaultMTModelVO.class);
             result.changeToTrue(modelVO);
 
         }else{
