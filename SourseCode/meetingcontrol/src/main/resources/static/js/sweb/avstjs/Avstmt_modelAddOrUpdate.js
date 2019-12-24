@@ -13,6 +13,17 @@ function callbackgetAvstmt_modelByssid(data) {
         var data=data.data;
         if (isNotEmpty(data)){
             var avstmt_model=data.avstmt_model;
+            var base_modeltypes=data.base_modeltypes;//会议模板类型data
+
+            $('#modeltypenum option').not(":lt(1)").remove();
+            if (isNotEmpty(base_modeltypes)){
+               //全部会议模板类型
+             for (var i = 0; i < base_modeltypes.length; i++) {
+                  var l = base_modeltypes[i];
+                   $("#modeltypenum").append("<option value='"+l.modeltypenum+"' > "+l.modeltypename+"</option>");
+              }
+
+            }
             if (isNotEmpty(avstmt_model)){
                 $("#meetingtype").val(avstmt_model.meetingtype);
                 $("#usernum").val(avstmt_model.usernum);
@@ -21,6 +32,7 @@ function callbackgetAvstmt_modelByssid(data) {
                 $("#explain").val(avstmt_model.explain);
                 $("#asrservermodel").val(avstmt_model.asrservermodel);
                 $("#asrnum").val(avstmt_model.asrnum);
+                $("#modeltypenum").val(avstmt_model.modeltypenum);
             }
         }
     }else{
@@ -46,9 +58,14 @@ function Avstmt_modelAddOrUpdate() {
     var explain = $("#explain").val();
     var asrservermodel = $("#asrservermodel").val();
     var asrnum = $("#asrnum").val();
+    var modeltypenum = $("#modeltypenum").val();
 
     if (!isNotEmpty(meetingtype)) {
         layer.msg("请选择会议类型",{icon: 2});
+        return;
+    }
+    if (!isNotEmpty(modeltypenum)) {
+        layer.msg("请选择模板类型",{icon: 2});
         return;
     }
     if (!isNotEmpty(usernum)) {
@@ -76,6 +93,7 @@ function Avstmt_modelAddOrUpdate() {
         asrservermodel:asrservermodel,
         asrnum:asrnum,
         explain:explain,
+        modeltypenum:modeltypenum,
         ssid:ssid
     };
     ajaxSubmit(url,data,callbackAvstmt_modelAddOrUpdate);

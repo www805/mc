@@ -9,8 +9,10 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modeltdAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_tduserAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.*;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_modeltype;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mtinfo;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_mttodatasave;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_modeltypeMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mtinfoMapper;
 import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_mttodatasaveMapper;
 import com.avst.meetingcontrol.common.util.JacksonUtil;
@@ -91,6 +93,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
     @Autowired
     private Avstmt_asrtdMapper avstmt_asrtdMapper;
+
+    @Autowired
+    private Base_modeltypeMapper base_modeltypeMapper;
 
     @Override
     public RResult startMC(ReqParam<StartMCParam_out> param, RResult result) {
@@ -604,6 +609,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
             model=gson.fromJson(gson.toJson(avstmt_modelAll),Avstmt_modelAll.class);
             model.setCreatetime(null);
             String mtmodelssid=avstmt_modelAll.getSsid();
+            Integer modeltypenum=avstmt_modelAll.getModeltypenum();
             EntityWrapper ew1=new EntityWrapper();
             ew1.orderBy("createtime",false);
             ew1.eq(true,"mtmodelssid",mtmodelssid);
@@ -617,6 +623,15 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     avstmt_modeltdAlls.add(avstmt_modeltdAll);
                 }
                 model.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
+            }
+            if (null!=modeltypenum){
+                Base_modeltype base_modeltype=new Base_modeltype();
+                EntityWrapper ew2=new EntityWrapper();
+                ew2.eq("modeltypenum",modeltypenum);
+                List<Base_modeltype> base_modeltypes=base_modeltypeMapper.selectList(ew2);
+                if (null!=base_modeltypes&&base_modeltypes.size()==1){
+                    model.setBase_modeltype(base_modeltypes.get(0));
+                }
             }
             modelAlls.add(model);
         }

@@ -77,6 +77,7 @@
         <tr>
             <th>序号</th>
             <th>会议类型</th>
+            <th>模板类型</th>
             <th>人员数量</th>
             <th>是否公开</th>
             <th>是否录制</th>
@@ -92,6 +93,7 @@
         <tr>
             <td>{{index+1}}</td>
             <td>{{value.meetingtype==null?"":(value.meetingtype==1?"<i class='layui-icon layui-icon-video'></i>视频":(value.meetingtype==2?"<i class='layui-icon layui-icon-headset'></i>音频":"未知"))}}</td>
+            <td>{{value.base_modeltype==null?"未知":(value.base_modeltype.modeltypename==null?"":value.base_modeltype.modeltypename)}}</td>
             <td>{{value.usernum==null?"0":value.usernum}}</td>
             <td>{{value.opened==null?"":(value.opened==1?"开放":(value.opened==-1?"不开放":"未知"))}}</td>
             <td>{{value.userecord==null?"":(value.userecord==1?"录制":(value.userecord==-1?"不录制":"未知"))}}</td>

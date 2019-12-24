@@ -5,6 +5,8 @@ import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.entity.param.Avstmt_modeltdAll;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modelMapper;
 import com.avst.meetingcontrol.common.datasourse.extrasourse.avstmt.mapper.Avstmt_modeltdMapper;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.entity.Base_modeltype;
+import com.avst.meetingcontrol.common.datasourse.publicsourse.mapper.Base_modeltypeMapper;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseService;
@@ -37,6 +39,9 @@ public class Avstmt_modelService extends BaseService {
 
     @Autowired
     private Avstmt_modeltdMapper avstmt_modeltdMapper;
+
+    @Autowired
+    private Base_modeltypeMapper base_modeltypeMapper;
 
     public void getAvstmt_modelList(RResult result, GetAvstmt_modelListParam param){
         GetAvstmt_modelListVO vo=new GetAvstmt_modelListVO();
@@ -80,6 +85,7 @@ public class Avstmt_modelService extends BaseService {
             //获取全部通道
             for (Avstmt_modelAll avstmt_modelAll : pagelist) {
                 String mtmodelssid=avstmt_modelAll.getSsid();
+                Integer modeltypenum=avstmt_modelAll.getModeltypenum();
                 EntityWrapper ew1=new EntityWrapper();
                 ew1.orderBy("createtime",false);
                 ew1.eq(true,"mtmodelssid",mtmodelssid);
@@ -87,6 +93,16 @@ public class Avstmt_modelService extends BaseService {
                 if (null!=avstmt_modeltdAlls&&avstmt_modeltdAlls.size()>0){
                     avstmt_modelAll.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
                 }
+                if (null!=modeltypenum){
+                    Base_modeltype base_modeltype=new Base_modeltype();
+                    EntityWrapper ew2=new EntityWrapper();
+                    ew2.eq("modeltypenum",modeltypenum);
+                    List<Base_modeltype> base_modeltypes=base_modeltypeMapper.selectList(ew2);
+                    if (null!=base_modeltypes&&base_modeltypes.size()==1){
+                        avstmt_modelAll.setBase_modeltype(base_modeltypes.get(0));
+                    }
+                }
+
             }
         }
         vo.setPagelist(pagelist);
@@ -149,10 +165,17 @@ public class Avstmt_modelService extends BaseService {
                 avstmt_modelAll.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
             }
             vo.setAvstmt_model(avstmt_modelAll);
-            result.setData(vo);
-            changeResultToSuccess(result);
-            return;
         }
+
+        EntityWrapper ew2=new EntityWrapper();
+        ew2.eq("modeltypestate",1);//状态正常
+        List<Base_modeltype> base_modeltypes=base_modeltypeMapper.selectList(ew2);
+        if (null!=base_modeltypes&&base_modeltypes.size()>0){
+            vo.setBase_modeltypes(base_modeltypes);
+        }
+
+        result.setData(vo);
+        changeResultToSuccess(result);
         return;
     }
 

@@ -72,6 +72,10 @@ public class Avstmt_model extends Model<Avstmt_model> {
      */
     private Integer defaultmtmodelbool;
 
+    /**
+     * 模板类型编号,0/1/2/3/4(一般0是默认)
+     */
+    private Integer modeltypenum;
 
     /**
      * 模板中文说明
@@ -214,21 +218,34 @@ public class Avstmt_model extends Model<Avstmt_model> {
         this.defaultmtmodelbool = defaultmtmodelbool;
     }
 
+    public Integer getModeltypenum() {
+        return modeltypenum;
+    }
+
+    public void setModeltypenum(Integer modeltypenum) {
+        this.modeltypenum = modeltypenum;
+    }
+
     @Override
     public String toString() {
         return "Avstmt_model{" +
-        "id=" + id +
-        ", meetingtype=" + meetingtype +
-        ", usernum=" + usernum +
-        ", opened=" + opened +
-        ", userecord=" + userecord +
-        ", createtime=" + createtime +
-        ", explain=" + explain +
-        ", string1=" + string1 +
-        ", string2=" + string2 +
-        ", integer1=" + integer1 +
-        ", integer2=" + integer2 +
-        ", ssid=" + ssid +
-        "}";
+                "id=" + id +
+                ", meetingtype=" + meetingtype +
+                ", usernum=" + usernum +
+                ", opened=" + opened +
+                ", userecord=" + userecord +
+                ", createtime=" + createtime +
+                ", asrservermodel=" + asrservermodel +
+                ", asrnum=" + asrnum +
+                ", modelstate=" + modelstate +
+                ", defaultmtmodelbool=" + defaultmtmodelbool +
+                ", modeltypenum=" + modeltypenum +
+                ", explain='" + explain + '\'' +
+                ", string1='" + string1 + '\'' +
+                ", string2='" + string2 + '\'' +
+                ", integer1=" + integer1 +
+                ", integer2=" + integer2 +
+                ", ssid='" + ssid + '\'' +
+                '}';
     }
 }

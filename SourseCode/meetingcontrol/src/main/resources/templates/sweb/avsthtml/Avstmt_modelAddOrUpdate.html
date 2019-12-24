@@ -34,6 +34,15 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>模板类型</label>
+            <div class="layui-input-block">
+                <select name="modeltypenum" lay-verify="required" id="modeltypenum"  lay-search>
+                    <option value="">请选择模板类型</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>人员数量</label>
             <div class="layui-input-block">
                 <input type="number" name="usernum" id="usernum" required  lay-verify="required" placeholder="请输入人员数量" autocomplete="off" class="layui-input">
