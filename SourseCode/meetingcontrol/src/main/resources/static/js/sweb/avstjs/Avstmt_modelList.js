@@ -44,11 +44,36 @@ function getAvstmt_modelList(meetingtype,opened,userecord,startdate,enddate,expl
     ajaxSubmit(url,data,callbackgetAvstmt_modelList);
 }
 
+function updateDefaultmtmodelbool(ssid, defaultmtmodelbool) {
+
+    var url=getUrl_manage().updateDefaultmtmodelbool;
+    var data = {
+        ssid: ssid,
+        defaultmtmodelbool: defaultmtmodelbool
+    };
+
+    ajaxSubmitByJson(url,data,callupdateDefaultmtmodelbool);
+}
 
 function callbackgetAvstmt_modelList(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             pageshow(data);
+        }
+    }else{
+        layer.msg(data.message,{icon: 2});
+    }
+}
+
+function callupdateDefaultmtmodelbool(data) {
+
+    if(null!=data&&data.actioncode=='SUCCESS'){
+
+        if(data.data == 1){
+            layer.msg("操作成功", {icon: 1});
+            setTimeout("window.location.reload();",1000);
+        }else{
+            layer.msg("操作失败",{icon: 1});
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -124,6 +149,14 @@ $(function () {
         });
         form.on('select(userecord_filter)', function(data){
             getAvstmt_modelListByParam();
+        });
+        //监听是否默认会议模板
+        form.on('switch(switchDefaultmtmodelbool)', function(data){
+            var shieldbool = 0;
+            if(this.checked){
+                shieldbool = 1;
+            }
+            updateDefaultmtmodelbool(data.value, shieldbool);
         });
 
     });

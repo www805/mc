@@ -120,6 +120,9 @@ public class Avstmt_modelService extends BaseService {
             result.setMessage("参数为空");
             return;
         }
+
+        setModelStateNo(param.getDefaultmtmodelbool());
+
         EntityWrapper ew=new EntityWrapper();
         ew.eq("ssid",ssid);
        int avstmt_modelMapper_updatebool = avstmt_modelMapper.update(param,ew);
@@ -131,6 +134,9 @@ public class Avstmt_modelService extends BaseService {
         return;
     }
     public void addAvstmt_model(RResult result, AddAvstmt_modelParam param){
+
+        setModelStateNo(param.getDefaultmtmodelbool());
+
         param.setCreatetime(new Date());
         param.setSsid(OpenUtil.getUUID_32());
         int avstmt_modelMapper_insertbool = avstmt_modelMapper.insert(param);
@@ -177,6 +183,40 @@ public class Avstmt_modelService extends BaseService {
         result.setData(vo);
         changeResultToSuccess(result);
         return;
+    }
+
+    public void updateDefaultmtmodelbool(RResult result, AddAvstmt_modelParam param) {
+
+        if (StringUtils.isBlank(param.getSsid())) {
+            result.setMessage("会议模板的ssid不能为空");
+            return;
+        }
+        if (null == param.getDefaultmtmodelbool()) {
+            result.setMessage("会议模板是否默认的状态不能为空");
+            return;
+        }
+
+        setModelStateNo(1);
+
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("ssid", param.getSsid());
+
+        Avstmt_model modeltd = new Avstmt_model();
+        modeltd.setDefaultmtmodelbool(param.getDefaultmtmodelbool());
+
+        Integer update = avstmt_modelMapper.update(modeltd, ew);
+
+        result.setData(update);
+        result.changeToTrue();
+    }
+
+    //把所有会议模板变成不是默认
+    private void setModelStateNo(Integer defaultmtmodelbool){
+        if (null != defaultmtmodelbool && 1 == defaultmtmodelbool) {
+            Avstmt_model model = new Avstmt_model();
+            model.setDefaultmtmodelbool(0);
+            avstmt_modelMapper.update(model, null);
+        }
     }
 
 }

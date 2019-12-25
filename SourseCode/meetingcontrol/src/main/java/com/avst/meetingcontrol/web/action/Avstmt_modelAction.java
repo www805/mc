@@ -9,6 +9,7 @@ import com.avst.meetingcontrol.web.req.GetAvstmt_modelListParam;
 import com.avst.meetingcontrol.web.req.UpdateAvstmt_modelParam;
 import com.avst.meetingcontrol.web.service.Avstmt_modelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,7 +73,17 @@ public class Avstmt_modelAction extends BaseAction {
     }
 
 
-
+    @RequestMapping("/updateDefaultmtmodelbool")
+    public RResult updateDefaultmtmodelbool(@RequestBody AddAvstmt_modelParam param){
+        RResult result=this.createNewResultOfFail();
+        if(null==param){
+            result.setMessage("参数错误");
+        }else {
+            avstmt_modelService.updateDefaultmtmodelbool(result,param);
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
 
 
 

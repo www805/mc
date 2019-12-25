@@ -30,6 +30,8 @@ function callbackgetAvstmt_modelByssid(data) {
                 $("#opened").val(avstmt_model.opened);
                 $("#userecord").val(avstmt_model.userecord);
                 $("#explain").val(avstmt_model.explain);
+                $("#modelstate").val(avstmt_model.modelstate);
+                $("#defaultmtmodelbool").val(avstmt_model.defaultmtmodelbool);
                 $("#asrservermodel").val(avstmt_model.asrservermodel);
                 $("#asrnum").val(avstmt_model.asrnum);
                 $("#modeltypenum").val(avstmt_model.modeltypenum);
@@ -56,6 +58,8 @@ function Avstmt_modelAddOrUpdate() {
     var opened = $("#opened").val();
     var userecord = $("#userecord").val();
     var explain = $("#explain").val();
+    var modelstate = $("#modelstate").val();
+    var defaultmtmodelbool = $("#defaultmtmodelbool").val();
     var asrservermodel = $("#asrservermodel").val();
     var asrnum = $("#asrnum").val();
     var modeltypenum = $("#modeltypenum").val();
@@ -80,6 +84,14 @@ function Avstmt_modelAddOrUpdate() {
         layer.msg("请输入是否录制",{icon: 2});
         return;
     }
+    if (!isNotEmpty(modelstate)) {
+        layer.msg("请选择模版状态",{icon: 2});
+        return;
+    }
+    if (!isNotEmpty(defaultmtmodelbool)) {
+        layer.msg("请选择默认会议模板",{icon: 2});
+        return;
+    }
     if (!isNotEmpty(asrservermodel)) {
         layer.msg("请选择语音识别类型",{icon: 2});
         return;
@@ -90,6 +102,8 @@ function Avstmt_modelAddOrUpdate() {
         usernum:usernum,
         opened:opened,
         userecord:userecord,
+        modelstate:modelstate,
+        defaultmtmodelbool:defaultmtmodelbool,
         asrservermodel:asrservermodel,
         asrnum:asrnum,
         explain:explain,

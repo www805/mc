@@ -108,13 +108,16 @@
         //使用模块
 
         form.verify({
-            loginaccount: function(value, item){ //value：表单的值、item：表单的DOM对象
-                if(''==value){
-                    return "请输入登录账户";
+            loginaccount:function (value) {
+                if (!(/\S/).test(value)) {
+                    return "请输入登录账号";
+                }
+                if (!(/^(?!.*\s).{5,12}$/.test(value))) {
+                    return "请输入5-12个字符不含空格的登录账号";
                 }
             },
-            password: function(value, item){ //value：表单的值、item：表单的DOM对象
-                if(''==value){
+            password:function (value) {
+                if (!(/\S/).test(value)) {
                     return "请输入密码";
                 }
             }

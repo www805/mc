@@ -72,6 +72,29 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>模版状态</label>
+            <div class="layui-input-block">
+                <select name="modelstate" lay-verify="" id="modelstate"  >
+                    <option value="">请选择模版状态</option>
+                    <option value="1">可以使用</option>
+                    <option value="0">暂停使用</option>
+                    <option value="-1">删除</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>默认会议模板</label>
+            <div class="layui-input-block">
+                <select name="defaultmtmodelbool" lay-verify="" id="defaultmtmodelbool"  >
+                    <option value="">请选择默认会议模板</option>
+                    <option value="0">不是</option>
+                    <option value="1">是</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>语音识别类型</label>
             <div class="layui-input-block">
                 <select name="asrservermodel" lay-verify="" id="asrservermodel"  >

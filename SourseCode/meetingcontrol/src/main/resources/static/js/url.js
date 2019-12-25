@@ -37,6 +37,7 @@ function getUrl_manage() {
         getAvstmt_modelByssid:getPath()+basepath+"avstmt_model/getAvstmt_modelByssid",//获取的单个模板
         updateAvstmt_model:getPath()+basepath+"avstmt_model/updateAvstmt_model",//修改模板
         addAvstmt_model:getPath()+basepath+"avstmt_model/addAvstmt_model",//添加模板
+        updateDefaultmtmodelbool:getPath()+basepath+"avstmt_model/updateDefaultmtmodelbool",//修改默认模板状态
 
 		//模板通道
         getAvstmt_modeltdList:getPath()+basepath+"avstmt_modeltd/getAvstmt_modeltdList",//获取模板通道page列表
