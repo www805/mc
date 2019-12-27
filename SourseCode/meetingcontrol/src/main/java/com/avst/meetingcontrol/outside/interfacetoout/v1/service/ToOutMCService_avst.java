@@ -784,7 +784,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
 
         Wrapper<Avstmt_model> wrapper=new EntityWrapper<Avstmt_model>();
         wrapper.eq("modelstate",1);
-        wrapper.eq("defaultmtmodelbool",1);
+        wrapper.eq("defaultmtmodelbool",param.getOnlinebool());
         List<Avstmt_model> modellist=avstmt_modelMapper.selectList(wrapper);
         if(null!=modellist&&modellist.size() > 0){
 

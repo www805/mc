@@ -428,8 +428,10 @@ private Gson gson=new Gson();
                             try {
                                 Gson gson=new Gson();
                                 CheckPolygraphStateVO checkPolygraphStateVO=gson.fromJson(gson.toJson(checkphresult.getData()),CheckPolygraphStateVO.class);
-                                System.out.println(checkPolygraphStateVO.getWorkstate());
-                                if(null!=checkPolygraphStateVO&&1==checkPolygraphStateVO.getWorkstate()){//说明是可以用的
+                                System.out.println(checkPolygraphStateVO.getWorkstate()+"----checkPolygraphStateVO.getWorkstate()");
+                                LogUtil.intoLog(this.getClass(),checkPolygraphStateVO.getWorkstate()+"----checkPolygraphStateVO.getWorkstate()");
+                                if(null!=checkPolygraphStateVO&&1==checkPolygraphStateVO.getWorkstate()){
+                                    //说明是可以用的
                                     LogUtil.intoLog(this.getClass(),"测谎仪开启 成功--Polygraphssid:"+td.getPolygraphssid());
                                     polygraphnum++;
 
@@ -465,14 +467,18 @@ private Gson gson=new Gson();
                                     mc_phThread.start();
                                     tdcacheParam.setMc_phThread(mc_phThread);
 
+                                }else{
+                                    LogUtil.intoLog(4,this.getClass(),"测谎仪开启失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                         }else{
-                            LogUtil.intoLog(this.getClass(),"测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                            LogUtil.intoLog(4,this.getClass(),"测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                         }
+                    }else{
+                        LogUtil.intoLog(3,this.getClass(),"测谎仪检测到不需要开启 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

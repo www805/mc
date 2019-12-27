@@ -22,7 +22,7 @@ public class LogUtil {
         if(loggrade==1){
             log.info(logtxt);
         }else if(loggrade==2){
-            log.debug(logtxt);
+            log.warn(logtxt);
         }else if(loggrade==3){
             log.warn(logtxt);
         }else if(loggrade==4){
