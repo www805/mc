@@ -158,6 +158,7 @@
         laydate.render({
             elem: '#recordstarttime'
             ,range: "~"
+            ,type: 'datetime'
             ,done: function(value, date, endDate){
                 recordstarttime=value;
                 getBase_mtinfoListByParam();
@@ -166,6 +167,7 @@
         laydate.render({
             elem: '#recordendtime'
             ,range: "~"
+            ,type: 'datetime'
             ,done: function(value, date, endDate){
                 recordendtime=value;
                 getBase_mtinfoListByParam();

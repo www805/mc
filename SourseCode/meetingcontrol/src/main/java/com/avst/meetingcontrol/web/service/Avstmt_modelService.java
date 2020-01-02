@@ -150,29 +150,29 @@ public class Avstmt_modelService extends BaseService {
     public void getAvstmt_modelByssid(RResult result, GetAvstmt_modelByssidParam param){
         GetAvstmt_modelByssidVO vo=new GetAvstmt_modelByssidVO();
 
+        //根据ssid获取会议信息
         String ssid=param.getSsid();
         LogUtil.intoLog(this.getClass(),"getAvstmt_modelByssid__ssid__"+ssid);
-        if (StringUtils.isBlank(ssid)){
-            result.setMessage("参数为空");
-            return;
-        }
-
-        Avstmt_model avstmt_model=new Avstmt_model();
-        avstmt_model.setSsid(ssid);
-        avstmt_model= avstmt_modelMapper.selectOne(avstmt_model);
-        Avstmt_modelAll avstmt_modelAll = gson.fromJson(gson.toJson(avstmt_model),Avstmt_modelAll.class);
-        if (null!=avstmt_modelAll){
-            String mtmodelssid=avstmt_modelAll.getSsid();
-            EntityWrapper ew1=new EntityWrapper();
-            ew1.orderBy("createtime",false);
-            ew1.eq(true,"mtmodelssid",mtmodelssid);
-            List<Avstmt_modeltdAll> avstmt_modeltdAlls=avstmt_modeltdMapper.selectList(ew1);
-            if (null!=avstmt_modeltdAlls&&avstmt_modeltdAlls.size()>0){
-                avstmt_modelAll.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
+        if (StringUtils.isNotBlank(ssid)){
+            Avstmt_model avstmt_model=new Avstmt_model();
+            avstmt_model.setSsid(ssid);
+            avstmt_model= avstmt_modelMapper.selectOne(avstmt_model);
+            Avstmt_modelAll avstmt_modelAll = gson.fromJson(gson.toJson(avstmt_model),Avstmt_modelAll.class);
+            if (null!=avstmt_modelAll){
+                String mtmodelssid=avstmt_modelAll.getSsid();
+                EntityWrapper ew1=new EntityWrapper();
+                ew1.orderBy("createtime",false);
+                ew1.eq(true,"mtmodelssid",mtmodelssid);
+                List<Avstmt_modeltdAll> avstmt_modeltdAlls=avstmt_modeltdMapper.selectList(ew1);
+                if (null!=avstmt_modeltdAlls&&avstmt_modeltdAlls.size()>0){
+                    avstmt_modelAll.setAvstmt_modeltdAlls(avstmt_modeltdAlls);
+                }
+                vo.setAvstmt_model(avstmt_modelAll);
             }
-            vo.setAvstmt_model(avstmt_modelAll);
         }
 
+
+        //回去模板类型
         EntityWrapper ew2=new EntityWrapper();
         ew2.eq("modeltypestate",1);//状态正常
         List<Base_modeltype> base_modeltypes=base_modeltypeMapper.selectList(ew2);
@@ -186,23 +186,38 @@ public class Avstmt_modelService extends BaseService {
     }
 
     public void updateDefaultmtmodelbool(RResult result, AddAvstmt_modelParam param) {
-
-        if (StringUtils.isBlank(param.getSsid())) {
+        Integer defaultmtmodelbool=param.getDefaultmtmodelbool();
+        String ssid=param.getSsid();
+        if (StringUtils.isBlank(ssid)) {
             result.setMessage("会议模板的ssid不能为空");
             return;
         }
-        if (null == param.getDefaultmtmodelbool()) {
+        if (null == defaultmtmodelbool) {
             result.setMessage("会议模板是否默认的状态不能为空");
             return;
         }
+        //setModelStateNo(1);
+        //查询是否存在该状态存在变为0
+        EntityWrapper entityWrapper=new EntityWrapper();
+        entityWrapper.eq("defaultmtmodelbool",defaultmtmodelbool);
+        List<Avstmt_model> models=avstmt_modelMapper.selectList(entityWrapper);
+        if (null!=models&&models.size()>0){
+            for (Avstmt_model model : models) {
+                EntityWrapper ew = new EntityWrapper();
+                ew.eq("ssid", model.getSsid());
 
-        setModelStateNo(1);
+                model.setDefaultmtmodelbool(0);
+                int avstmt_modelMapper_updatebool=avstmt_modelMapper.update(model, ew);
+                LogUtil.intoLog(1,this.getClass(),"avstmt_modelMapper_updatebool__"+avstmt_modelMapper_updatebool);
+            }
+        }
+
 
         EntityWrapper ew = new EntityWrapper();
-        ew.eq("ssid", param.getSsid());
+        ew.eq("ssid", ssid);
 
         Avstmt_model modeltd = new Avstmt_model();
-        modeltd.setDefaultmtmodelbool(param.getDefaultmtmodelbool());
+        modeltd.setDefaultmtmodelbool(defaultmtmodelbool);
 
         Integer update = avstmt_modelMapper.update(modeltd, ew);
 
@@ -212,6 +227,7 @@ public class Avstmt_modelService extends BaseService {
 
     //把所有会议模板变成不是默认
     private void setModelStateNo(Integer defaultmtmodelbool){
+        //defaultmtmodelbool 1shi
         if (null != defaultmtmodelbool && 1 == defaultmtmodelbool) {
             Avstmt_model model = new Avstmt_model();
             model.setDefaultmtmodelbool(0);
