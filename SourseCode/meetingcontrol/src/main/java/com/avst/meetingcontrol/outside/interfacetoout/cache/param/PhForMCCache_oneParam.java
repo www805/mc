@@ -3,13 +3,13 @@ package com.avst.meetingcontrol.outside.interfacetoout.cache.param;
 import java.util.List;
 
 /**
- *  会议的单个会议用户的测谎仪信息
+ *  会议的单个会议用户的身心监护信息
  */
 public class PhForMCCache_oneParam<T> {
 
-    private  String phssid;//本次识别的测谎仪ssid
+    private  String phssid;//本次识别的身心监护ssid
 
-    private  List<PhDataParam_toout<T>> phDataList;//测谎仪数据集合
+    private  List<PhDataParam_toout<T>> phDataList;//身心监护数据集合
 
     private  String userssid;//会议人员
 

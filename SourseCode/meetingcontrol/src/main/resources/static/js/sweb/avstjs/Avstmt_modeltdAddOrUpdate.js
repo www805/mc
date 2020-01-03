@@ -67,7 +67,7 @@ function Avstmt_modeltdAddOrUpdate() {
         return;
     }
     if (!isNotEmpty(polygraphssid)) {
-        layer.msg("请选择测谎仪",{icon: 2});
+        layer.msg("请选择身心监护",{icon: 2});
         return;
     }
     if (!isNotEmpty(asrssid)) {
@@ -280,7 +280,7 @@ function open_html4(bool) {
 
 
 
-//测谎仪--------------------------------------------------------------------------------------------------------------start
+//身心监护--------------------------------------------------------------------------------------------------------------start
 function getToOutPolygraphList() {
     var url=getUrl_manage().getToOutPolygraphList;
     var data={
@@ -328,14 +328,14 @@ function open_html2(bool) {
     if (isNotEmpty(bool)&&bool==1){
         ssid=$("#polygraphssid").val();
         if (!isNotEmpty(ssid)){
-            layer.msg("请选择需要修改的测谎仪");
+            layer.msg("请选择需要修改的身心监护");
             return;
         }
     }
     var url=getUrl_manage().toaddOrUpdatePolygraph+"?ssid="+ssid;
     layer.open({
         type: 2,
-        title:'测谎仪编辑',
+        title:'身心监护编辑',
         content:url,
         area: ['65%', '80%'],
         btn: ['确定','取消'],
@@ -354,7 +354,7 @@ function open_html2(bool) {
         }
     });
 }
-//测谎仪--------------------------------------------------------------------------------------------------------------end
+//身心监护--------------------------------------------------------------------------------------------------------------end
 
 
 

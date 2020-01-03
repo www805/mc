@@ -14,7 +14,7 @@ public class StartMCVO {
 
     private int asrnum;//语音识别服务开启个数
 
-    private int polygraphnum;//测谎仪服务开启个数
+    private int polygraphnum;//身心监护服务开启个数
 
     public List<UserETParam> getUseretlist() {
         return useretlist;

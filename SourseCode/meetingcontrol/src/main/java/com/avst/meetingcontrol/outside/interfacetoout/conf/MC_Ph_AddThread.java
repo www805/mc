@@ -26,7 +26,7 @@ public class MC_Ph_AddThread extends Thread{
 
     private String mtssid;//会议ssid
 
-    private String phssid;//测谎仪s服务sid
+    private String phssid;//身心监护s服务sid
 
     private String iid;//存储的唯一标识
 
@@ -46,7 +46,7 @@ public class MC_Ph_AddThread extends Thread{
     @Override
     public void run() {
 
-            //请求测谎仪服务获取数据
+            //请求身心监护服务获取数据
             LogUtil.intoLog(this.getClass(),phssid+"------phssid MC_Ph_AddThread mtssid:"+mtssid);
             try {
 

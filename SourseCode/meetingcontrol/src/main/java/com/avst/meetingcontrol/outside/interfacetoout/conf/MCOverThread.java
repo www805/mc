@@ -92,8 +92,8 @@ public class MCOverThread extends Thread{
 
                     //先停止获取测谎数据的线程
                     TdAndUserAndOtherCacheParam tdAndUserAndOtherCacheParam=MCCache.getMCCacheOneTDParamByPhssid(mtssid,one.getPhssid());
-                    if(null!=tdAndUserAndOtherCacheParam){//说明这个用户有测谎仪
-                        LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 说明这个用户有测谎仪 one.getPhssid()："
+                    if(null!=tdAndUserAndOtherCacheParam){//说明这个用户有身心监护
+                        LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 说明这个用户有身心监护 one.getPhssid()："
                                 +one.getPhssid()+"----tdAndUserAndOtherCacheParam.getUsepolygraph()："+tdAndUserAndOtherCacheParam.getUsepolygraph());
                         MC_PhThread mc_phThread=tdAndUserAndOtherCacheParam.getMc_phThread();
                         if(null==mc_phThread){
@@ -101,7 +101,7 @@ public class MCOverThread extends Thread{
                         }
                         mc_phThread.bool=false;//中断掉这个线程
                     }else{
-                        LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 说明这个用户没有测谎仪 one.getPhssid()："+one.getPhssid());
+                        LogUtil.intoLog(3,MCOverThread.class,mtssid+"：mtssid 说明这个用户没有身心监护 one.getPhssid()："+one.getPhssid());
                     }
 
                     //开始做插入测谎数据的操作

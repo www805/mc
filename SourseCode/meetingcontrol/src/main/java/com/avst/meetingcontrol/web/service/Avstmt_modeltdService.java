@@ -118,11 +118,11 @@ public class Avstmt_modeltdService extends BaseService {
                     if (null!=rr2&&rr2.getActioncode().equals(Code.SUCCESS.toString())&&null!=rr2.getData()){
                         PolygraphInfo polygraphInfo=gson.fromJson(gson.toJson(rr2.getData()), PolygraphInfo.class);
                         avstmt_modeltdAll.setPhexplain(polygraphInfo.getExplain());
-                        LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphById__请求成功");
+                        LogUtil.intoLog(this.getClass(),"身心监护getToOutPolygraphById__请求成功");
                     }else {
                         String msg=rr2.getMessage()==null?result.getMessage():rr2.getMessage();
                         result.setMessage(msg);
-                        LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphById__请求失败");
+                        LogUtil.intoLog(this.getClass(),"身心监护getToOutPolygraphById__请求失败");
                     }
                 }
                 if (StringUtils.isNotBlank(dqasrssid)){

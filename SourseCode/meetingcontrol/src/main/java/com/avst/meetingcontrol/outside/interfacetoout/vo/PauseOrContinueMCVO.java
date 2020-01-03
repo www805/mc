@@ -6,7 +6,7 @@ public class PauseOrContinueMCVO {
 
     private int asrnum;//语音识别服务暂停/停止个数
 
-    private int polygraphnum;//测谎仪服务暂停/停止个数
+    private int polygraphnum;//身心监护服务暂停/停止个数
 
     public int getRecordnum() {
         return recordnum;

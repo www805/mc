@@ -29,6 +29,11 @@ public class AddOrUpdateToOutAsrParam extends BaseReqParam {
     private String asrtype;
 
     /**
+     * 语音识别的返回接口
+     */
+    private String backtxtinterface;
+
+    /**
      * 识别验证密匙
      */
     private String asrkey;
@@ -84,6 +89,14 @@ public class AddOrUpdateToOutAsrParam extends BaseReqParam {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getBacktxtinterface() {
+        return backtxtinterface;
+    }
+
+    public void setBacktxtinterface(String backtxtinterface) {
+        this.backtxtinterface = backtxtinterface;
     }
 
     public Integer getMaxnum() {

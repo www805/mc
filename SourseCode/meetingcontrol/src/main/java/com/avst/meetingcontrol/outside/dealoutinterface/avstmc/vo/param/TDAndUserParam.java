@@ -10,13 +10,13 @@ public class TDAndUserParam {
 
     private String mtuserssid;
 
-    private int usepolygraph;//是否使用测谎仪
+    private int usepolygraph;//是否使用身心监护
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
     private int userecord;//是否使用设备录像，1使用，-1 不使用
 
-    private String polygraphssid;//测谎仪ssid
+    private String polygraphssid;//身心监护ssid
 
     private String asrssid;//语言识别ssid
 

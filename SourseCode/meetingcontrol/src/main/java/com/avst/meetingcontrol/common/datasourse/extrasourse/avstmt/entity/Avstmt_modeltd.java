@@ -42,7 +42,7 @@ public class Avstmt_modeltd extends Model<Avstmt_modeltd> {
     private String fdssid;
 
     /**
-     * 测谎仪ssid
+     * 身心监护ssid
      */
     private String polygraphssid;
 

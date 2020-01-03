@@ -13,13 +13,13 @@ public class TdAndUserParam {
 
     private int grade;//1主麦，2/3/4/5/6/7副麦，有时需要一些特殊的处理(主麦只有一个)
 
-    private int usepolygraph;//是否使用测谎仪
+    private int usepolygraph;//是否使用身心监护
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
     private int userecord;//是否使用录像，1使用，-1 不使用
 
-    private String polygraphssid;//测谎仪ssid
+    private String polygraphssid;//身心监护ssid
 
     private String asrssid;//语言识别ssid
 

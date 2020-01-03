@@ -72,15 +72,20 @@ public class AsrService extends BaseService {
         param.setAsrtype(ASRType.AVST);
         ReqParam reqParam=new ReqParam();
         reqParam.setParam(param);
-        RResult addrr =  equipmentControl.addToOutAsr(reqParam);
-        if (null!=addrr&&addrr.getActioncode().equals(Code.SUCCESS.toString())){
-            result.setData(addrr.getData());
-            changeResultToSuccess(result);
-            LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__请求成功");
-        }else {
-            String msg=addrr.getMessage()==null?result.getMessage():addrr.getMessage();
-            result.setMessage(msg);
-            LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__请求失败");
+        try {
+            RResult addrr =  equipmentControl.addToOutAsr(reqParam);
+            if (null!=addrr&&addrr.getActioncode().equals(Code.SUCCESS.toString())){
+                result.setData(addrr.getData());
+                changeResultToSuccess(result);
+                LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__请求成功");
+            }else {
+                String msg=addrr.getMessage()==null?result.getMessage():addrr.getMessage();
+                result.setMessage(msg);
+                LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__请求失败");
+            }
+        } catch (Exception e) {
+            result.setMessage("语音识别addToOutAsr__远程请求失败");
+            LogUtil.intoLog(this.getClass(),"语音识别addToOutAsr__远程请求失败");
         }
         return;
     }

@@ -29,11 +29,11 @@ public class PolygraphService extends BaseService {
         if (null!=ph_rr&&ph_rr.getActioncode().equals(Code.SUCCESS.toString())){
             result.setData(ph_rr.getData());
             changeResultToSuccess(result);
-            LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求成功");
+            LogUtil.intoLog(this.getClass(),"身心监护getToOutPolygraphList__请求成功");
         }else {
             String msg=ph_rr.getMessage()==null?result.getMessage():ph_rr.getMessage();
             result.setMessage(msg);
-            LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求失败");
+            LogUtil.intoLog(this.getClass(),"身心监护getToOutPolygraphList__请求失败");
         }
         return;
     }
@@ -54,11 +54,11 @@ public class PolygraphService extends BaseService {
         if (null!=ph_rr&&ph_rr.getActioncode().equals(Code.SUCCESS.toString())){
             result.setData(ph_rr.getData());
             changeResultToSuccess(result);
-            LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求成功");
+            LogUtil.intoLog(this.getClass(),"身心监护getToOutPolygraphList__请求成功");
         }else {
             String msg=ph_rr.getMessage()==null?result.getMessage():ph_rr.getMessage();
             result.setMessage(msg);
-            LogUtil.intoLog(this.getClass(),"测谎仪getToOutPolygraphList__请求失败");
+            LogUtil.intoLog(this.getClass(),"身心监护getToOutPolygraphList__请求失败");
         }
         return;
     }
@@ -68,15 +68,20 @@ public class PolygraphService extends BaseService {
         param.setPhType(PHType.CMCROSS);
         ReqParam reqParam=new ReqParam();
         reqParam.setParam(param);
-        RResult addph_rr =  equipmentControl.addToOutPolygraph(reqParam);
-        if (null!=addph_rr&&addph_rr.getActioncode().equals(Code.SUCCESS.toString())){
-            result.setData(addph_rr.getData());
-            changeResultToSuccess(result);
-            LogUtil.intoLog(this.getClass(),"测谎仪addToOutPolygraph__请求成功");
-        }else {
-            String msg=addph_rr.getMessage()==null?result.getMessage():addph_rr.getMessage();
-            result.setMessage(msg);
-            LogUtil.intoLog(this.getClass(),"测谎仪addToOutFlushbonading__请求失败");
+        try {
+            RResult addph_rr =  equipmentControl.addToOutPolygraph(reqParam);
+            if (null!=addph_rr&&addph_rr.getActioncode().equals(Code.SUCCESS.toString())){
+                result.setData(addph_rr.getData());
+                changeResultToSuccess(result);
+                LogUtil.intoLog(this.getClass(),"身心监护addToOutPolygraph__请求成功");
+            }else {
+                String msg=addph_rr.getMessage()==null?result.getMessage():addph_rr.getMessage();
+                result.setMessage(msg);
+                LogUtil.intoLog(this.getClass(),"身心监护addToOutFlushbonading__请求失败");
+            }
+        } catch (Exception e) {
+            result.setMessage("身心监护addToOutFlushbonading__请求失败");
+            LogUtil.intoLog(4, this.getClass(), "身心监护addToOutFlushbonading__请求失败");
         }
         return;
     }
@@ -97,11 +102,11 @@ public class PolygraphService extends BaseService {
         if (null!=updph_rr&&updph_rr.getActioncode().equals(Code.SUCCESS.toString())){
             result.setData(updph_rr.getData());
             changeResultToSuccess(result);
-            LogUtil.intoLog(this.getClass(),"测谎仪updateToOutPolygraph__请求成功");
+            LogUtil.intoLog(this.getClass(),"身心监护updateToOutPolygraph__请求成功");
         }else {
             String msg=updph_rr.getMessage()==null?result.getMessage():updph_rr.getMessage();
             result.setMessage(msg);
-            LogUtil.intoLog(this.getClass(),"测谎仪updateToOutPolygraph__请求失败");
+            LogUtil.intoLog(this.getClass(),"身心监护updateToOutPolygraph__请求失败");
         }
         return;
     }

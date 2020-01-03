@@ -5,7 +5,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_PhThread;
 
 /**
  * 用户通道关联其他的参数的集合，用于开启会议时用的
- * 暂时只有asr和测谎仪，有其他的也写在这里，这里是对每一个会议人员的处理的参数集合
+ * 暂时只有asr和身心监护，有其他的也写在这里，这里是对每一个会议人员的处理的参数集合
  */
 public class TdAndUserAndOtherCacheParam {
 
@@ -27,15 +27,15 @@ public class TdAndUserAndOtherCacheParam {
 
     private int grade;//1主麦，2副麦，有时需要一些特殊的处理(主麦只有一个)
 
-    private int usepolygraph;//是否使用测谎仪，1使用，-1 不使用
+    private int usepolygraph;//是否使用身心监护，1使用，-1 不使用
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
-    private String polygraphssid;//测谎仪ssid
+    private String polygraphssid;//身心监护ssid
 
-    private String polygraphtype;//测谎仪服务类型，
+    private String polygraphtype;//身心监护服务类型，
 
-    private long phStartTime;//开始保存测谎仪数据,ms
+    private long phStartTime;//开始保存身心监护数据,ms
 
     private String asrssid;//语言识别ssid
 
@@ -49,8 +49,8 @@ public class TdAndUserAndOtherCacheParam {
 
     private boolean asrRun;//语音识别服务是否启动
 
-    //测谎仪有线程就写在这
-    private MC_PhThread mc_phThread;//测谎仪数据获取线程
+    //身心监护有线程就写在这
+    private MC_PhThread mc_phThread;//身心监护数据获取线程
 
     public MC_PhThread getMc_phThread() {
         return mc_phThread;

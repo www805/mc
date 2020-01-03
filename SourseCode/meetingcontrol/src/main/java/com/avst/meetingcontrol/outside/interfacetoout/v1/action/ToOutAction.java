@@ -140,7 +140,7 @@ public class ToOutAction extends BaseAction {
     }
 
     /**
-     * 根据会议获取测谎仪ssid
+     * 根据会议获取身心监护ssid
      * @param param
      * @return
      */

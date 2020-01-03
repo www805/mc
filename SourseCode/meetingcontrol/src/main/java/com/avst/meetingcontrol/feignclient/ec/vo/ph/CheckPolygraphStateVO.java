@@ -1,7 +1,7 @@
 package com.avst.meetingcontrol.feignclient.ec.vo.ph;
 
 /**
- * 检测测谎仪是否正常
+ * 检测身心监护是否正常
  */
 public class CheckPolygraphStateVO {
 

@@ -133,6 +133,7 @@ public class Avstmt_modelService extends BaseService {
        }
         return;
     }
+
     public void addAvstmt_model(RResult result, AddAvstmt_modelParam param){
 
         setModelStateNo(param.getDefaultmtmodelbool());
@@ -147,6 +148,7 @@ public class Avstmt_modelService extends BaseService {
         }
         return;
     }
+
     public void getAvstmt_modelByssid(RResult result, GetAvstmt_modelByssidParam param){
         GetAvstmt_modelByssidVO vo=new GetAvstmt_modelByssidVO();
 

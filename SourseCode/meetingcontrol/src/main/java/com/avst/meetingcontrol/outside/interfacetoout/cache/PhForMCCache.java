@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 本场会议的测谎仪缓存
- * 缓存本场会议中使用的测谎仪数据
+ * 本场会议的身心监护缓存
+ * 缓存本场会议中使用的身心监护数据
  * 关联的KEY用mtssid
  */
 public class PhForMCCache {

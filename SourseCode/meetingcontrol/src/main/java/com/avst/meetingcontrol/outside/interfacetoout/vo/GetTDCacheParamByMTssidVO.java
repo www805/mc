@@ -19,15 +19,15 @@ public class GetTDCacheParamByMTssidVO {
 
     private int grade;//1主麦，2副麦，有时需要一些特殊的处理(主麦只有一个)
 
-    private int usepolygraph;//是否使用测谎仪，1使用，-1 不使用
+    private int usepolygraph;//是否使用身心监护，1使用，-1 不使用
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 
-    private String polygraphssid;//测谎仪ssid
+    private String polygraphssid;//身心监护ssid
 
-    private String polygraphtype;//测谎仪服务类型，
+    private String polygraphtype;//身心监护服务类型，
 
-    private long phStartTime;//开始保存测谎仪数据,ms
+    private long phStartTime;//开始保存身心监护数据,ms
 
     private String asrssid;//语言识别ssid
 

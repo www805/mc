@@ -11,7 +11,7 @@ public class Avstmt_modeltdAll extends Avstmt_modeltd {
 
     private String asrexplain;//语音识别说明
 
-    private String phexplain;//测谎仪说明
+    private String phexplain;//身心监护说明
 
     private String tdexplain;//设备通道说明
 

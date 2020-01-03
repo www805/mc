@@ -125,7 +125,7 @@ public class MtPageAction {
 
     @RequestMapping(value = "/toaddOrUpdatePolygraph")
     public ModelAndView toaddOrUpdatePolygraph(Model model,String ssid) {
-        model.addAttribute("title", "测谎仪新增/修改");
+        model.addAttribute("title", "身心监护新增/修改");
         model.addAttribute("ssid",ssid);
         RResult result=new RResult<>();
         GetBaseListParam param=new GetBaseListParam();

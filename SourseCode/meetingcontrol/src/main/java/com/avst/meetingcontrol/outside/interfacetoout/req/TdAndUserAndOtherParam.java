@@ -4,7 +4,7 @@ import com.avst.meetingcontrol.outside.interfacetoout.conf.MC_AsrThread;
 
 /**
  * 用户通道关联其他的参数的集合，用于开启会议时用的
- * 暂时只有asr和测谎仪，有其他的也写在这里，这里是对每一个会议人员的处理的参数集合
+ * 暂时只有asr和身心监护，有其他的也写在这里，这里是对每一个会议人员的处理的参数集合
  */
 public class TdAndUserAndOtherParam {
 
@@ -22,11 +22,11 @@ public class TdAndUserAndOtherParam {
 
     private int grade;//1主麦，2/3/4/5/6/7副麦，有时需要一些特殊的处理(主麦只有一个)
 
-    private int usepolygraph;//是否使用测谎仪,1使用，-1 不使用
+    private int usepolygraph;//是否使用身心监护,1使用，-1 不使用
 
-    private String polygraphtype;//测谎仪服务类型，
+    private String polygraphtype;//身心监护服务类型，
 
-    private String polygraphssid;//测谎仪ssid
+    private String polygraphssid;//身心监护ssid
 
     private int useasr;//是否使用语言识别，1使用，-1 不使用
 

@@ -83,9 +83,9 @@ public interface EquipmentControl {
 
 
 
-    //ph测谎仪
+    //ph身心监护
     /**
-     * 检测测谎仪状态
+     * 检测身心监护状态
      * @param param
      * @return
      */
@@ -94,7 +94,7 @@ public interface EquipmentControl {
     public RResult checkPolygraphState(@RequestBody  ReqParam<CheckPolygraphStateParam> param);
 
     /**
-     * 开启测谎仪
+     * 开启身心监护
      * @param param
      * @return
      */
@@ -103,7 +103,7 @@ public interface EquipmentControl {
     public RResult startPolygraph(@RequestBody  ReqParam<StartPolygraphParam> param);
 
     /**
-     * //结束测谎仪
+     * //结束身心监护
      * @param param
      * @return
      */
@@ -121,7 +121,7 @@ public interface EquipmentControl {
     public RResult<GetPolygraphAnalysisVO> getPolygraphAnalysis(@RequestBody  ReqParam<GetPolygraphAnalysisParam> param);
 
     /**
-     * //获取测谎仪心理分析的实时图像
+     * //获取身心监护心理分析的实时图像
      * @param param
      * @return
      */
@@ -187,7 +187,7 @@ public interface EquipmentControl {
     public RResult setToOutMiddleware_FTP(@RequestBody ReqParam<SetToOutMiddleware_FTPParam> param);
 
 
-    //测谎仪
+    //身心监护
     @RequestMapping("/polygraph/v1/getToOutPolygraphList")
     @ResponseBody
     public RResult getToOutPolygraphList(@RequestBody ReqParam<GetToOutPolygraphListParam> param);

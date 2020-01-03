@@ -17,13 +17,13 @@ public class TdAndAsrParam {
 
     private String fdtype;////用的是哪一家的设备，avst公司自制的嵌入式设备fd_avst
 
-    private int usepolygraph;//是否使用测谎仪
+    private int usepolygraph;//是否使用身心监护
 
-    private String polygraphtype;//采用的是哪一种测谎仪服务
+    private String polygraphtype;//采用的是哪一种身心监护服务
 
     private int useasr;//是否使用语音识别，1使用，-1 不使用
 
-    private String polygraphssid;//测谎仪ssid
+    private String polygraphssid;//身心监护ssid
 
     private String asrssid;//语言识别ssid
 

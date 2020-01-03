@@ -107,7 +107,7 @@ public class MCCache {
     }
 
     /**
-     * 获取会议缓存中关于测谎仪监控的用户的通道数据信息
+     * 获取会议缓存中关于身心监护监控的用户的通道数据信息
      * @param mtssid
      * @return
      */
@@ -256,7 +256,7 @@ public class MCCache {
                         for(TdAndUserAndOtherCacheParam td:tdlist){
                             MC_PhThread mc_phThread=td.getMc_phThread();
                             if(null!=mc_phThread){
-                                mc_phThread.bool=false;//关闭测谎仪定时器
+                                mc_phThread.bool=false;//关闭身心监护定时器
                             }
                         }
                     }

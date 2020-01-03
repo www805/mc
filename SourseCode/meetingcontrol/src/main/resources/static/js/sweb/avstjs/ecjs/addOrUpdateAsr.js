@@ -22,6 +22,7 @@ function callbackgetToOutAsrById(data){
             $("input[name='asrtype']").val(asr.asrtype);
             $("input[name='asrkey']").val(asr.asrkey);
             $("input[name='etnum']").val(asr.etnum);
+            $("input[name='backtxtinterface']").val(asr.backtxtinterface);
             $("input[name='etip']").val(asr.etip);
             $("#explain").text(asr.explain);
             etypessid=asr.etypessid;
@@ -45,6 +46,7 @@ function AddOrUpdateToOutAsr() {
     var asrtype=$("input[name='asrtype']").val();
     var asrkey=$("input[name='asrkey']").val();
     var etnum=$("input[name='etnum']").val();
+    var backtxtinterface=$("input[name='backtxtinterface']").val();
     var etip=$("input[name='etip']").val();
     var explain=$("textarea[name='explain']").val();
 
@@ -66,6 +68,7 @@ function AddOrUpdateToOutAsr() {
             asrkey: asrkey,
             etypessid: etypessid,
             etnum: etnum,
+            backtxtinterface: backtxtinterface,
             etip: etip,
             explain: explain
         }

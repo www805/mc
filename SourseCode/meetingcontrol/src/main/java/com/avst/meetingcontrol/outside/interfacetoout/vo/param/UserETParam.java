@@ -6,7 +6,7 @@ public class UserETParam {
 
     private String fdssid;//嵌入式设备ssid
 
-    private String polygraphssid;//测谎仪ssid，不一定有值，一般只有副麦才会有
+    private String polygraphssid;//身心监护ssid，不一定有值，一般只有副麦才会有
 
     private String livingurl;//设备直播地址
 

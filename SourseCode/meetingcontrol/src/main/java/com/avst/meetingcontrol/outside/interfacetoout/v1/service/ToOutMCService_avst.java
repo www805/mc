@@ -287,11 +287,11 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
         List<TdAndUserAndOtherCacheParam> tdlist=mc.getTdList();
         if(null!=tdlist&&tdlist.size() > 0){
             int asrbool=0;////成功语音识别执行个数
-            int phbool=0;////成功执行测谎仪个数
+            int phbool=0;////成功执行身心监护个数
             int recordbool=0;//成功执行设备录像个数
             for(TdAndUserAndOtherCacheParam td:tdlist){
 
-                if(td.getUsepolygraph()==1){//测谎仪这个不需要判断和请求，因为mc状态变了就不会去主动请求
+                if(td.getUsepolygraph()==1){//身心监护这个不需要判断和请求，因为mc状态变了就不会去主动请求
                     phbool++;
                 }
 
@@ -547,9 +547,9 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                                                         if(null==txts||txts.length ==0){
                                                             continue;
                                                         }
-                                                        //加上测谎仪开始时间与录像开始时间差
+                                                        //加上身心监护开始时间与录像开始时间差
                                                         Long subtractime=avstmt_tdpolygraph.getStarttime()-avstmt_tdpolygraph.getMtstartrecordtime();
-                                                        Long num=(subtractime/1000)+Integer.valueOf(txts[0].trim());//测谎仪差值
+                                                        Long num=(subtractime/1000)+Integer.valueOf(txts[0].trim());//身心监护差值
                                                         phDataBackVoParam.setNum(num.toString());
                                                         phDataBackVoParam.setPhBataBackJson(txts[1].trim());
                                                         SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
@@ -633,6 +633,7 @@ public class ToOutMCService_avst implements BaseDealMCInterface {
                     model.setBase_modeltype(base_modeltypes.get(0));
                 }
             }
+            model.setCreatetime(null);
             modelAlls.add(model);
         }
         result.changeToTrue(modelAlls);

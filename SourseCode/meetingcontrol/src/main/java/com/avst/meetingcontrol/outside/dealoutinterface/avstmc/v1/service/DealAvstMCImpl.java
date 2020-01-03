@@ -239,7 +239,7 @@ private Gson gson=new Gson();
         int mtmodelasrnum=param.getAsrNum();//这个会话最多可以调用语音识别的路数
         int recordnum=0;//录音/像个数
         int asrnum=0;//语音识别个数
-        int polygraphnum=0;//测谎仪个数
+        int polygraphnum=0;//身心监护个数
         List<UserETParam> useretlist=new ArrayList<UserETParam>();
 
         //对每一个会议通道进行处理，该asr的要新建语言识别记录，开启asr识别；测谎也是一样的
@@ -432,10 +432,10 @@ private Gson gson=new Gson();
                                 LogUtil.intoLog(this.getClass(),checkPolygraphStateVO.getWorkstate()+"----checkPolygraphStateVO.getWorkstate()");
                                 if(null!=checkPolygraphStateVO&&1==checkPolygraphStateVO.getWorkstate()){
                                     //说明是可以用的
-                                    LogUtil.intoLog(this.getClass(),"测谎仪开启 成功--Polygraphssid:"+td.getPolygraphssid());
+                                    LogUtil.intoLog(this.getClass(),"身心监护开启 成功--Polygraphssid:"+td.getPolygraphssid());
                                     polygraphnum++;
 
-                                    //long 测谎仪开始记录时间 ms
+                                    //long 身心监护开始记录时间 ms
                                     long phstarttime=DateUtil.strToLong_MS(checkphresult.getEndtime());
                                     tdcacheParam.setPhStartTime(phstarttime);
 
@@ -452,7 +452,7 @@ private Gson gson=new Gson();
                                     avstmt_tdpolygraph.setCreatetime(new Date());
                                     int insert_ph=avstmt_tdpolygraphMapper.insert(avstmt_tdpolygraph);
                                     if(insert_ph <= 0){//注意测试，这里，是0还是1
-                                        LogUtil.intoLog(this.getClass(),"测谎仪关联用户通道失败，没有新增到数据库， mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                                        LogUtil.intoLog(this.getClass(),"身心监护关联用户通道失败，没有新增到数据库， mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                                     }
 
                                     PhForMCCache_oneParam phone=new PhForMCCache_oneParam();
@@ -461,24 +461,24 @@ private Gson gson=new Gson();
                                     phone.setIid(phiid);
                                     PhForMCCache.setPhForMCCache_oneParam(phone,mtssid);
 
-                                    //开启定时请求测谎仪数据 //业务平台测谎仪数据从缓存中调取
+                                    //开启定时请求身心监护数据 //业务平台身心监护数据从缓存中调取
                                     MC_PhThread mc_phThread=new MC_PhThread(
                                             td.getPolygraphssid(),tdcacheParam.getUserssid(),equipmentControl,mtssid,td.getPolygraphtype(),phstarttime);
                                     mc_phThread.start();
                                     tdcacheParam.setMc_phThread(mc_phThread);
 
                                 }else{
-                                    LogUtil.intoLog(4,this.getClass(),"测谎仪开启失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                                    LogUtil.intoLog(4,this.getClass(),"身心监护开启失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                         }else{
-                            LogUtil.intoLog(4,this.getClass(),"测谎仪检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                            LogUtil.intoLog(4,this.getClass(),"身心监护检测是否在线失败 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                         }
                     }else{
-                        LogUtil.intoLog(3,this.getClass(),"测谎仪检测到不需要开启 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
+                        LogUtil.intoLog(3,this.getClass(),"身心监护检测到不需要开启 mtssid："+mtssid+"--Polygraphssid:"+td.getPolygraphssid());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

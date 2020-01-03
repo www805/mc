@@ -1,7 +1,7 @@
 package com.avst.meetingcontrol.common.conf;
 
 /**
- * 测谎仪
+ * 身心监护
  */
 public class PHType {
 

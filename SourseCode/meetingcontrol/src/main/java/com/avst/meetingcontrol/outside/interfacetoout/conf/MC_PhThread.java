@@ -27,10 +27,10 @@ public class MC_PhThread extends Thread{
 
     public boolean bool=true;//用于中断控制
 
-    private String phssid;//测谎仪ssid
+    private String phssid;//身心监护ssid
     private String userssid;//会议中的参会人员ssid
 
-    private String phtype;//测谎仪类型
+    private String phtype;//身心监护类型
 
     private EquipmentControl equipmentControl;
 
@@ -52,7 +52,7 @@ public class MC_PhThread extends Thread{
 
         while (bool){
 
-            //请求测谎仪服务获取数据
+            //请求身心监护服务获取数据
             LogUtil.intoLog(this.getClass(),phssid+"------phssid  userssid:"+userssid);
             try {
                 MCCacheParam mc=MCCache.getMCCacheParam(mtssid);
@@ -97,7 +97,7 @@ public class MC_PhThread extends Thread{
                 }
 
                 try {
-                    Thread.sleep(1000);//1s请求一次测谎仪
+                    Thread.sleep(1000);//1s请求一次身心监护
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

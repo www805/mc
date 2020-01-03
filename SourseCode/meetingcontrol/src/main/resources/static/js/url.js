@@ -78,7 +78,7 @@ function getUrl_manage() {
         getptdjconst:getPath()+basepath+"flushbonading/getptdjconst",
         getMiddleware_FTP:getPath()+basepath+"flushbonading/getMiddleware_FTP",
         setMiddleware_FTP:getPath()+basepath+"flushbonading/setMiddleware_FTP",
-        //测谎仪
+        //身心监护
         getToOutPolygraphList:getPath()+basepath+"polygraph/getToOutPolygraphList",
         getToOutPolygraphById:getPath()+basepath+"polygraph/getToOutPolygraphById",
         addToOutPolygraph:getPath()+basepath+"polygraph/addToOutPolygraph",

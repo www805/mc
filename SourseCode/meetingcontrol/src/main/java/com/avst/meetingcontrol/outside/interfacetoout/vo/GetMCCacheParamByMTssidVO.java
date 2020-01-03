@@ -13,7 +13,7 @@ public class GetMCCacheParamByMTssidVO {
 
     private int recordnum=0;//本次会议开启的录音/像个数
     private int asrnum=0;//本次会议开启的语音识别个数
-    private int polygraphnum=0;//本次会议开启的测谎仪个数
+    private int polygraphnum=0;//本次会议开启的身心监护个数
 
     public int getMeetingtype() {
         return meetingtype;

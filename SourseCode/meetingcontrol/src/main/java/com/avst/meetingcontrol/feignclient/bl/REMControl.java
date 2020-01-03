@@ -1,5 +1,6 @@
 package com.avst.meetingcontrol.feignclient.bl;
 
+import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.outside.interfacetoout.cache.param.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.vo.SetMCAsrTxtBackVO;
@@ -19,5 +20,8 @@ public interface REMControl {
     @ResponseBody
     public boolean setRercordAsrTxtBack(@RequestBody ReqParam<SetMCAsrTxtBackVO> param);
 
+    //获取trm当前登录的用户信息
+    @RequestMapping("/trm/v1/getUserPwd")
+    public RResult getUserPwd(@RequestBody ReqParam param);
 
 }
