@@ -7,6 +7,7 @@ import com.avst.meetingcontrol.common.util.OpenUtil;
 import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class AppCache {
         String application_name = PropertiesListenerConfig.getProperty("spring.application.name");
         String nav_file_name = PropertiesListenerConfig.getProperty("nav.file.name");
 
-        String path = OpenUtil.getXMSoursePath() + "\\" + nav_file_name + ".yml";
+        String path = OpenUtil.getXMSoursePath() + File.separator + nav_file_name + ".yml";
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(path);

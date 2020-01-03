@@ -1078,7 +1078,7 @@ public static String numtoStr(int digit,Integer num){
 		String str=System.getProperty("java.home");
 		if(null!=str&&(str.indexOf("jdk")>-1 || str.indexOf("jre")>-1 )){
 			LogUtil.intoLog(OpenUtil.class,"----getJDKorJREPath str:"+str);
-			return str.endsWith("\\") ? (str+"bin\\"):(str+"\\bin\\");
+			return str.endsWith(File.separator) ? (str+"bin"+File.separator):(str+File.separator+"bin"+File.separator);
 		}
 		return null;
 	}
