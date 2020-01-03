@@ -52,7 +52,7 @@ public class Base_mtinfoService extends BaseService {
         }
 
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         if(StringUtils.isNotEmpty(param.getRecordstarttime_startdate()) && StringUtils.isNotEmpty(param.getRecordstarttime_enddate())){
 

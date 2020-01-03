@@ -1,12 +1,10 @@
 
 function getAvstmt_modelByssid(){
-    if (isNotEmpty(ssid)){
         var url=getUrl_manage().getAvstmt_modelByssid;
         var data={
             ssid:ssid
         };
         ajaxSubmit(url,data,callbackgetAvstmt_modelByssid);
-    }
 }
 function callbackgetAvstmt_modelByssid(data) {
     if(null!=data&&data.actioncode=='SUCCESS'){
