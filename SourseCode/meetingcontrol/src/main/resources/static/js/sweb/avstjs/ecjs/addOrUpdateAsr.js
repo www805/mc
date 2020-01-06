@@ -26,6 +26,9 @@ function callbackgetToOutAsrById(data){
             $("input[name='etip']").val(asr.etip);
             $("#explain").text(asr.explain);
             etypessid=asr.etypessid;
+
+            base_etip = asr.etip;
+            base_etnum = asr.etnum;
         }
     }else{
         layer.msg(data.message,{icon: 5});
@@ -104,6 +107,32 @@ $(function () {
                 }
                 if(!(/^([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}$/.test(value))){
                     return '请输入一个正确的IP地址';
+                }
+            },
+            portnum: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(''==value){
+                    return "端口不能为空";
+                }
+                if(value.length > 10){
+                    return '端口的长度不能超过10个字符';
+                }
+            },
+            maxnum: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(''==value){
+                    return "并发数不能为空";
+                }
+                if(value.length > 10){
+                    return '并发数的长度不能超过10个字符';
+                }
+            },
+            zhongwen: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if((/[\u4E00-\u9FA5]/g.test(value))){
+                    return '不能输入中文';
+                }
+            },
+            httpUrlStart: function (value, item) {
+                if (!value.startsWith("http://")) {
+                    return '接口地址开头必须要是http://开头的';
                 }
             }
         });

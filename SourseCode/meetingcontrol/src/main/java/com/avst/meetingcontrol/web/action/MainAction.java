@@ -5,6 +5,7 @@ import com.avst.meetingcontrol.common.conf.Constant;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.baseaction.BaseAction;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
+import com.avst.meetingcontrol.feignclient.ec.req.GetToOutBaseEcParam;
 import com.avst.meetingcontrol.web.req.GetBaseListParam;
 import com.avst.meetingcontrol.web.req.GetHomeParam;
 import com.avst.meetingcontrol.web.req.LoginParam;
@@ -148,7 +149,18 @@ public class MainAction extends BaseAction {
     }
 
 
-
-
+    /**
+     * 获取所有基础设备
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getBaseEc")
+    @ResponseBody
+    public RResult getBaseEc(@RequestBody GetToOutBaseEcParam param){
+        RResult result=this.createNewResultOfFail();
+        mainService.getBaseEc(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
 
 }

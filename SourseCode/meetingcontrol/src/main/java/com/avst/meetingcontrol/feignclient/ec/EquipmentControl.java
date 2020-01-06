@@ -19,6 +19,7 @@ import com.avst.meetingcontrol.feignclient.ec.vo.ph.*;
 import com.avst.meetingcontrol.feignclient.ec.vo.asr.AsrTxtParam_toout;
 import com.avst.meetingcontrol.outside.interfacetoout.req.TxtBackParam;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -266,6 +267,12 @@ public interface EquipmentControl {
     @RequestMapping("/base/v1/main/gethome")
     @ResponseBody
     public RResult gethome(@RequestBody ReqParam param);
+
+    //获取所有基础设备
+    @PostMapping(value = "/base/v1/main/getToOutBaseEc")
+    @ResponseBody
+    public RResult getToOutBaseEc(@RequestBody GetToOutBaseEcParam param);
+
     /*--------------------------------以下为：提供给会议后台显示的接口---end--------------------------------------*/
 
     /**

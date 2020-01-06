@@ -23,6 +23,9 @@ function callbackgetToOutPolygraphById(data){
             $("input[name='etnum']").val(polygraph.etnum);
             $("input[name='etip']").val(polygraph.etip);
             $("#explain").text(polygraph.explain);
+
+            base_etip = polygraph.etip;
+            base_etnum = polygraph.etnum;
         }
     }else{
         layer.msg(data.message,{icon: 5});

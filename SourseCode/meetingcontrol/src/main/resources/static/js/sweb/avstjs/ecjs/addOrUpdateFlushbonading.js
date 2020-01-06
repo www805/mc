@@ -41,6 +41,9 @@ function callbackgetToOutFlushbonadingById(data){
                 $("#getptdjconstBtn").val("更新片头列表");
             }
 
+            base_etip = flushbonading.etip;
+            base_etnum = flushbonading.etnum;
+
         }
     }else{
         layer.msg(data.message,{icon: 5});

@@ -102,6 +102,9 @@ function getUrl_manage() {
         addToOutTtsEtinfo:getPath()+basepath+"tts/addToOutTtsEtinfo",
         updateToOutTtsEtinfo:getPath()+basepath+"tts/updateToOutTtsEtinfo",
 
+        //获取所有基础设备
+        getBaseEc:getPath()+basepath+"main/getBaseEc",
+
         /*--------------------------------以下为：提供给会议后台显示的接口---end--------------------------------------*/
 
         getLoginCookie:getPath()+basepath+"main/getLoginCookie",

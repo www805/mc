@@ -13,6 +13,7 @@ import com.avst.meetingcontrol.common.util.baseaction.Code;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
 import com.avst.meetingcontrol.feignclient.ec.EquipmentControl;
+import com.avst.meetingcontrol.feignclient.ec.req.GetToOutBaseEcParam;
 import com.avst.meetingcontrol.feignclient.ec.req.GetToOutBaseListParam;
 import com.avst.meetingcontrol.web.req.GetBaseListParam;
 import com.avst.meetingcontrol.web.req.GetHomeParam;
@@ -245,5 +246,24 @@ public class MainService extends BaseService {
         result.setData(vo);
         result.changeToTrue();
        return;
+    }
+
+    public void getBaseEc(RResult result, GetToOutBaseEcParam param) {
+
+
+        try {
+            param.setBaseType(BASEType.Base);
+            RResult rr = equipmentControl.getToOutBaseEc(param);
+
+            if (null!=rr&&rr.getActioncode().equals(Code.SUCCESS.toString())){
+                result.setData(rr.getData());
+                changeResultToSuccess(result);
+            }
+
+        } catch (Exception e) {
+            LogUtil.intoLog(4, this.getClass(), "获取ec所有基础设备getBaseEc__请求失败");
+        }
+
+
     }
 }
