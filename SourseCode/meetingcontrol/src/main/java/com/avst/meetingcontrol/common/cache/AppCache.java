@@ -1,10 +1,11 @@
 package com.avst.meetingcontrol.common.cache;
 
 import com.avst.meetingcontrol.common.cache.param.AppCacheParam;
-import com.avst.meetingcontrol.common.conf.NetTool;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.OpenUtil;
+import com.avst.meetingcontrol.common.util.iputil.SystemIpUtil;
 import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
+import org.apache.commons.lang.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -55,8 +56,12 @@ public class AppCache {
             Map<String,Object> guidepage = (Map<String, Object>) zkYml.get("guidepage");
             Map<String,Object> client_button = (Map<String, Object>) guidepage.get("client_button");
             String guidepageUrl = (String) client_button.get("url");
-            String myIP = NetTool.getMyIP();
-            avstYml.put("guidepageUrl" , "http://" + myIP + guidepageUrl);
+            String myIP = SystemIpUtil.getOneUseableIp();
+            String zkport=PropertiesListenerConfig.getProperty("zkport");
+            if(StringUtils.isEmpty(zkport)){
+                zkport="6059";
+            }
+            avstYml.put("guidepageUrl" , "http://" + myIP +":"+zkport+ guidepageUrl);
 
             avstYml.put("bottom", map.get("bottom"));
             if (null != map && map.size() > 0) {

@@ -3,6 +3,7 @@ package com.avst.meetingcontrol.common.conf;
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.LogUtil;
 import com.avst.meetingcontrol.common.util.baseaction.ReqParam;
+import com.avst.meetingcontrol.common.util.iputil.SystemIpUtil;
 import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.base.vo.ControlInfoParamVO;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
@@ -34,14 +35,7 @@ public class SchedulerZk {
         ReqParam<ControlInfoParamVO> param = new ReqParam<>();
 
         //获取本机ip地址
-        String hostAddress = "localhost";
-        try {
-            InetAddress addr = InetAddress.getLocalHost();
-            hostAddress = addr.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
+        String hostAddress = SystemIpUtil.getOneUseableIp();
         String servername = PropertiesListenerConfig.getProperty("spring.application.name");
         String url = PropertiesListenerConfig.getProperty("control.servser.url");
         String port = PropertiesListenerConfig.getProperty("server.port");

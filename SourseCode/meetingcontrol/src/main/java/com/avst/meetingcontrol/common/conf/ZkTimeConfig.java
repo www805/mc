@@ -2,6 +2,7 @@ package com.avst.meetingcontrol.common.conf;
 
 import com.avst.meetingcontrol.common.util.DateUtil;
 import com.avst.meetingcontrol.common.util.LogUtil;
+import com.avst.meetingcontrol.common.util.NetTool;
 import com.avst.meetingcontrol.common.util.baseaction.RResult;
 import com.avst.meetingcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.meetingcontrol.feignclient.zk.ZkControl;
@@ -10,13 +11,11 @@ import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
